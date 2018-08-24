@@ -1,0 +1,7 @@
+commands:
+  divinedrop:
+    aliases: [ddrop, dd]
+
+# /dd             | permissions: divinedrop.info
+# /dd reload      | permissions: divinedrop.reload
+# /dd getname     | permissions: divinedrop.getname
