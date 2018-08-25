@@ -62,7 +62,7 @@ public class V13R1 implements Version {
     }
 
     private String getLangNameNMS(net.minecraft.server.v1_13_R1.ItemStack itemStack) {
-        return Language.getInstance().getLocName(getNameNMS(itemStack) + ".name").trim();
+        return Language.getInstance().getLocName(getNameNMS(itemStack)).trim();
     }
 
     private String getNameNMS(net.minecraft.server.v1_13_R1.ItemStack itemStack) {
