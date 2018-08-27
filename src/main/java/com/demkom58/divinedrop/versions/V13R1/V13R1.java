@@ -24,8 +24,8 @@ public class V13R1 implements Version {
 
     @NotNull
     @Override
-    public String getPath() {
-        return PATH;
+    public String getLangPath(@NotNull final String locale) {
+        return String.format(PATH, locale.toLowerCase());
     }
 
     @NotNull
@@ -36,7 +36,7 @@ public class V13R1 implements Version {
 
     @NotNull
     @Override
-    public String getVersion() {
+    public String name() {
         return VERSION;
     }
 
@@ -47,25 +47,17 @@ public class V13R1 implements Version {
     }
 
     private String getName(ItemStack bItemStack) {
-        net.minecraft.server.v1_13_R1.ItemStack itemStack = org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack.asNMSCopy(bItemStack);
-        net.minecraft.server.v1_13_R1.NBTTagCompound nbtTagCompound = itemStack.b("display");
-        if (nbtTagCompound != null) {
+        final net.minecraft.server.v1_13_R1.ItemStack itemStack = org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack.asNMSCopy(bItemStack);
+        final net.minecraft.server.v1_13_R1.NBTTagCompound nbtTagCompound = itemStack.b("display");
 
+        if (nbtTagCompound != null) {
             if (nbtTagCompound.hasKeyOfType("Name", 8))
                 return nbtTagCompound.getString("Name");
-
             if (nbtTagCompound.hasKeyOfType("LocName", 8))
                 return Language.getInstance().getLocName(nbtTagCompound.getString("LocName"));
-
         }
-        return getLangNameNMS(itemStack);
+
+        return Language.getInstance().getLocName(itemStack.getItem().getName()).trim();
     }
 
-    private String getLangNameNMS(net.minecraft.server.v1_13_R1.ItemStack itemStack) {
-        return Language.getInstance().getLocName(getNameNMS(itemStack)).trim();
-    }
-
-    private String getNameNMS(net.minecraft.server.v1_13_R1.ItemStack itemStack) {
-        return Language.getInstance().getLocName(itemStack.getItem().getName());
-    }
 }

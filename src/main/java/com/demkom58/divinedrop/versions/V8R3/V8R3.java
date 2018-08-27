@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 public class V8R3 implements Version {
-    public static final String VERSION = "1.8.8";
+    public static final String VERSION = "1.8.9";
     public static final String PATH = "minecraft/lang/%s.lang";
 
     @Override
@@ -21,10 +21,16 @@ public class V8R3 implements Version {
         return getName(item);
     }
 
+    public static String langFormat(@NotNull final String locale) {
+        final String[] lang = locale.split("_");
+        if(lang.length == 1) return lang[0];
+        return lang[0] + "_" + lang[1].toUpperCase();
+    }
+
     @NotNull
     @Override
-    public String getPath() {
-        return PATH;
+    public String getLangPath(@NotNull final String locale) {
+        return String.format(PATH, langFormat(locale));
     }
 
     @NotNull
@@ -35,7 +41,7 @@ public class V8R3 implements Version {
 
     @NotNull
     @Override
-    public String getVersion() {
+    public String name() {
         return VERSION;
     }
 
@@ -48,21 +54,17 @@ public class V8R3 implements Version {
     private String getName(ItemStack bItemStack) {
         net.minecraft.server.v1_8_R3.ItemStack itemStack = org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack.asNMSCopy(bItemStack);
         String s = getLangNameNMS(itemStack);
+
         if (itemStack.getTag() != null && itemStack.getTag().hasKeyOfType("display", 10)) {
-            net.minecraft.server.v1_8_R3.NBTTagCompound nbttagcompound = itemStack.getTag().getCompound("display");
-            if (nbttagcompound.hasKeyOfType("Name", 8)) {
-                s = nbttagcompound.getString("Name");
-            }
+            net.minecraft.server.v1_8_R3.NBTTagCompound nbtTagCompound = itemStack.getTag().getCompound("display");
+            if (nbtTagCompound.hasKeyOfType("Name", 8))
+                s = nbtTagCompound.getString("Name");
         }
         return s;
     }
 
     private String getLangNameNMS(net.minecraft.server.v1_8_R3.ItemStack itemStack) {
-        return Language.getInstance().getLocName(getNameNMS(itemStack) + ".name").trim();
+        return Language.getInstance().getLocName(itemStack.getItem().e_(itemStack) + ".name").trim();
     }
 
-    private String getNameNMS(net.minecraft.server.v1_8_R3.ItemStack itemStack) {
-        String name = itemStack.getItem().e_(itemStack);
-        return name == null ? "" : Language.getInstance().getLocName(name);
-    }
 }

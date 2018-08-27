@@ -22,14 +22,17 @@ public class LangManager {
 
             if(!langFolder.exists()) {
                 if(!langFolder.mkdir()) {
-                    plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "[DivineDrop] §cI cant create languages folder."));
+                    plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "[DivineDrop] §cCan't create languages folder."));
                     plugin.getServer().getPluginManager().disablePlugin(plugin);
                     return;
                 }
             }
 
             final File langFile = new File(langPath);
-            if(!langFile.exists()) downloader.downloadResource(lang, new File(langPath));
+            if(!langFile.exists()) {
+                langFile.getParentFile().mkdirs();
+                downloader.downloadResource(lang, new File(langPath));
+            }
 
             language.updateLangMap(version);
         } catch (IOException ex) {

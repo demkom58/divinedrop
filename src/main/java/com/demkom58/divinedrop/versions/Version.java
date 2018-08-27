@@ -12,9 +12,9 @@ import java.util.Map;
 public interface Version {
 
     String getI18NDisplayName(@Nullable final ItemStack item);
-    @NotNull String getPath();
+    @NotNull String getLangPath(@NotNull final String locale);
     @NotNull Map<String, String> parseLang(@NotNull InputStream inputStream) throws IOException;
-    @NotNull String getVersion();
+    @NotNull String name();
     @NotNull Listener getListener();
 
 }
