@@ -25,8 +25,8 @@ public class V10R1 implements Version {
 
     @NotNull
     @Override
-    public String getPath() {
-        return V8R3.PATH;
+    public String getLangPath(@NotNull final String locale) {
+        return String.format(V8R3.PATH, V8R3.langFormat(locale));
     }
 
     @NotNull
@@ -37,7 +37,7 @@ public class V10R1 implements Version {
 
     @NotNull
     @Override
-    public String getVersion() {
+    public String name() {
         return VERSION;
     }
 
@@ -60,11 +60,7 @@ public class V10R1 implements Version {
     }
 
     private String getLangNameNMS(net.minecraft.server.v1_10_R1.ItemStack itemStack) {
-        return Language.getInstance().getLocName(getNameNMS(itemStack) + ".name").trim();
+        return Language.getInstance().getLocName(itemStack.getItem().f_(itemStack) + ".name").trim();
     }
 
-    private String getNameNMS(net.minecraft.server.v1_10_R1.ItemStack itemStack) {
-        String name = itemStack.getItem().f_(itemStack);
-        return name == null ? "" : Language.getInstance().getLocName(name);
-    }
 }

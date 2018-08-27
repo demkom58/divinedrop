@@ -18,30 +18,31 @@ import java.util.ArrayList;
 
 public class Downloader {
 
-    private final static String VERSIONS_LIST = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
-    private final static String ASSETS_URL = "http://resources.download.minecraft.net/";
-    private final Gson gson = new Gson();
+    private static final String VERSIONS_LIST = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
+    private static final String ASSETS_URL = "http://resources.download.minecraft.net/";
+    private static final Gson GSON = new Gson();
 
-    public void downloadResource(String locale, File destination) throws IOException {
+    public void downloadResource(@NotNull String locale, @NotNull File destination) throws IOException {
         final VersionManifest vm = this.downloadObject(new URL(Downloader.VERSIONS_LIST), VersionManifest.class);
-        final ClientVersion client = downloadObject(new URL(vm.getLatestRelease().getUrl()), ClientVersion.class);
+        final ClientVersion client = downloadObject(new URL(vm.getRelease().getUrl()), ClientVersion.class);
         final AssetIndex ai = downloadObject(new URL(client.getAssetUrl()), AssetIndex.class);
 
         final String hash = ai.getLocaleHash(locale);
-        Bukkit.getServer().getConsoleSender().sendMessage("§eDownloading §6{0}.data §efile (hash: §6{1}§e)"
+        Bukkit.getServer().getConsoleSender().sendMessage("§eDownloading §6{0}§e file (hash: §6{1}§e)"
                 .replace("{0}", locale).replace("{1}", hash));
 
         final String assetPath = Downloader.ASSETS_URL + this.createPathFromHash(hash);
         FileUtils.copyURLToFile(new URL(assetPath), destination, 100, 500);
     }
 
-    private <T> T downloadObject(URL url, Class<T> object) throws IOException {
+    @NotNull
+    private <T> T downloadObject(@NotNull URL url, @NotNull Class<T> object) throws IOException {
         try (InputStream input = url.openConnection().getInputStream()) {
 
             final InputStreamReader reader = new InputStreamReader(input);
             final JsonReader jsonReader = new JsonReader(reader);
 
-            final T prepared = gson.fromJson(jsonReader, object);
+            final T prepared = GSON.fromJson(jsonReader, object);
 
             jsonReader.close();
             reader.close();
@@ -50,7 +51,8 @@ public class Downloader {
         }
     }
 
-    private String createPathFromHash(String hash) {
+    @NotNull
+    private String createPathFromHash(@NotNull String hash) {
         return hash.substring(0, 2) + "/" + hash;
     }
 
@@ -60,14 +62,15 @@ public class Downloader {
         private ArrayList<RemoteClient> versions;
 
         @NotNull
-        public RemoteClient getLatestRelease() {
-            final String version = VersionUtil.getVersion().getVersion();
+        public RemoteClient getRelease() {
+            final String version = VersionUtil.getVersion().name();
 
             for (RemoteClient c : this.versions)
                 if (c.getId().equals(version)) return c;
 
             throw new IllegalArgumentException(version + " does not exists. There something is definitely wrong.");
         }
+
     }
 
     class RemoteClient {
@@ -114,7 +117,7 @@ public class Downloader {
 
         @NotNull
         public String getLocaleHash(@NotNull final String locale) {
-            final LinkedTreeMap<String, String> asset = objects.get(String.format(VersionUtil.getVersion().getPath(), locale.toLowerCase()));
+            final LinkedTreeMap<String, String> asset = objects.get(VersionUtil.getVersion().getLangPath(locale));
                 if (asset == null) {
                     Data.lang = "en_CA";
                     Data.langManager.downloadLang(Data.lang, VersionUtil.getVersion());

@@ -1,6 +1,7 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.lang.LangManager;
+import com.demkom58.divinedrop.versions.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -53,14 +54,14 @@ public final class Data {
             "§b"
     };
 
-    public static HashMap<Material, HashMap<String, DataContainer>> countdowns;
+    public static Map<Material, Map<String, DataContainer>> countdowns;
     public static final Set<Item> ITEMS_LIST = Collections.newSetFromMap(new WeakHashMap<>());
     public static List<ItemStack> deathDroppedItemsList;
 
     public static LangManager langManager;
 
     public static String getLangPath() {
-        return DivineDrop.getInstance().getDataFolder().getAbsolutePath() + "/languages/"+Data.lang +".data";
+        return DivineDrop.getInstance().getDataFolder().getAbsolutePath() + "/languages/"+VersionUtil.getVersion().name()+"/"+Data.lang +".lang";
     }
 
     public static void updateData(@NotNull final FileConfiguration conf) {
@@ -104,7 +105,7 @@ public final class Data {
                 if(format == null) format = Data.format;
 
                 format = ChatColor.translateAlternateColorCodes('&', format);
-                HashMap<String, DataContainer> itemFilter;
+                Map<String, DataContainer> itemFilter;
 
                 if(!Data.countdowns.containsKey(material)) {
                     itemFilter = new HashMap<>();

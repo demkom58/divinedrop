@@ -1,10 +1,16 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.versions.VersionUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+
+import java.util.List;
+import java.util.Map;
 
 public final class Logic {
     private Logic() { }
@@ -62,5 +68,70 @@ public final class Logic {
                 .replace(Data.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
                 .replace(Data.NAME_PLACEHOLDER, Logic.getDisplayName(item))
         );
+    }
+
+    static void registerCountdown() {
+        Bukkit.getServer().getScheduler().runTaskTimer(DivineDrop.getInstance(), () -> {
+            for (Item item : Data.ITEMS_LIST) {
+                if (item == null) continue;
+                Bukkit.getServer().getScheduler().runTaskAsynchronously(DivineDrop.getInstance(), () -> {
+                    final List<MetadataValue> metadataCountdowns = item.getMetadata(Data.METADATA_COUNTDOWN);
+                    if (metadataCountdowns.isEmpty()) {
+
+                        int timer = Data.timerValue;
+                        String format = Data.format;
+                        Material material = item.getItemStack().getType();
+                        String name = item.getItemStack().getItemMeta().getDisplayName();
+                        if (name == null) name = "";
+
+                        if (Data.enableCustomCountdowns) {
+                            boolean mapContainsMaterial = Data.countdowns.containsKey(material);
+
+                            if (mapContainsMaterial) {
+                                Map<String, DataContainer> filterMap = Data.countdowns.get(material);
+
+                                boolean mapContainsName = filterMap.containsKey(name);
+                                if (mapContainsName) {
+                                    timer = filterMap.get(name).getTimer();
+                                    format = filterMap.get(name).getFormat();
+                                }
+
+                                boolean mapContainsVoid = filterMap.containsKey("");
+                                if (mapContainsVoid & name.equals("") & !mapContainsName) {
+                                    timer = filterMap.get("").getTimer();
+                                    format = filterMap.get("").getFormat();
+                                }
+
+                                boolean mapContainsAny = filterMap.containsKey("*");
+                                if (mapContainsAny & (!name.equals("") || !mapContainsVoid) & !mapContainsName) {
+                                    timer = filterMap.get("*").getTimer();
+                                    format = filterMap.get("*").getFormat();
+                                }
+
+                            }
+                        }
+                        DataContainer dataContainer = new DataContainer(timer, format);
+
+                        if (Data.savePlayerDeathDroppedItems)
+                            if (Data.deathDroppedItemsList.contains(item.getItemStack())) {
+                                Logic.setItemWithoutTimer(item, dataContainer);
+                                return;
+                            }
+
+                        if (timer == -1) {
+                            Logic.setItemWithoutTimer(item, dataContainer);
+                            return;
+                        }
+
+                        Logic.setItemWithTimer(item, dataContainer);
+                        return;
+                    }
+                    DataContainer dataContainer = (DataContainer) metadataCountdowns.get(0).value();
+                    dataContainer.setTimer(dataContainer.getTimer() - 1);
+                    Logic.setItemWithTimer(item, dataContainer);
+                });
+            }
+        }, 0L, 20L);
+
     }
 }
