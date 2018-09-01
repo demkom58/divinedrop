@@ -4,6 +4,7 @@ import com.demkom58.divinedrop.Data;
 import com.demkom58.divinedrop.versions.Version;
 import com.google.common.collect.Maps;
 import com.google.gson.stream.JsonReader;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class Language {
         instance = this;
     }
 
-    public void updateLangMap(Version version) {
+    public void updateLangMap(@NotNull Version version) {
         try {
             final InputStream inputStream = new FileInputStream(Data.getLangPath());
 
@@ -38,7 +39,7 @@ public class Language {
         }
     }
 
-    private <K, V> void mergeMap(Map<K, V> from, Map<K, V> to) {
+    private <K, V> void mergeMap(@NotNull Map<K, V> from, @NotNull Map<K, V> to) {
         for(Map.Entry<K, V> entry : from.entrySet())
             to.put(entry.getKey(), entry.getValue());
     }
@@ -52,12 +53,14 @@ public class Language {
         }
     }
 
-    private synchronized String getLangName(String path) {
-        String result = this.langMap.get(path);
+    @NotNull
+    private synchronized String getLangName(@NotNull String path) {
+        String result = langMap.get(path);
         return result == null ? path : result;
     }
 
-    public String getLocName(String path) {
+    @NotNull
+    public String getLocName(@NotNull String path) {
         return getLangName(path);
     }
 
@@ -66,7 +69,7 @@ public class Language {
     }
 
     public synchronized boolean contains(String path) {
-        return this.langMap.containsKey(path);
+        return langMap.containsKey(path);
     }
 
     public long getCurrentMillis() {

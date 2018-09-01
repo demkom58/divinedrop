@@ -15,7 +15,7 @@ public class V12Listener implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
         if(!Data.addItemsOnChunkLoad) return;
-        Logic.registerNewItems(event.getChunk().getEntities());
+        Logic.registerItems(event.getChunk().getEntities());
     }
 
     @EventHandler
