@@ -23,7 +23,6 @@ public final class Logic {
         Arrays.stream(entities)
                 .filter(Objects::nonNull)
                 .filter(entity -> entity instanceof Item)
-                .filter(entity -> !Data.ITEMS_LIST.contains(entity))
                 .forEach(entity -> Data.ITEMS_LIST.add((Item) entity));
     }
 
