@@ -8,46 +8,47 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public final class Logic {
-    private Logic() { }
-
-    public static void registerNewItems(Entity[] entities) {
-        for (Entity entity : entities) {
-            if(entity == null) continue;
-            if (entity instanceof Item) {
-                Item item = (Item) entity;
-                if (Data.ITEMS_LIST.contains(item)) return;
-                Data.ITEMS_LIST.add(item);
-            }
-        }
+    private Logic() {
     }
 
-    public static void registerDeathDrop(PlayerDeathEvent event) {
+    public static void registerItems(@NotNull Entity[] entities) {
+        Arrays.stream(entities)
+                .filter(Objects::nonNull)
+                .filter(entity -> entity instanceof Item)
+                .filter(entity -> !Data.ITEMS_LIST.contains(entity))
+                .forEach(entity -> Data.ITEMS_LIST.add((Item) entity));
+    }
+
+    public static void registerDeathDrop(@NotNull PlayerDeathEvent event) {
         Data.deathDroppedItemsList.addAll(event.getDrops());
     }
 
     public static void removeTimers() {
-        for (Item item : Data.ITEMS_LIST) {
-            if(item == null) continue;
-            item.setCustomName(Data.liteFormat
-                    .replace(Data.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
-                    .replace(Data.NAME_PLACEHOLDER, getDisplayName(item))
-            );
-        }
+        Data.ITEMS_LIST.forEach(item -> item.setCustomName(getLiteCustomName(item)));
     }
 
-    public static String getDisplayName(Item item) {
+    public static String getLiteCustomName(@NotNull Item item) {
+        return Data.liteFormat
+                .replace(Data.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
+                .replace(Data.NAME_PLACEHOLDER, getDisplayName(item));
+    }
+
+    public static String getDisplayName(@NotNull Item item) {
         return VersionUtil.getVersion().getI18NDisplayName(item.getItemStack());
     }
 
-    public static void setItemWithoutTimer(Item item, DataContainer dataContainer){
+    public static void removeTimer(@NotNull Item item, @NotNull DataContainer dataContainer) {
         String format = dataContainer.getFormat();
-        if(format == null) format = Data.liteFormat;
-        if(format.equals(Data.format)) format = Data.liteFormat;
+        if (format == null) format = Data.liteFormat;
+        if (format.equals(Data.format)) format = Data.liteFormat;
 
         item.setCustomName(format
                 .replace(Data.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
@@ -56,12 +57,13 @@ public final class Logic {
         Data.ITEMS_LIST.remove(item);
     }
 
-    public static void setItemWithTimer(Item item, DataContainer dataContainer){
-        if(dataContainer.getTimer() <= 0) {
+    public static void setTimer(@NotNull Item item, @NotNull DataContainer dataContainer) {
+        if (dataContainer.getTimer() <= 0) {
             item.remove();
             Data.ITEMS_LIST.remove(item);
         }
-        if(dataContainer.getFormat() == null) dataContainer.setFormat("");
+
+        if (dataContainer.getFormat() == null) dataContainer.setFormat("");
         item.setMetadata(Data.METADATA_COUNTDOWN, new FixedMetadataValue(DivineDrop.getInstance(), dataContainer));
         item.setCustomName(dataContainer.getFormat()
                 .replace(Data.TIMER_PLACEHOLDER, String.valueOf(dataContainer.getTimer()))
@@ -71,10 +73,8 @@ public final class Logic {
     }
 
     static void registerCountdown() {
-        Bukkit.getServer().getScheduler().runTaskTimer(DivineDrop.getInstance(), () -> {
-            for (Item item : Data.ITEMS_LIST) {
-                if (item == null) continue;
-                Bukkit.getServer().getScheduler().runTaskAsynchronously(DivineDrop.getInstance(), () -> {
+        Bukkit.getServer().getScheduler().runTaskTimer(DivineDrop.getInstance(), () ->
+                Data.ITEMS_LIST.forEach(item -> Bukkit.getServer().getScheduler().runTaskAsynchronously(DivineDrop.getInstance(), () -> {
                     final List<MetadataValue> metadataCountdowns = item.getMetadata(Data.METADATA_COUNTDOWN);
                     if (metadataCountdowns.isEmpty()) {
 
@@ -114,24 +114,22 @@ public final class Logic {
 
                         if (Data.savePlayerDeathDroppedItems)
                             if (Data.deathDroppedItemsList.contains(item.getItemStack())) {
-                                Logic.setItemWithoutTimer(item, dataContainer);
+                                Logic.removeTimer(item, dataContainer);
                                 return;
                             }
 
                         if (timer == -1) {
-                            Logic.setItemWithoutTimer(item, dataContainer);
+                            Logic.removeTimer(item, dataContainer);
                             return;
                         }
 
-                        Logic.setItemWithTimer(item, dataContainer);
+                        Logic.setTimer(item, dataContainer);
                         return;
                     }
                     DataContainer dataContainer = (DataContainer) metadataCountdowns.get(0).value();
                     dataContainer.setTimer(dataContainer.getTimer() - 1);
-                    Logic.setItemWithTimer(item, dataContainer);
-                });
-            }
-        }, 0L, 20L);
+                    Logic.setTimer(item, dataContainer);
+                })), 0L, 20L);
 
     }
 }

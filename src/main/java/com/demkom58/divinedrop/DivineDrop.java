@@ -4,8 +4,6 @@ import com.demkom58.divinedrop.lang.LangManager;
 import com.demkom58.divinedrop.versions.Version;
 import com.demkom58.divinedrop.versions.VersionUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +13,7 @@ public final class DivineDrop extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        instance = this;
+        DivineDrop.instance = this;
         Data.langManager = new LangManager();
         VersionUtil.setup();
 
@@ -27,10 +25,13 @@ public final class DivineDrop extends JavaPlugin {
 
         Logic.registerCountdown();
 
-        if(Data.addItemsOnChunkLoad)
-            for(World world : getServer().getWorlds())
-                for(Entity entity : world.getEntities())
-                    if(entity instanceof Item) Data.ITEMS_LIST.add((Item)entity);
+        if (Data.addItemsOnChunkLoad) {
+            getServer().getWorlds().forEach(world -> world.getEntities().stream()
+                    .filter(entity -> entity instanceof Item)
+                    .forEach(item -> Data.ITEMS_LIST.add((Item) item))
+            );
+        }
+
     }
 
     @Override
