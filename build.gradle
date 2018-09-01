@@ -12,6 +12,7 @@ bukkit {
 
     dependencies {
         compileOnly files(
+                "$rootDir/lb/spigot-1.13.1-R0.1-SNAPSHOT-b1869.jar",
                 "$rootDir/lb/spigot-1.13-R0.1-SNAPSHOT-b1845.jar",
                 "$rootDir/lb/spigot-1.12-R0.1-SNAPSHOT-b1376.jar",
                 "$rootDir/lb/spigot-1.12.2-R0.1-SNAPSHOT-b1498.jar",
