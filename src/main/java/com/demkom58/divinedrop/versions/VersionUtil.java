@@ -6,6 +6,7 @@ import com.demkom58.divinedrop.versions.V11R1.V11R1;
 import com.demkom58.divinedrop.versions.V12R1.V12R1;
 import com.demkom58.divinedrop.versions.V13R1.V13R1;
 import com.demkom58.divinedrop.versions.V13R2.V13R2;
+import com.demkom58.divinedrop.versions.V14R1.V14R1;
 import com.demkom58.divinedrop.versions.V8R3.V8R3;
 import com.demkom58.divinedrop.versions.V9R1.V9R1;
 import com.demkom58.divinedrop.versions.V9R2.V9R2;
@@ -48,6 +49,7 @@ public class VersionUtil {
         if ("v1_12_R1".equals(ver)) return new V12R1();
         if ("v1_13_R1".equals(ver)) return new V13R1();
         if ("v1_13_R2".equals(ver)) return new V13R2();
+        if ("v1_14_R1".equals(ver)) return new V14R1();
         return null;
     }
 
