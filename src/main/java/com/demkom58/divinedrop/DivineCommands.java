@@ -36,13 +36,15 @@ public class DivineCommands implements CommandExecutor {
                 try {
                     if (DivineDrop.getInstance().getServer().getVersion().contains("1.8"))
                         itemName = player.getItemInHand().getItemMeta().getDisplayName();
-                    else itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                    else
+                        itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 } catch (NullPointerException ex) {
                     sendMessage(sender, Data.PREFIX + Data.itemDisplayNameMessage.replace("$name$", "AIR"));
                     return false;
                 }
 
-                if (itemName == null) itemName = "NONAME";
+                if (itemName == null)
+                    itemName = "NONAME";
 
                 sendMessage(sender, Data.itemDisplayNameMessage.replace("$name$", itemName.replace('§', '&')));
                 return true;

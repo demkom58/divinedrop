@@ -14,15 +14,15 @@ public class DataContainer {
         return timer;
     }
 
-    public String getFormat() {
-        return format;
-    }
-
     public void setTimer(int timer) {
         this.timer = timer;
     }
 
-    public void setFormat( String format) {
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
         this.format = format;
     }
 }

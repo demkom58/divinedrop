@@ -19,7 +19,9 @@ public class V9R2 implements Version {
 
     @Override
     public String getI18NDisplayName(@Nullable ItemStack item) {
-        if(item == null) return null;
+        if (item == null)
+            return null;
+
         return getName(item);
     }
 
@@ -52,9 +54,9 @@ public class V9R2 implements Version {
         String s = getLangNameNMS(itemStack);
         if (itemStack.getTag() != null && itemStack.getTag().hasKeyOfType("display", 10)) {
             net.minecraft.server.v1_9_R2.NBTTagCompound nbtTagCompound = itemStack.getTag().getCompound("display");
-            if (nbtTagCompound.hasKeyOfType("Name", 8)) {
+
+            if (nbtTagCompound.hasKeyOfType("Name", 8))
                 s = nbtTagCompound.getString("Name");
-            }
         }
         return s;
     }

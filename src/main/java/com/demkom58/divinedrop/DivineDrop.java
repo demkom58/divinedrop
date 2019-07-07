@@ -11,6 +11,10 @@ import org.jetbrains.annotations.NotNull;
 public final class DivineDrop extends JavaPlugin {
     private static DivineDrop instance;
 
+    public static DivineDrop getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         DivineDrop.instance = this;
@@ -48,10 +52,5 @@ public final class DivineDrop extends JavaPlugin {
         Data.langManager.downloadLang(Data.lang, version);
 
         saveConfig();
-    }
-
-
-    public static DivineDrop getInstance() {
-        return instance;
     }
 }

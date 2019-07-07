@@ -15,16 +15,21 @@ public class V8R3 implements Version {
     public static final String VERSION = "1.8.9";
     public static final String PATH = "minecraft/lang/%s.lang";
 
-    @Override
-    public String getI18NDisplayName(@Nullable ItemStack item) {
-        if(item == null) return null;
-        return getName(item);
-    }
-
     public static String langFormat(@NotNull final String locale) {
         final String[] lang = locale.split("_");
-        if(lang.length == 1) return lang[0];
+
+        if (lang.length == 1)
+            return lang[0];
+
         return lang[0] + "_" + lang[1].toUpperCase();
+    }
+
+    @Override
+    public String getI18NDisplayName(@Nullable ItemStack item) {
+        if (item == null)
+            return null;
+
+        return getName(item);
     }
 
     @NotNull
@@ -57,6 +62,7 @@ public class V8R3 implements Version {
 
         if (itemStack.getTag() != null && itemStack.getTag().hasKeyOfType("display", 10)) {
             net.minecraft.server.v1_8_R3.NBTTagCompound nbtTagCompound = itemStack.getTag().getCompound("display");
+
             if (nbtTagCompound.hasKeyOfType("Name", 8))
                 s = nbtTagCompound.getString("Name");
         }

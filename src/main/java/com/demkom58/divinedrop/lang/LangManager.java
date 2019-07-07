@@ -3,7 +3,6 @@ package com.demkom58.divinedrop.lang;
 import com.demkom58.divinedrop.Data;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.versions.Version;
-import org.bukkit.ChatColor;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,16 +19,14 @@ public class LangManager {
         try {
             final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
 
-            if(!langFolder.exists()) {
-                if(!langFolder.mkdir()) {
-                    plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "[DivineDrop] §cCan't create languages folder."));
-                    plugin.getServer().getPluginManager().disablePlugin(plugin);
-                    return;
-                }
+            if (!langFolder.exists() && !langFolder.mkdir()) {
+                plugin.getServer().getConsoleSender().sendMessage("[DivineDrop] §cCan't create languages folder.");
+                plugin.getServer().getPluginManager().disablePlugin(plugin);
+                return;
             }
 
             final File langFile = new File(langPath);
-            if(!langFile.exists()) {
+            if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
                 downloader.downloadResource(lang, new File(langPath));
             }

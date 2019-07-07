@@ -19,7 +19,9 @@ public class V13R2 implements Version {
 
     @Override
     public String getI18NDisplayName(@Nullable ItemStack item) {
-        if(item == null) return null;
+        if (item == null)
+            return null;
+
         return getName(item);
     }
 
