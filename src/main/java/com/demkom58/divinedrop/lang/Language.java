@@ -22,6 +22,10 @@ public class Language {
         instance = this;
     }
 
+    public static Language getInstance() {
+        return instance;
+    }
+
     public void updateLangMap(@NotNull Version version) {
         try {
             final InputStream inputStream = new FileInputStream(Data.getLangPath());
@@ -34,13 +38,14 @@ public class Language {
 
             jsonReader.close();
             reader.close();
-        } catch (IOException ignored) {} finally {
+        } catch (IOException ignored) {
+        } finally {
             currentTimeMillis = System.currentTimeMillis();
         }
     }
 
     private <K, V> void mergeMap(@NotNull Map<K, V> from, @NotNull Map<K, V> to) {
-        for(Map.Entry<K, V> entry : from.entrySet())
+        for (Map.Entry<K, V> entry : from.entrySet())
             to.put(entry.getKey(), entry.getValue());
     }
 
@@ -55,8 +60,10 @@ public class Language {
 
     @NotNull
     private synchronized String getLangName(@NotNull String path) {
-        String result = langMap.get(path);
-        return result == null ? path : result;
+        final String result = langMap.get(path);
+        return result == null
+                ? path
+                : result;
     }
 
     @NotNull
@@ -74,10 +81,6 @@ public class Language {
 
     public long getCurrentMillis() {
         return currentTimeMillis;
-    }
-
-    public static Language getInstance() {
-        return instance;
     }
 
 }

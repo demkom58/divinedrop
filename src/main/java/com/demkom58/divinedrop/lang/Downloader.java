@@ -38,7 +38,6 @@ public class Downloader {
     @NotNull
     private <T> T downloadObject(@NotNull URL url, @NotNull Class<T> object) throws IOException {
         try (InputStream input = url.openConnection().getInputStream()) {
-
             final InputStreamReader reader = new InputStreamReader(input);
             final JsonReader jsonReader = new JsonReader(reader);
 
@@ -118,11 +117,11 @@ public class Downloader {
         @NotNull
         public String getLocaleHash(@NotNull final String locale) {
             final LinkedTreeMap<String, String> asset = objects.get(VersionUtil.getVersion().getLangPath(locale));
-                if (asset == null) {
-                    Data.lang = "en_CA";
-                    Data.langManager.downloadLang(Data.lang, VersionUtil.getVersion());
-                    return "";
-                }
+            if (asset == null) {
+                Data.lang = "en_CA";
+                Data.langManager.downloadLang(Data.lang, VersionUtil.getVersion());
+                return "";
+            }
 
             final String hash = asset.get("hash");
             return hash != null ? hash : "";

@@ -46,8 +46,12 @@ public final class Logic {
 
     public static void removeTimer(@NotNull Item item, @NotNull DataContainer dataContainer) {
         String format = dataContainer.getFormat();
-        if (format == null) format = Data.liteFormat;
-        if (format.equals(Data.format)) format = Data.liteFormat;
+
+        if (format == null)
+            format = Data.liteFormat;
+
+        if (format.equals(Data.format))
+            format = Data.liteFormat;
 
         item.setCustomName(format
                 .replace(Data.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
@@ -62,7 +66,9 @@ public final class Logic {
             Data.ITEMS_LIST.remove(item);
         }
 
-        if (dataContainer.getFormat() == null) dataContainer.setFormat("");
+        if (dataContainer.getFormat() == null)
+            dataContainer.setFormat("");
+
         item.setMetadata(Data.METADATA_COUNTDOWN, new FixedMetadataValue(DivineDrop.getInstance(), dataContainer));
         item.setCustomName(dataContainer.getFormat()
                 .replace(Data.TIMER_PLACEHOLDER, String.valueOf(dataContainer.getTimer()))
@@ -81,7 +87,9 @@ public final class Logic {
                         String format = Data.format;
                         Material material = item.getItemStack().getType();
                         String name = item.getItemStack().getItemMeta().getDisplayName();
-                        if (name == null) name = "";
+
+                        if (name == null)
+                            name = "";
 
                         if (Data.enableCustomCountdowns) {
                             boolean mapContainsMaterial = Data.countdowns.containsKey(material);

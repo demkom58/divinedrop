@@ -28,8 +28,11 @@ public class VersionUtil {
             Bukkit.getPluginManager().disablePlugin(DivineDrop.getInstance());
         }
 
-        if(ver != null) version = detectVersion(ver);
-        if(version != null) return;
+        if (ver != null)
+            version = detectVersion(ver);
+
+        if (version != null)
+            return;
 
         Bukkit.getConsoleSender().sendMessage("[" + DivineDrop.getInstance().getDescription().getName() + "] " + ChatColor.RED + " Your current version, " + ver + ", is not supported!");
         Bukkit.getPluginManager().disablePlugin(DivineDrop.getInstance());

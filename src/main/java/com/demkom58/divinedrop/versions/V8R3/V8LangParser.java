@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -20,18 +20,20 @@ public class V8LangParser {
 
     public static Map<String, String> parseLang(@NotNull InputStream inputStream) throws IOException {
         Map<String, String> langMap = Maps.newHashMap();
-        Iterator iterator = IOUtils.readLines(inputStream, StandardCharsets.UTF_8).iterator();
-        while (iterator.hasNext()) {
-            String next = (String) iterator.next();
-            if (!next.isEmpty() && next.charAt(0) != '#') {
-                String[] array = Iterables.toArray(SPLITTER.split(next), String.class);
-                if (array != null && array.length == 2) {
-                    String first = array[0];
-                    String str = PATTERN.matcher(array[1]).replaceAll("%$1s");
-                    langMap.put(first, str);
-                }
+        List<String> lines = IOUtils.readLines(inputStream, StandardCharsets.UTF_8);
+
+        for (String next : lines) {
+            if (next.isEmpty() || next.charAt(0) == '#')
+                continue;
+
+            String[] array = Iterables.toArray(SPLITTER.split(next), String.class);
+            if (array != null && array.length == 2) {
+                String first = array[0];
+                String str = PATTERN.matcher(array[1]).replaceAll("%$1s");
+                langMap.put(first, str);
             }
         }
+
         return langMap;
     }
 
