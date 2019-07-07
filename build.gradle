@@ -1,31 +1,23 @@
 plugins {
-    id "ru.endlesscode.bukkitgradle" version "0.6.7"
+    id "ru.endlesscode.bukkitgradle" version "0.8.2"
 }
 group = pluginGroup
 description = pluginDesc
 version = pluginVersion
 
 bukkit {
+
     meta {
         authors = ["demkom58", "demkom", "GdemkomG"]
     }
+    
+    repositories {
+        vault { url "http://nexus.hc.to/content/repositories/pub_releases/" }
+        placeholderapi { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" } 
+    }
 
     dependencies {
-        compileOnly files(
-                "$rootDir/lb/spigot-1.13.1-R0.1-SNAPSHOT-b1869.jar",
-                "$rootDir/lb/spigot-1.13-R0.1-SNAPSHOT-b1845.jar",
-                "$rootDir/lb/spigot-1.12-R0.1-SNAPSHOT-b1376.jar",
-                "$rootDir/lb/spigot-1.12.2-R0.1-SNAPSHOT-b1498.jar",
-                "$rootDir/lb/spigot-1.12.1-R0.1-SNAPSHOT-b1405.jar",
-                "$rootDir/lb/spigot-1.11-R0.1-SNAPSHOT.jar",
-                "$rootDir/lb/spigot-1.11.2-R0.1-SNAPSHOT.jar",
-                "$rootDir/lb/spigot-1.10-R0.1-SNAPSHOT-latest.jar",
-                "$rootDir/lb/spigot-1.10.2-R0.1-SNAPSHOT.jar",
-                "$rootDir/lb/spigot-1.9-R0.1-SNAPSHOT-latest.jar",
-                "$rootDir/lb/spigot-1.9.4-R0.1-SNAPSHOT-latest.jar",
-                "$rootDir/lb/spigot-1.9.2-R0.1-SNAPSHOT-latest.jar",
-                "$rootDir/lb/spigot-1.8.8-R0.1-SNAPSHOT.jar",
-        )
-        compile group: 'org.jetbrains', name: 'annotations', version: '13.0'
+        compileOnly fileTree(dir: "$rootDir/libraries/", includes: ['*.jar'])
+        compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
     }
 }
