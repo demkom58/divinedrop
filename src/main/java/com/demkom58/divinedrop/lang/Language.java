@@ -26,9 +26,10 @@ public class Language {
         return instance;
     }
 
-    public void updateLangMap(@NotNull Version version) {
+    public void updateLangMap(@NotNull final Version version,
+                              @NotNull final String langPath) {
         try {
-            final InputStream inputStream = new FileInputStream(Data.getLangPath());
+            final InputStream inputStream = new FileInputStream(langPath);
 
             final InputStreamReader reader = new InputStreamReader(inputStream);
             final JsonReader jsonReader = new JsonReader(reader);
