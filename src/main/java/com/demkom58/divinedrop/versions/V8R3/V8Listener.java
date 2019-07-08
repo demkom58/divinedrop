@@ -1,6 +1,7 @@
 package com.demkom58.divinedrop.versions.V8R3;
 
 import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.Logic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,45 +11,54 @@ import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.jetbrains.annotations.NotNull;
 
 public final class V8Listener implements Listener {
+    private final DivineDrop plugin;
+    private final Data data;
+    private final Logic logic;
 
-    public V8Listener() {
+    public V8Listener(@NotNull final DivineDrop plugin,
+                      @NotNull final Data data,
+                      @NotNull final Logic logic) {
+        this.plugin = plugin;
+        this.data = data;
+        this.logic = logic;
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if (!Data.addItemsOnChunkLoad)
+        if (!data.addItemsOnChunkLoad)
             return;
 
-        Logic.registerItems(event.getChunk().getEntities());
+        logic.registerItems(event.getChunk().getEntities());
     }
 
     @EventHandler
     public void onDropDeSpawn(ItemDespawnEvent event) {
-        if (Data.savePlayerDeathDroppedItems)
-            Data.deathDroppedItemsList.remove(event.getEntity().getItemStack());
+        if (data.savePlayerDeathDroppedItems)
+            data.deathDroppedItemsList.remove(event.getEntity().getItemStack());
 
         Data.ITEMS_LIST.remove(event.getEntity());
     }
 
     @EventHandler
     public void onDropPickup(PlayerPickupItemEvent event) {
-        if (Data.pickupOnShift) if (!event.getPlayer().isSneaking()) {
+        if (data.pickupOnShift) if (!event.getPlayer().isSneaking()) {
             event.setCancelled(true);
             return;
         }
 
-        if (Data.savePlayerDeathDroppedItems)
-            Data.deathDroppedItemsList.remove(event.getItem().getItemStack());
+        if (data.savePlayerDeathDroppedItems)
+            data.deathDroppedItemsList.remove(event.getItem().getItemStack());
 
         Data.ITEMS_LIST.remove(event.getItem());
     }
 
     @EventHandler
     public void onDeathDrop(PlayerDeathEvent event) {
-        if (Data.savePlayerDeathDroppedItems)
-            Logic.registerDeathDrop(event);
+        if (data.savePlayerDeathDroppedItems)
+            logic.registerDeathDrop(event);
     }
 
     @EventHandler

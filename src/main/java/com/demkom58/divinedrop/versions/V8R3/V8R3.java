@@ -1,5 +1,8 @@
 package com.demkom58.divinedrop.versions.V8R3;
 
+import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.DivineDrop;
+import com.demkom58.divinedrop.Logic;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.versions.Version;
 import org.bukkit.event.Listener;
@@ -14,6 +17,18 @@ import java.util.Map;
 public class V8R3 implements Version {
     public static final String VERSION = "1.8.9";
     public static final String PATH = "minecraft/lang/%s.lang";
+
+    private final DivineDrop plugin;
+    private final Data data;
+    private final Logic logic;
+
+    public V8R3(@NotNull final DivineDrop plugin,
+                @NotNull final Data data,
+                @NotNull final Logic logic) {
+        this.plugin = plugin;
+        this.data = data;
+        this.logic = logic;
+    }
 
     public static String langFormat(@NotNull final String locale) {
         final String[] lang = locale.split("_");
@@ -53,7 +68,7 @@ public class V8R3 implements Version {
     @NotNull
     @Override
     public Listener getListener() {
-        return new V8Listener();
+        return new V8Listener(plugin, data, logic);
     }
 
     private String getName(ItemStack bItemStack) {

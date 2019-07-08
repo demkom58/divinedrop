@@ -1,7 +1,7 @@
 package com.demkom58.divinedrop.lang;
 
 import com.demkom58.divinedrop.Data;
-import com.demkom58.divinedrop.versions.VersionUtil;
+import com.demkom58.divinedrop.versions.VersionManager;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
@@ -21,6 +21,18 @@ public class Downloader {
     private static final String VERSIONS_LIST = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
     private static final String ASSETS_URL = "http://resources.download.minecraft.net/";
     private static final Gson GSON = new Gson();
+
+    private final VersionManager versionManager;
+    private final Data data;
+    private final LangManager langManager;
+
+    public Downloader(@NotNull final VersionManager versionManager,
+                      @NotNull final Data data,
+                      @NotNull final LangManager langManager) {
+        this.versionManager = versionManager;
+        this.data = data;
+        this.langManager = langManager;
+    }
 
     public void downloadResource(@NotNull String locale, @NotNull File destination) throws IOException {
         final VersionManifest vm = this.downloadObject(new URL(Downloader.VERSIONS_LIST), VersionManifest.class);
@@ -62,7 +74,7 @@ public class Downloader {
 
         @NotNull
         public RemoteClient getRelease() {
-            final String version = VersionUtil.getVersion().name();
+            final String version = versionManager.getVersion().name();
 
             for (RemoteClient c : this.versions)
                 if (c.getId().equals(version)) return c;
@@ -116,15 +128,18 @@ public class Downloader {
 
         @NotNull
         public String getLocaleHash(@NotNull final String locale) {
-            final LinkedTreeMap<String, String> asset = objects.get(VersionUtil.getVersion().getLangPath(locale));
+            final LinkedTreeMap<String, String> asset = objects.get(versionManager.getVersion().getLangPath(locale));
             if (asset == null) {
-                Data.lang = "en_CA";
-                Data.langManager.downloadLang(Data.lang, VersionUtil.getVersion());
+                data.lang = "en_CA";
+                langManager.downloadLang(data.lang, versionManager.getVersion());
                 return "";
             }
 
             final String hash = asset.get("hash");
-            return hash != null ? hash : "";
+
+            return hash != null
+                    ? hash
+                    : "";
         }
     }
 

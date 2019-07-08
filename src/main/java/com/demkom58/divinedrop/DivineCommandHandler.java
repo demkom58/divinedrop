@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop;
 
-import com.demkom58.divinedrop.versions.VersionUtil;
+import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,13 +9,22 @@ import org.jetbrains.annotations.NotNull;
 
 public class DivineCommandHandler implements CommandExecutor {
     private final DivineDrop plugin;
+    private final VersionManager versionManager;
+    private final Data data;
 
-    public DivineCommandHandler(@NotNull final DivineDrop plugin) {
+    public DivineCommandHandler(@NotNull final DivineDrop plugin,
+                                @NotNull final VersionManager versionManager,
+                                @NotNull final Data data) {
         this.plugin = plugin;
+        this.versionManager = versionManager;
+        this.data = data;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull final CommandSender sender,
+                             @NotNull final Command command,
+                             @NotNull final String label,
+                             @NotNull final String[] args) {
         if (args.length == 0) {
             sender.sendMessage(Data.INFO);
             return true;
@@ -24,12 +33,12 @@ public class DivineCommandHandler implements CommandExecutor {
         final String subCommand = args[0];
         if (subCommand.equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("divinedrop.reload")) {
-                sendMessage(sender, Data.noPermMessage);
+                sendMessage(sender, data.noPermMessage);
                 return false;
             }
 
-            plugin.loadConfig(VersionUtil.getVersion());
-            sendMessage(sender, Data.reloadedMessage);
+            plugin.loadConfig(versionManager.getVersion());
+            sendMessage(sender, data.reloadedMessage);
             return true;
         }
 
@@ -44,14 +53,14 @@ public class DivineCommandHandler implements CommandExecutor {
                     else
                         itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 } catch (NullPointerException ex) {
-                    sendMessage(sender, Data.PREFIX + Data.itemDisplayNameMessage.replace("$name$", "AIR"));
+                    sendMessage(sender, Data.PREFIX + data.itemDisplayNameMessage.replace("$name$", "AIR"));
                     return false;
                 }
 
                 if (itemName == null)
                     itemName = "NONAME";
 
-                sendMessage(sender, Data.itemDisplayNameMessage.replace("$name$", itemName.replace('§', '&')));
+                sendMessage(sender, data.itemDisplayNameMessage.replace("$name$", itemName.replace('§', '&')));
                 return true;
             }
             return true;
@@ -63,7 +72,7 @@ public class DivineCommandHandler implements CommandExecutor {
             return true;
         }
 
-        sendMessage(sender, Data.unknownCmdMessage);
+        sendMessage(sender, data.unknownCmdMessage);
         return true;
     }
 

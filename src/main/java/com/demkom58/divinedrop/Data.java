@@ -1,7 +1,6 @@
 package com.demkom58.divinedrop;
 
-import com.demkom58.divinedrop.lang.LangManager;
-import com.demkom58.divinedrop.versions.VersionUtil;
+import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,33 +33,38 @@ public final class Data {
             "§b"
     };
     public static final Set<Item> ITEMS_LIST = Collections.newSetFromMap(new WeakHashMap<>());
-    public static String lang;
-    public static String format;
-    public static String liteFormat;
-    public static String noPermMessage;
-    public static String unknownCmdMessage;
-    public static String reloadedMessage;
-    public static String itemDisplayNameMessage;
-    public static boolean enableCustomCountdowns;
-    public static boolean addItemsOnChunkLoad;
-    public static boolean pickupOnShift;
-    public static boolean savePlayerDeathDroppedItems;
-    public static int timerValue = 10;
-    public static Map<Material, Map<String, DataContainer>> countdowns;
-    public static List<ItemStack> deathDroppedItemsList;
-    public static LangManager langManager;
 
-    private Data() {
+    public String lang;
+    public String format;
+    public String liteFormat;
+    public String noPermMessage;
+    public String unknownCmdMessage;
+    public String reloadedMessage;
+    public String itemDisplayNameMessage;
+    public boolean enableCustomCountdowns;
+    public boolean addItemsOnChunkLoad;
+    public boolean pickupOnShift;
+    public boolean savePlayerDeathDroppedItems;
+    public int timerValue = 10;
+
+    public Map<Material, Map<String, DataContainer>> countdowns;
+    public List<ItemStack> deathDroppedItemsList;
+
+    private final DivineDrop plugin;
+    private final VersionManager versionManager;
+
+    public Data(@NotNull final DivineDrop plugin,
+                @NotNull final VersionManager versionManager) {
+        this.plugin = plugin;
+        this.versionManager = versionManager;
     }
 
-    public static String getLangPath() {
-        return DivineDrop.getInstance().getDataFolder().getAbsolutePath() + "/languages/" + VersionUtil.getVersion().name() + "/" + Data.lang + ".lang";
+    public String getLangPath() {
+        return plugin.getDataFolder().getAbsolutePath() + "/languages/" + versionManager.getVersion().name() + "/" + lang + ".lang";
     }
 
-    public static void updateData(@NotNull final FileConfiguration conf) {
+    public void updateData(@NotNull final FileConfiguration conf) {
         countdowns = null;
-
-        timerValue = conf.getInt("timer");
 
         lang = conf.getString("lang", "en_CA");
         format = color(conf.getString("format", "&c[&4%countdown%&c] &f%name% &7(x%size%)"));
@@ -74,6 +78,8 @@ public final class Data {
         addItemsOnChunkLoad = conf.getBoolean("timer-for-loaded-items", true);
         pickupOnShift = conf.getBoolean("pickup-items-on-sneak", false);
         savePlayerDeathDroppedItems = conf.getBoolean("save-player-dropped-items", false);
+
+        timerValue = conf.getInt("timer");
 
         if (savePlayerDeathDroppedItems)
             deathDroppedItemsList = new ArrayList<>();
@@ -97,15 +103,15 @@ public final class Data {
                 String format = sec.getString(materialName + ".format");
 
                 if (format == null)
-                    format = Data.format;
+                    format = Data.this.format;
 
                 format = color(format);
                 Map<String, DataContainer> itemFilter;
 
-                if (!Data.countdowns.containsKey(material)) {
+                if (!countdowns.containsKey(material)) {
                     itemFilter = new HashMap<>();
-                    Data.countdowns.put(material, itemFilter);
-                } else itemFilter = Data.countdowns.get(material);
+                    countdowns.put(material, itemFilter);
+                } else itemFilter = countdowns.get(material);
 
                 itemFilter.put(name, new DataContainer(timer, format));
             }

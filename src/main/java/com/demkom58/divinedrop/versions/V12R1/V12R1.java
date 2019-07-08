@@ -1,5 +1,8 @@
 package com.demkom58.divinedrop.versions.V12R1;
 
+import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.DivineDrop;
+import com.demkom58.divinedrop.Logic;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.versions.V8R3.V8LangParser;
 import com.demkom58.divinedrop.versions.V8R3.V8R3;
@@ -15,6 +18,18 @@ import java.util.Map;
 
 public class V12R1 implements Version {
     public static final String VERSION = "1.12";
+
+    private final DivineDrop plugin;
+    private final Data data;
+    private final Logic logic;
+
+    public V12R1(@NotNull final DivineDrop plugin,
+                 @NotNull final Data data,
+                 @NotNull final Logic logic) {
+        this.plugin = plugin;
+        this.data = data;
+        this.logic = logic;
+    }
 
     @Override
     public String getI18NDisplayName(@Nullable ItemStack item) {
@@ -45,7 +60,7 @@ public class V12R1 implements Version {
     @NotNull
     @Override
     public Listener getListener() {
-        return new V12Listener();
+        return new V12Listener(plugin, data, logic);
     }
 
     private String getName(ItemStack bItemStack) {
