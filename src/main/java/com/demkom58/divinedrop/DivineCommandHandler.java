@@ -7,7 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class DivineCommands implements CommandExecutor {
+public class DivineCommandHandler implements CommandExecutor {
+    private final DivineDrop plugin;
+
+    public DivineCommandHandler(@NotNull final DivineDrop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -23,7 +28,7 @@ public class DivineCommands implements CommandExecutor {
                 return false;
             }
 
-            DivineDrop.getInstance().loadConfig(VersionUtil.getVersion());
+            plugin.loadConfig(VersionUtil.getVersion());
             sendMessage(sender, Data.reloadedMessage);
             return true;
         }
@@ -34,7 +39,7 @@ public class DivineCommands implements CommandExecutor {
                 String itemName;
 
                 try {
-                    if (DivineDrop.getInstance().getServer().getVersion().contains("1.8"))
+                    if (plugin.getServer().getVersion().contains("1.8"))
                         itemName = player.getItemInHand().getItemMeta().getDisplayName();
                     else
                         itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
