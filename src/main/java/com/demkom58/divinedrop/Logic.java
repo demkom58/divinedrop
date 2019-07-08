@@ -111,8 +111,9 @@ public final class Logic {
 
                                 boolean mapContainsAny = filterMap.containsKey("*");
                                 if (mapContainsAny & (!name.equals("") || !mapContainsVoid) & !mapContainsName) {
-                                    timer = filterMap.get("*").getTimer();
-                                    format = filterMap.get("*").getFormat();
+                                    DataContainer dataContainer = filterMap.get("*");
+                                    timer = dataContainer.getTimer();
+                                    format = dataContainer.getFormat();
                                 }
 
                             }

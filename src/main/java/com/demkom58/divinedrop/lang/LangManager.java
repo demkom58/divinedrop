@@ -3,15 +3,20 @@ package com.demkom58.divinedrop.lang;
 import com.demkom58.divinedrop.Data;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.versions.Version;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 
 public class LangManager {
 
-    private DivineDrop plugin = DivineDrop.getInstance();
+    private final DivineDrop plugin;
     private Downloader downloader = new Downloader();
     private Language language = new Language();
+
+    public LangManager(@NotNull final DivineDrop plugin) {
+        this.plugin = plugin;
+    }
 
     public void downloadLang(String lang, Version version) {
         final String langPath = Data.getLangPath();

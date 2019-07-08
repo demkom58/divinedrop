@@ -18,14 +18,14 @@ public final class DivineDrop extends JavaPlugin {
     @Override
     public void onEnable() {
         DivineDrop.instance = this;
-        Data.langManager = new LangManager();
+        Data.langManager = new LangManager(this);
         VersionUtil.setup();
 
         saveDefaultConfig();
         loadConfig(VersionUtil.getVersion());
 
         getServer().getPluginManager().registerEvents(VersionUtil.getVersion().getListener(), this);
-        getCommand("divinedrop").setExecutor(new DivineCommands());
+        getCommand("divinedrop").setExecutor(new DivineCommandHandler(this));
 
         Logic.registerCountdown();
 
