@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.lang;
 
-import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.versions.VersionManager;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -23,11 +23,11 @@ public class Downloader {
     private static final Gson GSON = new Gson();
 
     private final VersionManager versionManager;
-    private final Data data;
+    private final ConfigurationData data;
     private final LangManager langManager;
 
     public Downloader(@NotNull final VersionManager versionManager,
-                      @NotNull final Data data,
+                      @NotNull final ConfigurationData data,
                       @NotNull final LangManager langManager) {
         this.versionManager = versionManager;
         this.data = data;

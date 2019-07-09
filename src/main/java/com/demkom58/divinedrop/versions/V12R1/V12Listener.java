@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions.V12R1;
 
-import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.Logic;
 import org.bukkit.entity.Player;
@@ -13,11 +13,11 @@ import org.jetbrains.annotations.NotNull;
 public class V12Listener implements Listener {
 
     private final DivineDrop plugin;
-    private final Data data;
+    private final ConfigurationData data;
     private final Logic logic;
 
     public V12Listener(@NotNull final DivineDrop plugin,
-                       @NotNull final Data data,
+                       @NotNull final ConfigurationData data,
                        @NotNull final Logic logic) {
         this.plugin = plugin;
         this.data = data;
@@ -37,7 +37,7 @@ public class V12Listener implements Listener {
         if (data.savePlayerDeathDroppedItems)
             data.deathDroppedItemsList.remove(event.getEntity().getItemStack());
 
-        Data.ITEMS_LIST.remove(event.getEntity());
+        Logic.ITEMS_LIST.remove(event.getEntity());
     }
 
     @EventHandler
@@ -51,7 +51,7 @@ public class V12Listener implements Listener {
         if (data.savePlayerDeathDroppedItems)
             data.deathDroppedItemsList.remove(event.getItem().getItemStack());
 
-        Data.ITEMS_LIST.remove(event.getItem());
+        Logic.ITEMS_LIST.remove(event.getItem());
     }
 
 
@@ -65,13 +65,13 @@ public class V12Listener implements Listener {
 
     @EventHandler
     public void onSpawnDrop(ItemSpawnEvent event) {
-        Data.ITEMS_LIST.add(event.getEntity());
+        Logic.ITEMS_LIST.add(event.getEntity());
         event.getEntity().setCustomNameVisible(true);
 
     }
 
     @EventHandler
     public void onMergeDrop(ItemMergeEvent event) {
-        Data.ITEMS_LIST.remove(event.getEntity());
+        Logic.ITEMS_LIST.remove(event.getEntity());
     }
 }

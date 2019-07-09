@@ -1,6 +1,5 @@
 package com.demkom58.divinedrop.lang;
 
-import com.demkom58.divinedrop.Data;
 import com.demkom58.divinedrop.versions.Version;
 import com.google.common.collect.Maps;
 import com.google.gson.stream.JsonReader;

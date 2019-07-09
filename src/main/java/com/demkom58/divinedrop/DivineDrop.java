@@ -10,8 +10,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 public final class DivineDrop extends JavaPlugin {
+
     private final VersionManager versionManager = new VersionManager(this);
-    private final Data data = new Data(this, versionManager);
+    private final ConfigurationData data = new ConfigurationData(this, versionManager);
     private final LangManager langManager = new LangManager(this, versionManager, data);
     private final Logic logic = new Logic(this, versionManager, data);
 
@@ -38,9 +39,11 @@ public final class DivineDrop extends JavaPlugin {
         if (data.addItemsOnChunkLoad) {
             getServer().getWorlds().forEach(world -> world.getEntities().stream()
                     .filter(entity -> entity instanceof Item)
-                    .forEach(item -> Data.ITEMS_LIST.add((Item) item))
+                    .forEach(item -> Logic.ITEMS_LIST.add((Item) item))
             );
         }
+
+        Bukkit.reload();
 
     }
 
@@ -64,7 +67,7 @@ public final class DivineDrop extends JavaPlugin {
         return langManager;
     }
 
-    public Data getData() {
+    public ConfigurationData getData() {
         return data;
     }
 

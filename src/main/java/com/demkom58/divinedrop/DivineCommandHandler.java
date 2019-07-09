@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 public class DivineCommandHandler implements CommandExecutor {
     private final DivineDrop plugin;
     private final VersionManager versionManager;
-    private final Data data;
+    private final ConfigurationData data;
 
     public DivineCommandHandler(@NotNull final DivineDrop plugin,
                                 @NotNull final VersionManager versionManager,
-                                @NotNull final Data data) {
+                                @NotNull final ConfigurationData data) {
         this.plugin = plugin;
         this.versionManager = versionManager;
         this.data = data;
@@ -26,7 +26,7 @@ public class DivineCommandHandler implements CommandExecutor {
                              @NotNull final String label,
                              @NotNull final String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(Data.INFO);
+            sender.sendMessage(ConfigurationData.INFO);
             return true;
         }
 
@@ -53,7 +53,7 @@ public class DivineCommandHandler implements CommandExecutor {
                     else
                         itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 } catch (NullPointerException ex) {
-                    sendMessage(sender, Data.PREFIX + data.itemDisplayNameMessage.replace("$name$", "AIR"));
+                    sendMessage(sender, ConfigurationData.PREFIX + data.itemDisplayNameMessage.replace("$name$", "AIR"));
                     return false;
                 }
 
@@ -68,7 +68,7 @@ public class DivineCommandHandler implements CommandExecutor {
 
         if (subCommand.equalsIgnoreCase("size")) {
             if (sender.hasPermission("divinedrop.developer"))
-                sendMessage(sender, "Items to remove: " + Data.ITEMS_LIST.size());
+                sendMessage(sender, "Items to remove: " + Logic.ITEMS_LIST.size());
             return true;
         }
 
@@ -77,7 +77,7 @@ public class DivineCommandHandler implements CommandExecutor {
     }
 
     private void sendMessage(@NotNull final CommandSender player, @NotNull final String message) {
-        player.sendMessage(Data.PREFIX + message);
+        player.sendMessage(ConfigurationData.PREFIX + message);
     }
 
 }
