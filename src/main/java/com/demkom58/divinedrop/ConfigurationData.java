@@ -6,13 +6,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public final class Data {
+public final class ConfigurationData {
     public static final String PREFIX = "§5§lDivineDrop §7> §f";
     public static final String TIMER_PLACEHOLDER = "%countdown%";
     public static final String SIZE_PLACEHOLDER = "%size%";
@@ -32,7 +31,6 @@ public final class Data {
             "§e§l§m------------------------------------------------- ",
             "§b"
     };
-    public static final Set<Item> ITEMS_LIST = Collections.newSetFromMap(new WeakHashMap<>());
 
     public String lang;
     public String format;
@@ -53,8 +51,8 @@ public final class Data {
     private final DivineDrop plugin;
     private final VersionManager versionManager;
 
-    public Data(@NotNull final DivineDrop plugin,
-                @NotNull final VersionManager versionManager) {
+    public ConfigurationData(@NotNull final DivineDrop plugin,
+                             @NotNull final VersionManager versionManager) {
         this.plugin = plugin;
         this.versionManager = versionManager;
     }
@@ -103,7 +101,7 @@ public final class Data {
                 String format = sec.getString(materialName + ".format");
 
                 if (format == null)
-                    format = Data.this.format;
+                    format = ConfigurationData.this.format;
 
                 format = color(format);
                 Map<String, DataContainer> itemFilter;

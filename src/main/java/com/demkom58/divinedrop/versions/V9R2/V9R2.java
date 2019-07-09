@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions.V9R2;
 
-import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.Logic;
 import com.demkom58.divinedrop.lang.Language;
@@ -21,11 +21,11 @@ public class V9R2 implements Version {
     public static final String VERSION = "1.9";
 
     private final DivineDrop plugin;
-    private final Data data;
+    private final ConfigurationData data;
     private final Logic logic;
 
     public V9R2(@NotNull final DivineDrop plugin,
-                @NotNull final Data data,
+                @NotNull final ConfigurationData data,
                 @NotNull final Logic logic) {
         this.plugin = plugin;
         this.data = data;

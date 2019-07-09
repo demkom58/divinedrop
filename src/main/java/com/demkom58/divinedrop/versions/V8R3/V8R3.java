@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions.V8R3;
 
-import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.Logic;
 import com.demkom58.divinedrop.lang.Language;
@@ -19,11 +19,11 @@ public class V8R3 implements Version {
     public static final String PATH = "minecraft/lang/%s.lang";
 
     private final DivineDrop plugin;
-    private final Data data;
+    private final ConfigurationData data;
     private final Logic logic;
 
     public V8R3(@NotNull final DivineDrop plugin,
-                @NotNull final Data data,
+                @NotNull final ConfigurationData data,
                 @NotNull final Logic logic) {
         this.plugin = plugin;
         this.data = data;

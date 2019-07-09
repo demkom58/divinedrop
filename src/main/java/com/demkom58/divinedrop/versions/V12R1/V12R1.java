@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions.V12R1;
 
-import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.Logic;
 import com.demkom58.divinedrop.lang.Language;
@@ -20,11 +20,11 @@ public class V12R1 implements Version {
     public static final String VERSION = "1.12";
 
     private final DivineDrop plugin;
-    private final Data data;
+    private final ConfigurationData data;
     private final Logic logic;
 
     public V12R1(@NotNull final DivineDrop plugin,
-                 @NotNull final Data data,
+                 @NotNull final ConfigurationData data,
                  @NotNull final Logic logic) {
         this.plugin = plugin;
         this.data = data;

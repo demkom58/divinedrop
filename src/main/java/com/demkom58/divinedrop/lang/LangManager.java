@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.lang;
 
-import com.demkom58.divinedrop.Data;
+import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.versions.Version;
 import com.demkom58.divinedrop.versions.VersionManager;
@@ -12,13 +12,13 @@ import java.io.IOException;
 public class LangManager {
 
     private final DivineDrop plugin;
-    private final Data data;
+    private final ConfigurationData data;
     private final Downloader downloader;
     private final Language language;
 
     public LangManager(@NotNull final DivineDrop plugin,
                        @NotNull final VersionManager versionManager,
-                       @NotNull final Data data) {
+                       @NotNull final ConfigurationData data) {
         this.plugin = plugin;
         this.data = data;
         this.downloader = new Downloader(versionManager, data, this);
