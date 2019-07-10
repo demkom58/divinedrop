@@ -33,12 +33,12 @@ public class DivineCommandHandler implements CommandExecutor {
         final String subCommand = args[0];
         if (subCommand.equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("divinedrop.reload")) {
-                sendMessage(sender, data.noPermMessage);
+                sendMessage(sender, data.getNoPermMessage());
                 return false;
             }
 
             plugin.loadConfig(versionManager.getVersion());
-            sendMessage(sender, data.reloadedMessage);
+            sendMessage(sender, data.getReloadedMessage());
             return true;
         }
 
@@ -53,14 +53,14 @@ public class DivineCommandHandler implements CommandExecutor {
                     else
                         itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 } catch (NullPointerException ex) {
-                    sendMessage(sender, ConfigurationData.PREFIX + data.itemDisplayNameMessage.replace("$name$", "AIR"));
+                    sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", "AIR"));
                     return false;
                 }
 
                 if (itemName == null)
                     itemName = "NONAME";
 
-                sendMessage(sender, data.itemDisplayNameMessage.replace("$name$", itemName.replace('§', '&')));
+                sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", itemName.replace('§', '&')));
                 return true;
             }
             return true;
@@ -68,11 +68,11 @@ public class DivineCommandHandler implements CommandExecutor {
 
         if (subCommand.equalsIgnoreCase("size")) {
             if (sender.hasPermission("divinedrop.developer"))
-                sendMessage(sender, "Items to remove: " + Logic.ITEMS_LIST.size());
+                sendMessage(sender, "Items to remove: " + ItemsHandler.PROCESSING_ITEMS.size());
             return true;
         }
 
-        sendMessage(sender, data.unknownCmdMessage);
+        sendMessage(sender, data.getUnknownCmdMessage());
         return true;
     }
 

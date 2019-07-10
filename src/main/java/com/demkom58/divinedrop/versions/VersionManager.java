@@ -2,7 +2,7 @@ package com.demkom58.divinedrop.versions;
 
 import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.Logic;
+import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.versions.V10R1.V10R1;
 import com.demkom58.divinedrop.versions.V11R1.V11R1;
 import com.demkom58.divinedrop.versions.V12R1.V12R1;
@@ -68,7 +68,7 @@ public class VersionManager {
     @Nullable
     private Version detectVersion(@NotNull final String ver) {
         final ConfigurationData data = plugin.getData();
-        final Logic logic = plugin.getLogic();
+        final ItemsHandler logic = plugin.getLogic();
 
         if ("v1_8_R3".equals(ver)) return new V8R3(plugin, data, logic);
         if ("v1_9_R1".equals(ver)) return new V9R1(plugin, data, logic);

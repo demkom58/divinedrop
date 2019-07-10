@@ -2,7 +2,7 @@ package com.demkom58.divinedrop.versions.V14R1;
 
 import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.Logic;
+import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.versions.V12R1.V12Listener;
 import com.demkom58.divinedrop.versions.V13R1.V13LangParser;
@@ -22,11 +22,11 @@ public class V14R1 implements Version {
 
     private final DivineDrop plugin;
     private final ConfigurationData data;
-    private final Logic logic;
+    private final ItemsHandler logic;
 
     public V14R1(@NotNull final DivineDrop plugin,
                  @NotNull final ConfigurationData data,
-                 @NotNull final Logic logic) {
+                 @NotNull final ItemsHandler logic) {
         this.plugin = plugin;
         this.data = data;
         this.logic = logic;
