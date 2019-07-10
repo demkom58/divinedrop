@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 public final class DivineDrop extends JavaPlugin {
 
+    private final Metrics metrics = new Metrics(this);
+
     private final VersionManager versionManager = new VersionManager(this);
     private final ConfigurationData data = new ConfigurationData(this, versionManager);
     private final LangManager langManager = new LangManager(this, data);
@@ -18,6 +20,12 @@ public final class DivineDrop extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        try {
+            metrics.setup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             versionManager.setup();
         } catch (UnsupportedOperationException e) {
