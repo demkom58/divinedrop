@@ -2,7 +2,7 @@ package com.demkom58.divinedrop.versions.V8R3;
 
 import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.Logic;
+import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.versions.Version;
 import org.bukkit.event.Listener;
@@ -20,11 +20,11 @@ public class V8R3 implements Version {
 
     private final DivineDrop plugin;
     private final ConfigurationData data;
-    private final Logic logic;
+    private final ItemsHandler logic;
 
     public V8R3(@NotNull final DivineDrop plugin,
                 @NotNull final ConfigurationData data,
-                @NotNull final Logic logic) {
+                @NotNull final ItemsHandler logic) {
         this.plugin = plugin;
         this.data = data;
         this.logic = logic;

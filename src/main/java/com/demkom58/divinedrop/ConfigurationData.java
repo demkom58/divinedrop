@@ -1,16 +1,20 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.versions.VersionManager;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
+@Getter
+@Setter
 public final class ConfigurationData {
     public static final String PREFIX = "§5§lDivineDrop §7> §f";
     public static final String TIMER_PLACEHOLDER = "%countdown%";
@@ -32,21 +36,20 @@ public final class ConfigurationData {
             "§b"
     };
 
-    public String lang;
-    public String format;
-    public String liteFormat;
-    public String noPermMessage;
-    public String unknownCmdMessage;
-    public String reloadedMessage;
-    public String itemDisplayNameMessage;
-    public boolean enableCustomCountdowns;
-    public boolean addItemsOnChunkLoad;
-    public boolean pickupOnShift;
-    public boolean savePlayerDeathDroppedItems;
-    public int timerValue = 10;
+    private String lang;
+    private String format;
+    private String liteFormat;
+    private String noPermMessage;
+    private String unknownCmdMessage;
+    private String reloadedMessage;
+    private String itemDisplayNameMessage;
+    private boolean enableCustomCountdowns;
+    private boolean addItemsOnChunkLoad;
+    private boolean pickupOnShift;
+    private boolean savePlayerDeathDroppedItems;
+    private int timerValue = 10;
 
-    public Map<Material, Map<String, DataContainer>> countdowns;
-    public List<ItemStack> deathDroppedItemsList;
+    private Map<Material, Map<String, DataContainer>> countdowns;
 
     private final DivineDrop plugin;
     private final VersionManager versionManager;
@@ -57,10 +60,22 @@ public final class ConfigurationData {
         this.versionManager = versionManager;
     }
 
+    /**
+     * Generates path to version depending
+     * on current version of core.
+     *
+     * @return path to lang file
+     */
     public String getLangPath() {
         return plugin.getDataFolder().getAbsolutePath() + "/languages/" + versionManager.getVersion().name() + "/" + lang + ".lang";
     }
 
+    /**
+     * Reload all data from configuration file
+     * and prepare plugin to work with new configuration.
+     *
+     * @param conf - configuration file object.
+     */
     public void updateData(@NotNull final FileConfiguration conf) {
         countdowns = null;
 
@@ -79,8 +94,8 @@ public final class ConfigurationData {
 
         timerValue = conf.getInt("timer");
 
-        if (savePlayerDeathDroppedItems)
-            deathDroppedItemsList = new ArrayList<>();
+        if (!savePlayerDeathDroppedItems)
+            ItemsHandler.DEATH_DROP_ITEMS.clear();
 
         if (enableCustomCountdowns) {
             countdowns = new HashMap<>();
@@ -94,7 +109,8 @@ public final class ConfigurationData {
                 }
 
                 String name = sec.getString(materialName + ".name-filter");
-                if (name == null) name = "*";
+                if (name == null)
+                    name = "*";
                 name = color(name);
 
                 int timer = sec.getInt(materialName + ".timer");
@@ -109,7 +125,8 @@ public final class ConfigurationData {
                 if (!countdowns.containsKey(material)) {
                     itemFilter = new HashMap<>();
                     countdowns.put(material, itemFilter);
-                } else itemFilter = countdowns.get(material);
+                } else
+                    itemFilter = countdowns.get(material);
 
                 itemFilter.put(name, new DataContainer(timer, format));
             }

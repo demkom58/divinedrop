@@ -4,6 +4,7 @@ import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.versions.Version;
 import com.demkom58.divinedrop.versions.VersionManager;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -17,11 +18,10 @@ public class LangManager {
     private final Language language;
 
     public LangManager(@NotNull final DivineDrop plugin,
-                       @NotNull final VersionManager versionManager,
                        @NotNull final ConfigurationData data) {
         this.plugin = plugin;
         this.data = data;
-        this.downloader = new Downloader(versionManager, data, this);
+        this.downloader = new Downloader(data, this);
         this.language = new Language();
     }
 
@@ -32,15 +32,15 @@ public class LangManager {
             final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
 
             if (!langFolder.exists() && !langFolder.mkdir()) {
-                plugin.getServer().getConsoleSender().sendMessage("[DivineDrop] §cCan't create languages folder.");
-                plugin.getServer().getPluginManager().disablePlugin(plugin);
+                Bukkit.getConsoleSender().sendMessage("[DivineDrop] §cCan't create languages folder.");
+                Bukkit.getPluginManager().disablePlugin(plugin);
                 return;
             }
 
             final File langFile = new File(langPath);
             if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
-                downloader.downloadResource(lang, new File(langPath));
+                downloader.downloadResource(version, lang, new File(langPath));
             }
 
             language.updateLangMap(version, data.getLangPath());

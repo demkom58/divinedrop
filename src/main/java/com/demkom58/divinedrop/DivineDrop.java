@@ -13,8 +13,8 @@ public final class DivineDrop extends JavaPlugin {
 
     private final VersionManager versionManager = new VersionManager(this);
     private final ConfigurationData data = new ConfigurationData(this, versionManager);
-    private final LangManager langManager = new LangManager(this, versionManager, data);
-    private final Logic logic = new Logic(this, versionManager, data);
+    private final LangManager langManager = new LangManager(this, data);
+    private final ItemsHandler logic = new ItemsHandler(this, versionManager, data);
 
     @Override
     public void onEnable() {
@@ -28,23 +28,18 @@ public final class DivineDrop extends JavaPlugin {
 
         final Version version = versionManager.getVersion();
 
-        saveDefaultConfig();
         loadConfig(version);
-
         getServer().getPluginManager().registerEvents(version.getListener(), this);
         getCommand("divinedrop").setExecutor(new DivineCommandHandler(this, versionManager, data));
 
         logic.registerCountdown();
 
-        if (data.addItemsOnChunkLoad) {
+        if (data.isAddItemsOnChunkLoad()) {
             getServer().getWorlds().forEach(world -> world.getEntities().stream()
                     .filter(entity -> entity instanceof Item)
-                    .forEach(item -> Logic.ITEMS_LIST.add((Item) item))
+                    .forEach(item -> ItemsHandler.PROCESSING_ITEMS.add((Item) item))
             );
         }
-
-        Bukkit.reload();
-
     }
 
     @Override
@@ -58,7 +53,7 @@ public final class DivineDrop extends JavaPlugin {
         reloadConfig();
 
         data.updateData(getConfig());
-        langManager.downloadLang(data.lang, version);
+        langManager.downloadLang(data.getLang(), version);
 
         saveConfig();
     }
@@ -71,7 +66,7 @@ public final class DivineDrop extends JavaPlugin {
         return data;
     }
 
-    public Logic getLogic() {
+    public ItemsHandler getLogic() {
         return logic;
     }
 

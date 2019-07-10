@@ -7,21 +7,21 @@
 #      \|_______|\___/ /             \|_______|\|_______|\|__|     \|__|\|__| \|__|\|_______|\|__|     \|__|\_________\|_______|
 #               \|___|/                                                                                    \|_________|
 
-#Placeholders: %countdown%, %size%, %name%
+# Placeholders: %countdown%, %size%, %name%
 format: "&c[&4%countdown%&c] &f%name% &7(x%size%)"
-#Uses when world loaded with already dropped items.
-#[%countdown% placeholder will not be work.]
+# Uses when world loaded with already dropped items.
+# [%countdown% placeholder will not be work.]
 without-countdown-format: "&f%name% &7(x%size%)"
-#Global timer
+# Global timer
 timer: 10
-#The timer will be added to the items that are loaded along with the chunk.
+# The timer will be added to the items that are loaded along with the chunk.
 timer-for-loaded-items: true
-#Do not remove items dropped from the players.
+# Do not remove items dropped from the players.
 save-player-dropped-items: false
-#Pick up items only with the Shift key.
+# Pick up items only with the Shift key.
 pickup-items-on-sneak: false
-#Name of resources. Example: ru_RU, en_CA, uk_UA, de_DE, mt_MT etc.
-#More: https://www.spigotmc.org/resources/divinedrop.51715/
+# Name of resources. Example: ru_RU, en_CA, uk_UA, de_DE, mt_MT etc.
+# More: https://www.spigotmc.org/resources/divinedrop.51715/
 lang: "en_CA"
 
 dname: "Display Name&7: &f%name%"
@@ -31,25 +31,25 @@ reloaded: "&aThe configuration is reloaded."
 
 enable-custom-countdowns: false
 custom-countdowns:
-#Material list: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-#Its getName timer for all diamond swords. Such getName timer will only work on objects that are not in this configuration.
-#That is, if there is already getName record in the configuration with getName filter by name or emptiness, then this record will not spread to such getName sword.
+# Material list: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
+# Its name timer for all diamond swords. Such name timer will only work on objects that are not in this configuration.
+# That is, if there is already name record in the configuration with name filter by name or emptiness, then this record will not spread to such sword.
   DIAMOND_SWORD:
       name-filter: "*"
       timer: 20
       format: "&c%name% &7(x%size%)"
-#Its timer for an item that is not renamed.
+# Its timer for an item that is not renamed.
   STICK:
       name-filter: ""
       timer: 20
-#Your timer value on items with your custom name.
+# Your timer value on items with your custom name.
   DIAMOND:
       name-filter: "SILVER"
       timer: 50
-#Such getName thing will be without getName timer and the plugin will not delete it.
+# Such name thing will be without name timer and the plugin will not delete it.
   DIAMOND:
       name-filter: "KEEP_SILVER"
       timer: -1
-#It works on all raw fish.
+# It works on all raw fish.
   RAW_FISH:
       timer: -1
