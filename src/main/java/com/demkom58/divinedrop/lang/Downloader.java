@@ -5,9 +5,7 @@ import com.demkom58.divinedrop.versions.Version;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -34,7 +32,7 @@ public class Downloader {
     public void downloadResource(@NotNull final Version version,
                                  @NotNull final String locale,
                                  @NotNull final File destination) throws IOException {
-        final String versionId = version.name();
+        final String versionId = version.id();
 
         final VersionManifest vm = downloadObject(new URL(Downloader.VERSIONS_LIST), VersionManifest.class);
         final ClientVersion client = downloadObject(new URL(vm.getRelease(versionId).getUrl()), ClientVersion.class);

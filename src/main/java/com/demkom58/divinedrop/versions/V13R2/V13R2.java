@@ -54,7 +54,7 @@ public class V13R2 implements Version {
 
     @NotNull
     @Override
-    public String name() {
+    public String id() {
         return VERSION;
     }
 
