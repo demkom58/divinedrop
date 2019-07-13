@@ -30,9 +30,14 @@ public enum SupportedVersion {
     V13R2(V13R2.class, "v1_13_R2", V13R2::new),
     V14R1(V14R1.class, "v1_14_R1", V14R1::new);
 
-    private static final Map<String, SupportedVersion> VERSION_MAP = new HashMap<String, SupportedVersion>(){{
+    private static final Map<String, SupportedVersion> NMS_VERSION_MAP = new HashMap<String, SupportedVersion>(){{
         for (SupportedVersion version : SupportedVersion.values())
             put(version.nmsName, version);
+    }};
+
+    private static final Map<Class<? extends Version>, SupportedVersion> CLASS_VERSION_MAP = new HashMap<Class<? extends Version>, SupportedVersion>(){{
+        for (SupportedVersion version : SupportedVersion.values())
+            put(version.versionClass, version);
     }};
 
     @Getter private final Class<? extends Version> versionClass;
@@ -48,7 +53,11 @@ public enum SupportedVersion {
     }
 
     public static @Nullable SupportedVersion getVersion(@NotNull final String nmsName) {
-        return VERSION_MAP.get(nmsName);
+        return NMS_VERSION_MAP.get(nmsName);
+    }
+
+    public static @Nullable SupportedVersion getVersion(@NotNull final Class<? extends Version> versionClass) {
+        return CLASS_VERSION_MAP.get(versionClass);
     }
 
     public interface VersionFactory {

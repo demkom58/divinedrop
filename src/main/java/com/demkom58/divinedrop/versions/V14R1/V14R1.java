@@ -4,6 +4,7 @@ import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
+import com.demkom58.divinedrop.versions.V11R1.V11R1;
 import com.demkom58.divinedrop.versions.V12R1.V12Listener;
 import com.demkom58.divinedrop.versions.V13R1.V13LangParser;
 import com.demkom58.divinedrop.versions.Version;
@@ -23,6 +24,12 @@ public class V14R1 implements Version {
     private final DivineDrop plugin;
     private final ConfigurationData data;
     private final ItemsHandler logic;
+
+    private V14R1() {
+        this.plugin = null;
+        this.data = null;
+        this.logic = null;
+    }
 
     public V14R1(@NotNull final DivineDrop plugin,
                  @NotNull final ConfigurationData data,
@@ -62,6 +69,11 @@ public class V14R1 implements Version {
     @Override
     public Listener getListener() {
         return new V12Listener(plugin, data, logic);
+    }
+
+    @Override
+    public @NotNull String reformatLangCode(@NotNull final String localeCode) {
+        return V11R1.langCode(localeCode);
     }
 
     private String getName(ItemStack bItemStack) {
