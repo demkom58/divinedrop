@@ -61,7 +61,7 @@ public class V8R3 implements Version {
 
     @NotNull
     @Override
-    public String name() {
+    public String id() {
         return VERSION;
     }
 

@@ -17,7 +17,7 @@ public interface Version {
 
     @NotNull Map<String, String> parseLang(@NotNull InputStream inputStream) throws IOException;
 
-    @NotNull String name();
+    @NotNull String id();
 
     @NotNull Listener getListener();
 
