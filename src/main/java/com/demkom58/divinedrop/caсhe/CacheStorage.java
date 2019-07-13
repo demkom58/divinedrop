@@ -1,0 +1,40 @@
+package com.demkom58.divinedrop.caсhe;
+
+import com.demkom58.divinedrop.lang.Downloader;
+import com.demkom58.divinedrop.versions.Version;
+import com.google.gson.internal.LinkedTreeMap;
+import com.google.gson.stream.JsonReader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class CacheStorage {
+    private LinkedTreeMap<String, LinkedTreeMap<String, String>> versionLangsCache = new LinkedTreeMap<>();
+
+    private CacheStorage() { }
+
+    protected CacheStorage(LinkedTreeMap<String, LinkedTreeMap<String, String>> versionLangsCache) {
+        this.versionLangsCache = versionLangsCache;
+    }
+
+    public static CacheStorage load() {
+        try (JsonReader reader = new JsonReader(new InputStreamReader(CacheStorage.class.getResourceAsStream("/cache.json")))) {
+            return Downloader.GSON.fromJson(reader, CacheStorage.class);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public @Nullable String getLink(@NotNull final Version version,
+                                    @NotNull final String language) {
+        final LinkedTreeMap<String, String> languages = versionLangsCache.get(version.id());
+
+        if (languages == null)
+            return null;
+
+        return languages.get(version.reformatLangCode(language));
+    }
+
+}

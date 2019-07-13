@@ -21,4 +21,6 @@ public interface Version {
 
     @NotNull Listener getListener();
 
+    @NotNull String reformatLangCode(@NotNull String localeCode);
+
 }

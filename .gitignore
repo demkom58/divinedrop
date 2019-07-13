@@ -85,6 +85,7 @@ hs_err_pid*
 ### Minecraft ###
 local.properties
 libraries/
+/cache.json
 
 ### Gradle ###
 .gradle

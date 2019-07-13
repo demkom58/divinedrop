@@ -24,6 +24,12 @@ public class V9R2 implements Version {
     private final ConfigurationData data;
     private final ItemsHandler logic;
 
+    private V9R2() {
+        this.plugin = null;
+        this.data = null;
+        this.logic = null;
+    }
+
     public V9R2(@NotNull final DivineDrop plugin,
                 @NotNull final ConfigurationData data,
                 @NotNull final ItemsHandler logic) {
@@ -62,6 +68,11 @@ public class V9R2 implements Version {
     @Override
     public Listener getListener() {
         return new V8Listener(plugin, data, logic);
+    }
+
+    @Override
+    public @NotNull String reformatLangCode(@NotNull final String localeCode) {
+        return V8R3.langCode(localeCode);
     }
 
     private String getName(ItemStack bItemStack) {

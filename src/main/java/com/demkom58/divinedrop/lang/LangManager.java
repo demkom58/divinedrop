@@ -2,6 +2,7 @@ package com.demkom58.divinedrop.lang;
 
 import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
+import com.demkom58.divinedrop.caсhe.CacheStorage;
 import com.demkom58.divinedrop.versions.Version;
 import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.Bukkit;
@@ -56,8 +57,12 @@ public class LangManager {
             logger.severe("Looks like your server hasn't connection to Internet.");
             logger.severe("Server should have connection to download language...");
             logger.severe("Your can manually download and put it to \"" + relativePath + "\" with name \"" + langFileName + "\"");
+            final String link = CacheStorage.load().getLink(version, lang);
 
-            e.printStackTrace();
+            if (link == null) {
+                logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + version.id() + "\" from cache, sorry.");
+                logger.severe("Try download language files from place where Internet connection is present...");
+            } else logger.severe("You can download it from here: " + link);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
