@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.logging.Logger;
 
 public class LangManager {
 
@@ -26,7 +28,8 @@ public class LangManager {
     }
 
     public void downloadLang(String lang, Version version) {
-        final String langPath = data.getLangPath();
+        final File langFile = new File(data.getLangPath());
+        final Logger logger = plugin.getLogger();
 
         try {
             final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
@@ -37,15 +40,26 @@ public class LangManager {
                 return;
             }
 
-            final File langFile = new File(langPath);
             if (!langFile.exists()) {
                 langFile.getParentFile().mkdirs();
-                downloader.downloadResource(version, lang, new File(langPath));
+                downloader.downloadResource(version, lang, langFile);
             }
 
             language.updateLangMap(version, data.getLangPath());
+        } catch (UnknownHostException e) {
+            final String fullPath = langFile.getParentFile().getPath();
+            final int pluginsIdx = fullPath.indexOf("plugins");
+
+            final String relativePath = pluginsIdx == -1 ? fullPath : fullPath.substring(pluginsIdx);
+            final String langFileName = langFile.getName();
+
+            logger.severe("Looks like your server hasn't connection to Internet.");
+            logger.severe("Server should have connection to download language...");
+            logger.severe("Your can manually download and put it to \"" + relativePath + "\" with name \"" + langFileName + "\"");
+
+            e.printStackTrace();
         } catch (IOException ex) {
-            plugin.getLogger().severe(ex.getMessage());
+            ex.printStackTrace();
         }
 
     }
