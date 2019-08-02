@@ -7,6 +7,8 @@ import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.versions.V11R1.V11R1;
 import com.demkom58.divinedrop.versions.V12R1.V12Listener;
 import com.demkom58.divinedrop.versions.Version;
+import net.minecraft.server.v1_13_R1.IChatBaseComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -80,12 +82,18 @@ public class V13R1 implements Version {
         final net.minecraft.server.v1_13_R1.NBTTagCompound nbtTagCompound = itemStack.b("display");
 
         if (nbtTagCompound != null) {
-            if (nbtTagCompound.hasKeyOfType("Name", 8))
-                return nbtTagCompound.getString("Name");
-            if (nbtTagCompound.hasKeyOfType("LocName", 8))
-                return Language.getInstance().getLocName(nbtTagCompound.getString("LocName"));
+            if (nbtTagCompound.hasKeyOfType("Name", 8)) {
+                final net.minecraft.server.v1_13_R1.IChatBaseComponent name =
+                        net.minecraft.server.v1_13_R1.IChatBaseComponent.ChatSerializer.a(nbtTagCompound.getString("Name"));
+                return name == null ? null : name.getString();
+            }
         }
 
+        return getLangNameNMS(itemStack);
+    }
+
+
+    private String getLangNameNMS(net.minecraft.server.v1_13_R1.ItemStack itemStack) {
         return Language.getInstance().getLocName(itemStack.getItem().getName()).trim();
     }
 
