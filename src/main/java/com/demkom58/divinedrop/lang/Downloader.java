@@ -43,7 +43,7 @@ public class Downloader {
         } catch (IllegalArgumentException e) {
             Bukkit.getLogger().severe(e.getMessage());
             data.setLang("en_CA");
-            langManager.downloadLang(data.getLang(), version);
+            langManager.manageLang(data.getLang(), version);
             return;
         }
 

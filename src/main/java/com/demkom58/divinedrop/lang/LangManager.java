@@ -4,12 +4,12 @@ import com.demkom58.divinedrop.ConfigurationData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.caсhe.CacheStorage;
 import com.demkom58.divinedrop.versions.Version;
-import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
@@ -19,6 +19,7 @@ public class LangManager {
     private final ConfigurationData data;
     private final Downloader downloader;
     private final Language language;
+    private final Logger logger;
 
     public LangManager(@NotNull final DivineDrop plugin,
                        @NotNull final ConfigurationData data) {
@@ -26,27 +27,39 @@ public class LangManager {
         this.data = data;
         this.downloader = new Downloader(data, this);
         this.language = new Language();
+        this.logger = plugin.getLogger();
     }
 
-    public void downloadLang(String lang, Version version) {
+    public void manageLang(String lang, Version version) {
         final File langFile = new File(data.getLangPath());
-        final Logger logger = plugin.getLogger();
+        final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
 
+        if (!langFolder.exists() && !langFolder.mkdir()) {
+            logger.severe("Can't create languages folder.");
+            Bukkit.getPluginManager().disablePlugin(plugin);
+            return;
+        }
+
+        if (!langFile.exists()) {
+            langFile.getParentFile().mkdirs();
+            try {
+                this.downloadLang(version, lang, langFile, 0, 5);
+            } catch (IOException e) {
+                logger.severe("Can't download specified lang");
+                e.printStackTrace();
+            }
+        }
+
+        language.updateLangMap(version, data.getLangPath());
+
+    }
+
+    private void downloadLang(@NotNull final Version version,
+                              @NotNull final String lang,
+                              @NotNull final File langFile,
+                              int attempt, int maxAttempts) throws IOException {
         try {
-            final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
-
-            if (!langFolder.exists() && !langFolder.mkdir()) {
-                Bukkit.getConsoleSender().sendMessage("[DivineDrop] §cCan't create languages folder.");
-                Bukkit.getPluginManager().disablePlugin(plugin);
-                return;
-            }
-
-            if (!langFile.exists()) {
-                langFile.getParentFile().mkdirs();
-                downloader.downloadResource(version, lang, langFile);
-            }
-
-            language.updateLangMap(version, data.getLangPath());
+            downloader.downloadResource(version, lang, langFile);
         } catch (UnknownHostException e) {
             final String fullPath = langFile.getParentFile().getPath();
             final int pluginsIdx = fullPath.indexOf("plugins");
@@ -63,9 +76,12 @@ public class LangManager {
                 logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + version.id() + "\" from cache, sorry.");
                 logger.severe("Try download language files from place where Internet connection is present...");
             } else logger.severe("You can download it from here: " + link);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        } catch (SocketTimeoutException e) {
+            if (attempt >= maxAttempts)
+                throw e;
 
+            this.downloadLang(version, lang, langFile, ++attempt, maxAttempts);
+        }
     }
+
 }

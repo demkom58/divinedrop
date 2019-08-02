@@ -61,7 +61,7 @@ public final class DivineDrop extends JavaPlugin {
         reloadConfig();
 
         data.updateData(getConfig());
-        langManager.downloadLang(data.getLang(), version);
+        langManager.manageLang(data.getLang(), version);
 
         saveConfig();
     }
