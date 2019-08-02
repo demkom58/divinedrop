@@ -78,15 +78,15 @@ public class V12R1 implements Version {
     private String getName(ItemStack bItemStack) {
         net.minecraft.server.v1_12_R1.ItemStack itemStack = org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack.asNMSCopy(bItemStack);
         net.minecraft.server.v1_12_R1.NBTTagCompound nbtTagCompound = itemStack.d("display");
-        if (nbtTagCompound != null) {
 
+        if (nbtTagCompound != null) {
             if (nbtTagCompound.hasKeyOfType("Name", 8))
                 return nbtTagCompound.getString("Name");
 
             if (nbtTagCompound.hasKeyOfType("LocName", 8))
                 return Language.getInstance().getLocName(nbtTagCompound.getString("LocName"));
-
         }
+
         return getLangNameNMS(itemStack);
     }
 

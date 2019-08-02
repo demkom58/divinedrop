@@ -81,12 +81,17 @@ public class V13R2 implements Version {
         final net.minecraft.server.v1_13_R2.NBTTagCompound nbtTagCompound = itemStack.b("display");
 
         if (nbtTagCompound != null) {
-            if (nbtTagCompound.hasKeyOfType("Name", 8))
-                return nbtTagCompound.getString("Name");
-            if (nbtTagCompound.hasKeyOfType("LocName", 8))
-                return Language.getInstance().getLocName(nbtTagCompound.getString("LocName"));
+            if (nbtTagCompound.hasKeyOfType("Name", 8)) {
+                final net.minecraft.server.v1_13_R2.IChatBaseComponent name =
+                        net.minecraft.server.v1_13_R2.IChatBaseComponent.ChatSerializer.a(nbtTagCompound.getString("Name"));
+                return name == null ? null : name.getString();
+            }
         }
 
+        return getLangNameNMS(itemStack);
+    }
+
+    private String getLangNameNMS(net.minecraft.server.v1_13_R2.ItemStack itemStack) {
         return Language.getInstance().getLocName(itemStack.getItem().getName()).trim();
     }
 

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface Version {
 
-    String getI18NDisplayName(@Nullable final ItemStack item);
+    @Nullable String getI18NDisplayName(@Nullable final ItemStack item);
 
     @NotNull String getLangPath(@NotNull final String locale);
 

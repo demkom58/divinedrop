@@ -40,6 +40,7 @@ public class V14R1 implements Version {
     }
 
     @Override
+    @Nullable
     public String getI18NDisplayName(@Nullable ItemStack item) {
         if (item == null)
             return null;
@@ -71,22 +72,29 @@ public class V14R1 implements Version {
         return new V12Listener(plugin, data, logic);
     }
 
+    @NotNull
     @Override
-    public @NotNull String reformatLangCode(@NotNull final String localeCode) {
+    public String reformatLangCode(@NotNull final String localeCode) {
         return V11R1.langCode(localeCode);
     }
 
+    @Nullable
     private String getName(ItemStack bItemStack) {
         final net.minecraft.server.v1_14_R1.ItemStack itemStack = org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack.asNMSCopy(bItemStack);
         final net.minecraft.server.v1_14_R1.NBTTagCompound nbtTagCompound = itemStack.b("display");
 
         if (nbtTagCompound != null) {
-            if (nbtTagCompound.hasKeyOfType("Name", 8))
-                return nbtTagCompound.getString("Name");
-            if (nbtTagCompound.hasKeyOfType("LocName", 8))
-                return Language.getInstance().getLocName(nbtTagCompound.getString("LocName"));
+            if (nbtTagCompound.hasKeyOfType("Name", 8)) {
+                final net.minecraft.server.v1_14_R1.IChatBaseComponent name =
+                        net.minecraft.server.v1_14_R1.IChatBaseComponent.ChatSerializer.a(nbtTagCompound.getString("Name"));
+                return name == null ? null : name.getString();
+            }
         }
 
+        return getLangNameNMS(itemStack);
+    }
+
+    private String getLangNameNMS(net.minecraft.server.v1_14_R1.ItemStack itemStack) {
         return Language.getInstance().getLocName(itemStack.getItem().getName()).trim();
     }
 
