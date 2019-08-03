@@ -1,6 +1,7 @@
 package com.demkom58.divinedrop.versions;
 
 import com.demkom58.divinedrop.DivineDrop;
+import com.demkom58.divinedrop.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,8 @@ public class VersionManager {
         if (supportedVersion == null)
             throw new UnsupportedOperationException("Current version: " + nmsVersion + ". This version is not supported!");
 
-        this.version = supportedVersion.getFactory().create(plugin, plugin.getData(), plugin.getLogic());
+        final Config config = plugin.getConfiguration();
+        this.version = supportedVersion.getFactory().create(plugin, config.getConfigData(), plugin.getLogic());
     }
 
     /**
