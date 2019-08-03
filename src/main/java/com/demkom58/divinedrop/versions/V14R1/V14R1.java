@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions.V14R1;
 
-import com.demkom58.divinedrop.ConfigurationData;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
@@ -22,7 +22,7 @@ public class V14R1 implements Version {
     public static final String PATH = "minecraft/lang/%s.json";
 
     private final DivineDrop plugin;
-    private final ConfigurationData data;
+    private final ConfigData data;
     private final ItemsHandler logic;
 
     private V14R1() {
@@ -32,7 +32,7 @@ public class V14R1 implements Version {
     }
 
     public V14R1(@NotNull final DivineDrop plugin,
-                 @NotNull final ConfigurationData data,
+                 @NotNull final ConfigData data,
                  @NotNull final ItemsHandler logic) {
         this.plugin = plugin;
         this.data = data;

@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.lang;
 
-import com.demkom58.divinedrop.ConfigurationData;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.caсhe.CacheStorage;
 import com.demkom58.divinedrop.versions.Version;
@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 public class LangManager {
 
     private final DivineDrop plugin;
-    private final ConfigurationData data;
+    private final ConfigData data;
     private final Downloader downloader;
     private final Language language;
     private final Logger logger;
 
     public LangManager(@NotNull final DivineDrop plugin,
-                       @NotNull final ConfigurationData data) {
+                       @NotNull final ConfigData data) {
         this.plugin = plugin;
         this.data = data;
         this.downloader = new Downloader(data, this);

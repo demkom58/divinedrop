@@ -1,14 +1,12 @@
 package com.demkom58.divinedrop.versions.V13R1;
 
-import com.demkom58.divinedrop.ConfigurationData;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.versions.V11R1.V11R1;
 import com.demkom58.divinedrop.versions.V12R1.V12Listener;
 import com.demkom58.divinedrop.versions.Version;
-import net.minecraft.server.v1_13_R1.IChatBaseComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +21,7 @@ public class V13R1 implements Version {
     public static final String PATH = "minecraft/lang/%s.json";
 
     private final DivineDrop plugin;
-    private final ConfigurationData data;
+    private final ConfigData data;
     private final ItemsHandler logic;
 
     private V13R1() {
@@ -33,7 +31,7 @@ public class V13R1 implements Version {
     }
 
     public V13R1(@NotNull final DivineDrop plugin,
-                 @NotNull final ConfigurationData data,
+                 @NotNull final ConfigData data,
                  @NotNull final ItemsHandler logic) {
         this.plugin = plugin;
         this.data = data;

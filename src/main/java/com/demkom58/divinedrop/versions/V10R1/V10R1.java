@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions.V10R1;
 
-import com.demkom58.divinedrop.ConfigurationData;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
@@ -21,7 +21,7 @@ public class V10R1 implements Version {
     public static final String VERSION = "1.10";
 
     private final DivineDrop plugin;
-    private final ConfigurationData data;
+    private final ConfigData data;
     private final ItemsHandler logic;
 
     private V10R1() {
@@ -31,7 +31,7 @@ public class V10R1 implements Version {
     }
 
     public V10R1(@NotNull final DivineDrop plugin,
-                @NotNull final ConfigurationData data,
+                @NotNull final ConfigData data,
                 @NotNull final ItemsHandler logic) {
         this.plugin = plugin;
         this.data = data;

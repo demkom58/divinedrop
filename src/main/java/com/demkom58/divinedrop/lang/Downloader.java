@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.lang;
 
-import com.demkom58.divinedrop.ConfigurationData;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.versions.Version;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
@@ -20,10 +20,10 @@ public class Downloader {
     public static final String ASSETS_URL = "http://resources.download.minecraft.net/";
     public static final Gson GSON = new Gson();
 
-    private final ConfigurationData data;
+    private final ConfigData data;
     private final LangManager langManager;
 
-    public Downloader(@NotNull final ConfigurationData data,
+    public Downloader(@NotNull final ConfigData data,
                       @NotNull final LangManager langManager) {
         this.data = data;
         this.langManager = langManager;

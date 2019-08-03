@@ -1,7 +1,9 @@
 package com.demkom58.divinedrop;
 
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.versions.VersionManager;
 import com.google.common.collect.MapMaker;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -10,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -21,22 +24,40 @@ public final class ItemsHandler {
 
     private final DivineDrop plugin;
     private final VersionManager versionManager;
-    private final ConfigurationData data;
+    private final ConfigData data;
 
     private boolean countdownRegistered = false;
 
+    private BukkitTask handleTimer;
+
     public ItemsHandler(@NotNull final DivineDrop plugin,
                         @NotNull final VersionManager versionManager,
-                        @NotNull final ConfigurationData data) {
+                        @NotNull final ConfigData data) {
         this.plugin = plugin;
         this.versionManager = versionManager;
         this.data = data;
     }
 
-    public void registerItems(@NotNull final Entity[] entities) {
-        Arrays.stream(entities)
-                .filter(entity -> entity instanceof Item)
-                .forEach(entity -> PROCESSING_ITEMS.add((Item) entity));
+    public void registerItems(@NotNull final Collection<Item> items) {
+        items.forEach(item -> item.setCustomNameVisible(true));
+
+        if (!data.isCleanerEnabled()) {
+            items.forEach(item -> item.setCustomName(getFormattedName(item)));
+            return;
+        }
+
+        PROCESSING_ITEMS.addAll(items);
+    }
+
+    public void registerItem(@NotNull final Item item) {
+        item.setCustomNameVisible(true);
+
+        if (!data.isCleanerEnabled()) {
+            item.setCustomName(getFormattedName(item));
+            return;
+        }
+
+        PROCESSING_ITEMS.add(item);
     }
 
     public void registerDeathDrop(@NotNull final PlayerDeathEvent event) {
@@ -44,13 +65,13 @@ public final class ItemsHandler {
     }
 
     public void removeTimers() {
-        PROCESSING_ITEMS.forEach(item -> item.setCustomName(getLiteCustomName(item)));
+        PROCESSING_ITEMS.forEach(item -> item.setCustomName(getFormattedName(item)));
     }
 
-    public String getLiteCustomName(@NotNull final Item item) {
-        return data.getLiteFormat()
-                .replace(ConfigurationData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
-                .replace(ConfigurationData.NAME_PLACEHOLDER, getDisplayName(item));
+    public String getFormattedName(@NotNull final Item item) {
+        return data.getFormat()
+                .replace(StaticData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
+                .replace(StaticData.NAME_PLACEHOLDER, getDisplayName(item));
     }
 
     public String getDisplayName(@NotNull final Item item) {
@@ -62,14 +83,14 @@ public final class ItemsHandler {
         String format = dataContainer.getFormat();
 
         if (format == null)
-            format = data.getLiteFormat();
+            format = data.getFormat();
 
-        if (format.equals(data.getFormat()))
-            format = data.getLiteFormat();
+        if (format.equals(data.getCleanerFormat()))
+            format = data.getFormat();
 
         item.setCustomName(format
-                .replace(ConfigurationData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
-                .replace(ConfigurationData.NAME_PLACEHOLDER, getDisplayName(item))
+                .replace(StaticData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
+                .replace(StaticData.NAME_PLACEHOLDER, getDisplayName(item))
         );
         PROCESSING_ITEMS.remove(item);
     }
@@ -84,11 +105,11 @@ public final class ItemsHandler {
         if (dataContainer.getFormat() == null)
             dataContainer.setFormat("");
 
-        item.setMetadata(ConfigurationData.METADATA_COUNTDOWN, new FixedMetadataValue(plugin, dataContainer));
+        item.setMetadata(StaticData.METADATA_COUNTDOWN, new FixedMetadataValue(plugin, dataContainer));
         item.setCustomName(dataContainer.getFormat()
-                .replace(ConfigurationData.TIMER_PLACEHOLDER, String.valueOf(dataContainer.getTimer()))
-                .replace(ConfigurationData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
-                .replace(ConfigurationData.NAME_PLACEHOLDER, getDisplayName(item))
+                .replace(StaticData.TIMER_PLACEHOLDER, String.valueOf(dataContainer.getTimer()))
+                .replace(StaticData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
+                .replace(StaticData.NAME_PLACEHOLDER, getDisplayName(item))
         );
     }
 
@@ -96,19 +117,31 @@ public final class ItemsHandler {
         if (countdownRegistered)
             return;
 
-        Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(
+        handleTimer = Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(
                 plugin, () -> PROCESSING_ITEMS.forEach(this::handleItem), 0L, 20L
         );
 
         this.countdownRegistered = true;
     }
 
+    public void unregisterCountdown() {
+        if (!countdownRegistered)
+            return;
+
+        if (handleTimer != null) {
+            handleTimer.cancel();
+            handleTimer = null;
+        }
+
+        this.countdownRegistered = false;
+    }
+
     private void handleItem(@NotNull final Item item) {
-        final List<MetadataValue> metadataCountdowns = item.getMetadata(ConfigurationData.METADATA_COUNTDOWN);
+        final List<MetadataValue> metadataCountdowns = item.getMetadata(StaticData.METADATA_COUNTDOWN);
         if (metadataCountdowns.isEmpty()) {
 
             int timer = data.getTimerValue();
-            String format = data.getFormat();
+            String format = data.getCleanerFormat();
             Material material = item.getItemStack().getType();
             String name = item.getItemStack().getItemMeta().getDisplayName();
 
@@ -116,7 +149,7 @@ public final class ItemsHandler {
                 name = "";
 
             if (data.isEnableCustomCountdowns()) {
-                final Map<Material, Map<String, DataContainer>> countdowns = data.getCountdowns();
+                final Map<Material, Map<String, DataContainer>> countdowns = data.getCleanerCountdowns();
                 boolean mapContainsMaterial = countdowns.containsKey(material);
 
                 if (mapContainsMaterial) {
