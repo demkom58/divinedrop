@@ -23,9 +23,9 @@ public final class DivineDrop extends JavaPlugin {
     @Getter private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
 
     @Getter private final VersionManager versionManager = new VersionManager(this);
-    @Getter private final Config config = new Config("config", this, versionManager, 1);
-    @Getter private final LangManager langManager = new LangManager(this, config.getConfigData());
-    @Getter private final ItemsHandler logic = new ItemsHandler(this, versionManager, config.getConfigData());
+    @Getter private final Config configuration = new Config("config", this, versionManager, 1);
+    @Getter private final LangManager langManager = new LangManager(this, configuration.getConfigData());
+    @Getter private final ItemsHandler logic = new ItemsHandler(this, versionManager, configuration.getConfigData());
 
     @Override
     public void onEnable() {
@@ -52,7 +52,9 @@ public final class DivineDrop extends JavaPlugin {
         pluginManager.registerEvents(new CommonListener(this), this);
 
         Optional.ofNullable(getCommand("divinedrop"))
-                .ifPresent(cmd -> cmd.setExecutor(new DivineCommandHandler(this, versionManager, config.getConfigData())));
+                .ifPresent(cmd -> cmd.setExecutor(
+                        new DivineCommandHandler(this, versionManager, configuration.getConfigData())
+                ));
 
         webSpigot.ifOutdated((latestVersion) -> {
             final Logger logger = Bukkit.getLogger();
@@ -71,7 +73,7 @@ public final class DivineDrop extends JavaPlugin {
         loadConfig(version);
         logic.unregisterCountdown();
 
-        if (config.getConfigData().isCleanerEnabled()) {
+        if (configuration.getConfigData().isCleanerEnabled()) {
             logic.registerCountdown();
         } else {
             ItemsHandler.PROCESSING_ITEMS.forEach(item -> item.removeMetadata(StaticData.METADATA_COUNTDOWN, this));
@@ -85,8 +87,8 @@ public final class DivineDrop extends JavaPlugin {
     }
 
     public void loadConfig(@NotNull final Version version) {
-        config.load();
-        langManager.manageLang(config.getConfigData().getLang(), version);
+        configuration.load();
+        langManager.manageLang(configuration.getConfigData().getLang(), version);
     }
 
 }
