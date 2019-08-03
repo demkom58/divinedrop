@@ -19,6 +19,7 @@ public class Config extends CustomConfig {
     }
 
     public void load() {
+        super.saveDefault();
         super.reloadConfig();
         final int version = getConfig().getInt("config-version", 0);
 

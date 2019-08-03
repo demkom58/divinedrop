@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop;
+package com.demkom58.divinedrop.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

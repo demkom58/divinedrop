@@ -1,28 +1,31 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.Config;
-import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.lang.LangManager;
+import com.demkom58.divinedrop.util.Metrics;
+import com.demkom58.divinedrop.util.WebSpigot;
 import com.demkom58.divinedrop.versions.Version;
 import com.demkom58.divinedrop.versions.VersionManager;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public final class DivineDrop extends JavaPlugin {
 
-    private final Metrics metrics = new Metrics(this);
+    @Getter private final Metrics metrics = new Metrics(this);
+    @Getter private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
 
-    private final VersionManager versionManager = new VersionManager(this);
-    private final ConfigData data = new ConfigData(this, versionManager);
-    private final LangManager langManager = new LangManager(this, data);
-    private final ItemsHandler logic = new ItemsHandler(this, versionManager, data);
-    private final Config config = new Config("config", this, versionManager, 1);
+    @Getter private final VersionManager versionManager = new VersionManager(this);
+    @Getter private final Config config = new Config("config", this, versionManager, 1);
+    @Getter private final LangManager langManager = new LangManager(this, config.getConfigData());
+    @Getter private final ItemsHandler logic = new ItemsHandler(this, versionManager, config.getConfigData());
 
     @Override
     public void onEnable() {
@@ -43,10 +46,19 @@ public final class DivineDrop extends JavaPlugin {
         final Version version = versionManager.getVersion();
 
         reloadPlugin(version);
-        getServer().getPluginManager().registerEvents(version.getListener(), this);
+
+        final PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(version.getListener(), this);
+        pluginManager.registerEvents(new CommonListener(this), this);
 
         Optional.ofNullable(getCommand("divinedrop"))
-                .ifPresent(cmd -> cmd.setExecutor(new DivineCommandHandler(this, versionManager, data)));
+                .ifPresent(cmd -> cmd.setExecutor(new DivineCommandHandler(this, versionManager, config.getConfigData())));
+
+        webSpigot.ifOutdated((latestVersion) -> {
+            final Logger logger = Bukkit.getLogger();
+            logger.info("New version '" + latestVersion + "' detected.");
+            logger.info("Please update it on: " + webSpigot.getResourceLink());
+        }, false);
     }
 
     @Override
@@ -59,7 +71,7 @@ public final class DivineDrop extends JavaPlugin {
         loadConfig(version);
         logic.unregisterCountdown();
 
-        if (data.isCleanerEnabled()) {
+        if (config.getConfigData().isCleanerEnabled()) {
             logic.registerCountdown();
         } else {
             ItemsHandler.PROCESSING_ITEMS.forEach(item -> item.removeMetadata(StaticData.METADATA_COUNTDOWN, this));
@@ -73,26 +85,8 @@ public final class DivineDrop extends JavaPlugin {
     }
 
     public void loadConfig(@NotNull final Version version) {
-        config.saveDefault();
         config.load();
-
-        data.updateData(config.getConfig());
-        langManager.manageLang(data.getLang(), version);
+        langManager.manageLang(config.getConfigData().getLang(), version);
     }
 
-    public LangManager getLangManager() {
-        return langManager;
-    }
-
-    public ConfigData getData() {
-        return data;
-    }
-
-    public ItemsHandler getLogic() {
-        return logic;
-    }
-
-    public VersionManager getVersionManager() {
-        return versionManager;
-    }
 }

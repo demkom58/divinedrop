@@ -6,6 +6,7 @@ public class StaticData {
     public static final String SIZE_PLACEHOLDER = "%size%";
     public static final String NAME_PLACEHOLDER = "%name%";
     public static final String METADATA_COUNTDOWN = "╚countdown";
+    public static final int RESOURCE_ID = 51715;
     public static final String[] INFO = new String[]{
             "§b",
             "§e§l§m------------------------------------------------- ",
