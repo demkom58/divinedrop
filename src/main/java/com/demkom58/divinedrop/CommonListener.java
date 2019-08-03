@@ -1,5 +1,6 @@
 package com.demkom58.divinedrop;
 
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.util.WebSpigot;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,7 +18,8 @@ public class CommonListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(@NotNull final PlayerJoinEvent event) {
-        if (!event.getPlayer().isOp())
+        final ConfigData configData = plugin.getConfiguration().getConfigData();
+        if (!configData.isCheckUpdates() || !event.getPlayer().isOp())
             return;
 
         final Player player = event.getPlayer();

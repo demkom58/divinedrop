@@ -24,6 +24,7 @@ public final class ConfigData {
     private final VersionManager versionManager;
 
     // Common settings
+    private boolean checkUpdates;
     private String format;
     private boolean pickupOnShift;
     private String lang;
@@ -69,6 +70,7 @@ public final class ConfigData {
     public void updateData(@NotNull final FileConfiguration conf) {
         cleanerCountdowns = null;
 
+        checkUpdates = conf.getBoolean("check-updates", true);
         format = color(conf.getString("format", "&f%name% &7(x%size%)"));
         pickupOnShift = conf.getBoolean("pickup-items-on-sneak", false);
         lang = conf.getString("lang", "en_CA");

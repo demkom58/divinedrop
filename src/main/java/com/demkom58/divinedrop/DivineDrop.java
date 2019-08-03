@@ -19,13 +19,19 @@ import java.util.logging.Logger;
 
 public final class DivineDrop extends JavaPlugin {
 
-    @Getter private final Metrics metrics = new Metrics(this);
-    @Getter private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
+    @Getter
+    private final Metrics metrics = new Metrics(this);
+    @Getter
+    private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
 
-    @Getter private final VersionManager versionManager = new VersionManager(this);
-    @Getter private final Config configuration = new Config("config", this, versionManager, 1);
-    @Getter private final LangManager langManager = new LangManager(this, configuration.getConfigData());
-    @Getter private final ItemsHandler logic = new ItemsHandler(this, versionManager, configuration.getConfigData());
+    @Getter
+    private final VersionManager versionManager = new VersionManager(this);
+    @Getter
+    private final Config configuration = new Config("config", this, versionManager, 1);
+    @Getter
+    private final LangManager langManager = new LangManager(this, configuration.getConfigData());
+    @Getter
+    private final ItemsHandler logic = new ItemsHandler(this, versionManager, configuration.getConfigData());
 
     @Override
     public void onEnable() {
@@ -56,11 +62,12 @@ public final class DivineDrop extends JavaPlugin {
                         new DivineCommandHandler(this, versionManager, configuration.getConfigData())
                 ));
 
-        webSpigot.ifOutdated((latestVersion) -> {
-            final Logger logger = Bukkit.getLogger();
-            logger.info("New version '" + latestVersion + "' detected.");
-            logger.info("Please update it on: " + webSpigot.getResourceLink());
-        }, false);
+        if (configuration.getConfigData().isCheckUpdates())
+            webSpigot.ifOutdated((latestVersion) -> {
+                final Logger logger = Bukkit.getLogger();
+                logger.info("New version '" + latestVersion + "' detected.");
+                logger.info("Please update it on: " + webSpigot.getResourceLink());
+            }, false);
     }
 
     @Override
