@@ -1,5 +1,6 @@
 package com.demkom58.divinedrop;
 
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 public class DivineCommandHandler implements CommandExecutor {
     private final DivineDrop plugin;
     private final VersionManager versionManager;
-    private final ConfigurationData data;
+    private final ConfigData data;
 
     public DivineCommandHandler(@NotNull final DivineDrop plugin,
                                 @NotNull final VersionManager versionManager,
-                                @NotNull final ConfigurationData data) {
+                                @NotNull final ConfigData data) {
         this.plugin = plugin;
         this.versionManager = versionManager;
         this.data = data;
@@ -26,18 +27,18 @@ public class DivineCommandHandler implements CommandExecutor {
                              @NotNull final String label,
                              @NotNull final String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ConfigurationData.INFO);
+            sender.sendMessage(StaticData.INFO);
             return true;
         }
 
         final String subCommand = args[0];
         if (subCommand.equalsIgnoreCase("reload")) {
             if (!sender.hasPermission("divinedrop.reload")) {
-                sendMessage(sender, data.getNoPermMessage());
+                sendMessage(sender, data.getNoPermissionMessage());
                 return false;
             }
 
-            plugin.loadConfig(versionManager.getVersion());
+            plugin.reloadPlugin(versionManager.getVersion());
             sendMessage(sender, data.getReloadedMessage());
             return true;
         }
@@ -77,7 +78,7 @@ public class DivineCommandHandler implements CommandExecutor {
     }
 
     private void sendMessage(@NotNull final CommandSender player, @NotNull final String message) {
-        player.sendMessage(ConfigurationData.PREFIX + message);
+        player.sendMessage(StaticData.PREFIX + message);
     }
 
 }

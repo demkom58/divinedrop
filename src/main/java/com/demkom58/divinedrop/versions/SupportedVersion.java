@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.versions;
 
-import com.demkom58.divinedrop.ConfigurationData;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.versions.V8R3.V8R3;
@@ -61,7 +61,7 @@ public enum SupportedVersion {
     }
 
     public interface VersionFactory {
-        @NotNull Version create(@NotNull final DivineDrop plugin, @NotNull final ConfigurationData data, @NotNull final ItemsHandler handler);
+        @NotNull Version create(@NotNull final DivineDrop plugin, @NotNull final ConfigData data, @NotNull final ItemsHandler handler);
     }
 
 }
