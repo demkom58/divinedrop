@@ -8,6 +8,8 @@
 #               \|___|/                                                                                    \|_________|
 # Don't change this
 config-version: 1
+# Enable update notifications in chat for admins and console.
+check-updates: true
 # Uses when cleaner disabled or if item hasn't timer.
 # Placeholders: %size%, %name%
 # Note: [%countdown% placeholder will not be work.]

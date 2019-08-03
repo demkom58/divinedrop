@@ -14,6 +14,7 @@ public class Updater0 implements Consumer<Config> {
         final FileConfiguration upd = new YamlConfiguration();
 
         upd.set("config-version", 1);
+        upd.set("check-updates", true);
         upd.set("format", old.getString("without-countdown-format", "&f%name% &7(x%size%)"));
         upd.set("pickup-items-on-sneak", old.getBoolean("without-countdown-format", false));
         upd.set("lang", old.getString("lang", "en_CA"));
