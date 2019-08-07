@@ -49,9 +49,9 @@ public class V12Listener implements Listener {
             return;
 
         if (data.isSavePlayerDeathDroppedItems())
-            ItemsHandler.DEATH_DROP_ITEMS.remove(event.getEntity().getItemStack());
+            logic.getDeathDropItems().remove(event.getEntity().getItemStack());
 
-        ItemsHandler.PROCESSING_ITEMS.remove(event.getEntity());
+        logic.getProcessingItems().remove(event.getEntity());
     }
 
     @EventHandler
@@ -67,9 +67,9 @@ public class V12Listener implements Listener {
             return;
 
         if (data.isSavePlayerDeathDroppedItems())
-            ItemsHandler.DEATH_DROP_ITEMS.remove(event.getItem().getItemStack());
+            logic.getDeathDropItems().remove(event.getItem().getItemStack());
 
-        ItemsHandler.PROCESSING_ITEMS.remove(event.getItem());
+        logic.getProcessingItems().remove(event.getItem());
     }
 
 
@@ -93,6 +93,6 @@ public class V12Listener implements Listener {
         if (!data.isCleanerEnabled())
             Bukkit.getScheduler().runTaskLater(plugin, () -> logic.registerItem(event.getTarget()), 0);
         else
-            ItemsHandler.PROCESSING_ITEMS.remove(event.getEntity());
+            logic.getProcessingItems().remove(event.getEntity());
     }
 }
