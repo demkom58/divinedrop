@@ -26,7 +26,7 @@ public class CacheGenerator {
         LOGGER.setUseParentHandlers(false);
 
         final SupportedVersion[] versions = SupportedVersion.values();
-        final LinkedTreeMap<String, LinkedTreeMap<String, String>> versionLangs = new LinkedTreeMap<>();
+        final Map<String, Map<String, String>> versionLangs = new HashMap<>();
 
         for (SupportedVersion supportedVersion : versions) {
             final Version version = create(supportedVersion.getVersionClass());
@@ -34,7 +34,7 @@ public class CacheGenerator {
 
             LOGGER.info("Generating cache links for version " + versionId);
 
-            final LinkedTreeMap<String, String> langsMap = new LinkedTreeMap<>();
+            final Map<String, String> langsMap = new HashMap<>();
             versionLangs.put(versionId, langsMap);
 
             final VersionManifest vm = downloadObject(new URL(Downloader.VERSIONS_LIST), VersionManifest.class);

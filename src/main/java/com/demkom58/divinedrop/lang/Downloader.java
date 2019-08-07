@@ -13,6 +13,7 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Downloader {
 
@@ -144,11 +145,11 @@ public class Downloader {
 
     public static class AssetIndex {
         @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-        @Getter private LinkedTreeMap<String, LinkedTreeMap<String, String>> objects;
+        @Getter private HashMap<String, HashMap<String, String>> objects;
 
         @NotNull
         public String getLocaleHash(@NotNull final String langPath) throws IllegalArgumentException {
-            final LinkedTreeMap<String, String> asset = objects.get(langPath);
+            final HashMap<String, String> asset = objects.get(langPath);
 
             if (asset == null)
                 throw new IllegalArgumentException("Unable to get lang hash.");
