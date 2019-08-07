@@ -9,13 +9,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CacheStorage {
-    private LinkedTreeMap<String, LinkedTreeMap<String, String>> versionLangsCache = new LinkedTreeMap<>();
+    private Map<String, Map<String, String>> versionLangsCache = new HashMap<>();
 
     private CacheStorage() { }
 
-    protected CacheStorage(LinkedTreeMap<String, LinkedTreeMap<String, String>> versionLangsCache) {
+    protected CacheStorage(Map<String, Map<String, String>> versionLangsCache) {
         this.versionLangsCache = versionLangsCache;
     }
 
@@ -29,7 +31,7 @@ public class CacheStorage {
 
     public @Nullable String getLink(@NotNull final Version version,
                                     @NotNull final String language) {
-        final LinkedTreeMap<String, String> languages = versionLangsCache.get(version.id());
+        final Map<String, String> languages = versionLangsCache.get(version.id());
 
         if (languages == null)
             return null;
