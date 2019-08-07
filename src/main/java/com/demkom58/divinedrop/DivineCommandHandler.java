@@ -69,7 +69,7 @@ public class DivineCommandHandler implements CommandExecutor {
 
         if (subCommand.equalsIgnoreCase("size")) {
             if (sender.hasPermission("divinedrop.developer"))
-                sendMessage(sender, "Items to remove: " + ItemsHandler.PROCESSING_ITEMS.size());
+                sendMessage(sender, "Items to remove: " + plugin.getLogic().getProcessingItems().size());
             return true;
         }
 

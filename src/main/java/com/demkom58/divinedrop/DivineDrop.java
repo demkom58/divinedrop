@@ -83,9 +83,9 @@ public final class DivineDrop extends JavaPlugin {
         if (configuration.getConfigData().isCleanerEnabled()) {
             logic.registerCountdown();
         } else {
-            ItemsHandler.PROCESSING_ITEMS.forEach(item -> item.removeMetadata(StaticData.METADATA_COUNTDOWN, this));
-            ItemsHandler.DEATH_DROP_ITEMS.clear();
-            ItemsHandler.PROCESSING_ITEMS.clear();
+            logic.getProcessingItems().forEach(item -> item.removeMetadata(StaticData.METADATA_COUNTDOWN, this));
+            logic.getDeathDropItems().clear();
+            logic.getProcessingItems().clear();
         }
 
         getServer().getWorlds().forEach(world -> world.getEntities().stream()
