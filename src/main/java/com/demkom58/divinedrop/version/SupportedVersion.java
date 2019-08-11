@@ -65,11 +65,11 @@ public enum SupportedVersion {
     }
 
     public boolean isNewer(@NotNull final SupportedVersion version) {
-        return version.ordinal() > ordinal();
+        return ordinal() > version.ordinal();
     }
 
     public boolean isOlder(@NotNull final SupportedVersion version) {
-        return version.ordinal() < ordinal();
+        return ordinal() < version.ordinal();
     }
 
 }
