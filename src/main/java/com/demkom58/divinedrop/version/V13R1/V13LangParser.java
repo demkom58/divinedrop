@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.versions.V13R1;
+package com.demkom58.divinedrop.version.V13R1;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;

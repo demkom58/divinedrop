@@ -1,17 +1,17 @@
-package com.demkom58.divinedrop.versions;
+package com.demkom58.divinedrop.version;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
-import com.demkom58.divinedrop.versions.V8R3.V8R3;
-import com.demkom58.divinedrop.versions.V9R1.V9R1;
-import com.demkom58.divinedrop.versions.V9R2.V9R2;
-import com.demkom58.divinedrop.versions.V10R1.V10R1;
-import com.demkom58.divinedrop.versions.V11R1.V11R1;
-import com.demkom58.divinedrop.versions.V12R1.V12R1;
-import com.demkom58.divinedrop.versions.V13R1.V13R1;
-import com.demkom58.divinedrop.versions.V13R2.V13R2;
-import com.demkom58.divinedrop.versions.V14R1.V14R1;
+import com.demkom58.divinedrop.version.V8R3.V8R3;
+import com.demkom58.divinedrop.version.V9R1.V9R1;
+import com.demkom58.divinedrop.version.V9R2.V9R2;
+import com.demkom58.divinedrop.version.V10R1.V10R1;
+import com.demkom58.divinedrop.version.V11R1.V11R1;
+import com.demkom58.divinedrop.version.V12R1.V12R1;
+import com.demkom58.divinedrop.version.V13R1.V13R1;
+import com.demkom58.divinedrop.version.V13R2.V13R2;
+import com.demkom58.divinedrop.version.V14R1.V14R1;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

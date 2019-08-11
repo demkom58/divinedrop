@@ -1,13 +1,13 @@
-package com.demkom58.divinedrop.versions.V13R2;
+package com.demkom58.divinedrop.version.V13R2;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
-import com.demkom58.divinedrop.versions.V11R1.V11R1;
-import com.demkom58.divinedrop.versions.V12R1.V12Listener;
-import com.demkom58.divinedrop.versions.V13R1.V13LangParser;
-import com.demkom58.divinedrop.versions.Version;
+import com.demkom58.divinedrop.version.V11R1.V11R1;
+import com.demkom58.divinedrop.version.V12R1.V12Listener;
+import com.demkom58.divinedrop.version.V13R1.V13LangParser;
+import com.demkom58.divinedrop.version.Version;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;

@@ -1,6 +1,6 @@
 package com.demkom58.divinedrop.lang;
 
-import com.demkom58.divinedrop.versions.Version;
+import com.demkom58.divinedrop.version.Version;
 import com.google.common.collect.Maps;
 import com.google.gson.stream.JsonReader;
 import org.jetbrains.annotations.NotNull;

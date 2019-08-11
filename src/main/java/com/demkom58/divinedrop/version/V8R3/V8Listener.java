@@ -1,10 +1,9 @@
-package com.demkom58.divinedrop.versions.V8R3;
+package com.demkom58.divinedrop.version.V8R3;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -1,12 +1,13 @@
-package com.demkom58.divinedrop.versions.V13R1;
+package com.demkom58.divinedrop.version.V11R1;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.ItemsHandler;
 import com.demkom58.divinedrop.lang.Language;
-import com.demkom58.divinedrop.versions.V11R1.V11R1;
-import com.demkom58.divinedrop.versions.V12R1.V12Listener;
-import com.demkom58.divinedrop.versions.Version;
+import com.demkom58.divinedrop.version.V8R3.V8LangParser;
+import com.demkom58.divinedrop.version.V8R3.V8Listener;
+import com.demkom58.divinedrop.version.V8R3.V8R3;
+import com.demkom58.divinedrop.version.Version;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -16,23 +17,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
-public class V13R1 implements Version {
-    public static final String VERSION = "1.13";
-    public static final String PATH = "minecraft/lang/%s.json";
+public class V11R1 implements Version {
+    public static final String VERSION = "1.11";
 
     private final DivineDrop plugin;
     private final ConfigData data;
     private final ItemsHandler logic;
 
-    private V13R1() {
+    private V11R1() {
         this.plugin = null;
         this.data = null;
         this.logic = null;
     }
 
-    public V13R1(@NotNull final DivineDrop plugin,
-                 @NotNull final ConfigData data,
-                 @NotNull final ItemsHandler logic) {
+    public V11R1(@NotNull final DivineDrop plugin,
+                @NotNull final ConfigData data,
+                @NotNull final ItemsHandler logic) {
         this.plugin = plugin;
         this.data = data;
         this.logic = logic;
@@ -49,13 +49,13 @@ public class V13R1 implements Version {
     @NotNull
     @Override
     public String getLangPath(@NotNull final String locale) {
-        return String.format(PATH, locale.toLowerCase());
+        return String.format(V8R3.PATH, locale.toLowerCase());
     }
 
     @NotNull
     @Override
     public Map<String, String> parseLang(@NotNull InputStream inputStream) throws IOException {
-        return V13LangParser.parseLang(inputStream);
+        return V8LangParser.parseLang(inputStream);
     }
 
     @NotNull
@@ -67,7 +67,7 @@ public class V13R1 implements Version {
     @NotNull
     @Override
     public Listener getListener() {
-        return new V12Listener(plugin, data, logic);
+        return new V8Listener(plugin, data, logic);
     }
 
     @Override
@@ -76,23 +76,26 @@ public class V13R1 implements Version {
     }
 
     private String getName(ItemStack bItemStack) {
-        final net.minecraft.server.v1_13_R1.ItemStack itemStack = org.bukkit.craftbukkit.v1_13_R1.inventory.CraftItemStack.asNMSCopy(bItemStack);
-        final net.minecraft.server.v1_13_R1.NBTTagCompound nbtTagCompound = itemStack.b("display");
-
+        net.minecraft.server.v1_11_R1.ItemStack itemStack = org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack.asNMSCopy(bItemStack);
+        net.minecraft.server.v1_11_R1.NBTTagCompound nbtTagCompound = itemStack.d("display");
         if (nbtTagCompound != null) {
-            if (nbtTagCompound.hasKeyOfType("Name", 8)) {
-                final net.minecraft.server.v1_13_R1.IChatBaseComponent name =
-                        net.minecraft.server.v1_13_R1.IChatBaseComponent.ChatSerializer.a(nbtTagCompound.getString("Name"));
-                return name == null ? null : name.getString();
-            }
-        }
 
+            if (nbtTagCompound.hasKeyOfType("Name", 8))
+                return nbtTagCompound.getString("Name");
+
+            if (nbtTagCompound.hasKeyOfType("LocName", 8))
+                return Language.getInstance().getLocName(nbtTagCompound.getString("LocName"));
+
+        }
         return getLangNameNMS(itemStack);
     }
 
+    private String getLangNameNMS(net.minecraft.server.v1_11_R1.ItemStack itemStack) {
+        return Language.getInstance().getLocName(itemStack.getItem().a(itemStack) + ".name").trim();
+    }
 
-    private String getLangNameNMS(net.minecraft.server.v1_13_R1.ItemStack itemStack) {
-        return Language.getInstance().getLocName(itemStack.getItem().getName()).trim();
+    public static @NotNull String langCode(@NotNull final String localeCode) {
+        return localeCode.toLowerCase();
     }
 
 }

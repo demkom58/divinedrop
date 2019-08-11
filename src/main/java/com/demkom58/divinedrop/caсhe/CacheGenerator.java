@@ -1,9 +1,8 @@
 package com.demkom58.divinedrop.caсhe;
 
 import com.demkom58.divinedrop.lang.Downloader;
-import com.demkom58.divinedrop.versions.SupportedVersion;
-import com.demkom58.divinedrop.versions.Version;
-import com.google.gson.internal.LinkedTreeMap;
+import com.demkom58.divinedrop.version.SupportedVersion;
+import com.demkom58.divinedrop.version.Version;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -12,7 +11,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 

@@ -2,8 +2,8 @@ package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.StaticData;
-import com.demkom58.divinedrop.versions.SupportedVersion;
-import com.demkom58.divinedrop.versions.VersionManager;
+import com.demkom58.divinedrop.version.SupportedVersion;
+import com.demkom58.divinedrop.version.VersionManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
