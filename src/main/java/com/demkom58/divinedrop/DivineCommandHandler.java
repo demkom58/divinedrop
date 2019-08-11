@@ -7,6 +7,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 public class DivineCommandHandler implements CommandExecutor {
@@ -47,21 +49,18 @@ public class DivineCommandHandler implements CommandExecutor {
         if (subCommand.equalsIgnoreCase("getName")) {
             if (sender.hasPermission("divinedrop.getname")) {
                 final Player player = (Player) sender;
-                String name;
-
-                try {
-                    if (versionManager.isOlder(SupportedVersion.V9R1))
-                        name = player.getItemInHand().getItemMeta().getDisplayName();
-                    else
-                        name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-                } catch (NullPointerException ex) {
-                    name = "AIR";
-                }
+                final ItemStack handStack = versionManager.isOlder(SupportedVersion.V9R1)
+                        ? player.getItemInHand()
+                        : player.getInventory().getItemInMainHand();
+                final String name;
                 
-                if (name == null)
-                    name = "§7<Empty>";
-                else
-                    name = name.replace('§', '&');
+                if (handStack != null) {
+                    final ItemMeta itemMeta = handStack.getItemMeta();
+                    if (itemMeta != null && itemMeta.hasDisplayName())
+                        name = itemMeta.getDisplayName().replace('§', '&');
+                    else
+                        name = "§7<Empty>";
+                } else name = "AIR";
 
                 sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name));
                 return true;
