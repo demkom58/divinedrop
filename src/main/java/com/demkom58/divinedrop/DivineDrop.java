@@ -1,6 +1,7 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.Config;
+import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.lang.LangManager;
 import com.demkom58.divinedrop.util.Metrics;
 import com.demkom58.divinedrop.util.WebSpigot;
