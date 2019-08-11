@@ -46,22 +46,18 @@ public class DivineCommandHandler implements CommandExecutor {
         if (subCommand.equalsIgnoreCase("getName")) {
             if (sender.hasPermission("divinedrop.getname")) {
                 final Player player = (Player) sender;
-                String itemName;
+                String name;
 
                 try {
                     if (plugin.getServer().getVersion().contains("1.8"))
-                        itemName = player.getItemInHand().getItemMeta().getDisplayName();
+                        name = player.getItemInHand().getItemMeta().getDisplayName();
                     else
-                        itemName = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
+                        name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
                 } catch (NullPointerException ex) {
-                    sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", "AIR"));
-                    return false;
+                    name = "AIR";
                 }
 
-                if (itemName == null)
-                    itemName = "NONAME";
-
-                sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", itemName.replace('§', '&')));
+                sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name.replace('§', '&')));
                 return true;
             }
             return true;
