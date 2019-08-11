@@ -1,7 +1,7 @@
 package com.demkom58.divinedrop.config;
 
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.versions.VersionManager;
+import com.demkom58.divinedrop.version.VersionManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;

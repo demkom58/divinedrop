@@ -1,8 +1,7 @@
 package com.demkom58.divinedrop.caсhe;
 
 import com.demkom58.divinedrop.lang.Downloader;
-import com.demkom58.divinedrop.versions.Version;
-import com.google.gson.internal.LinkedTreeMap;
+import com.demkom58.divinedrop.version.Version;
 import com.google.gson.stream.JsonReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

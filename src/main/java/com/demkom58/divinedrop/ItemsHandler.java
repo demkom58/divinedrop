@@ -3,7 +3,7 @@ package com.demkom58.divinedrop;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.DataContainer;
 import com.demkom58.divinedrop.config.StaticData;
-import com.demkom58.divinedrop.versions.VersionManager;
+import com.demkom58.divinedrop.version.VersionManager;
 import com.google.common.collect.MapMaker;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

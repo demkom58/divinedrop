@@ -2,7 +2,7 @@ package com.demkom58.divinedrop.config;
 
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.config.updaters.ConfigUpdater;
-import com.demkom58.divinedrop.versions.VersionManager;
+import com.demkom58.divinedrop.version.VersionManager;
 import org.jetbrains.annotations.NotNull;
 
 public class Config extends CustomConfig {

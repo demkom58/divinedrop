@@ -1,7 +1,7 @@
 package com.demkom58.divinedrop.lang;
 
 import com.demkom58.divinedrop.config.ConfigData;
-import com.demkom58.divinedrop.versions.Version;
+import com.demkom58.divinedrop.version.Version;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;

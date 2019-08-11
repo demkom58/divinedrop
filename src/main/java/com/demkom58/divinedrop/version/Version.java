@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.versions;
+package com.demkom58.divinedrop.version;
 
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;

@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.versions.V8R3;
+package com.demkom58.divinedrop.version.V8R3;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;

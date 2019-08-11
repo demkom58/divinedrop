@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.versions;
+package com.demkom58.divinedrop.version;
 
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.config.Config;
