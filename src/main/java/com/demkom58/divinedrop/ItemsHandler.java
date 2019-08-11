@@ -77,8 +77,8 @@ public final class ItemsHandler {
     }
 
     public void removeTimer(@NotNull final Item item,
-                            @NotNull final DataContainer dataContainer) {
-        String format = dataContainer.getFormat();
+                            @NotNull final DataContainer container) {
+        String format = container.getFormat();
 
         if (format == null)
             format = data.getFormat();
@@ -94,18 +94,18 @@ public final class ItemsHandler {
     }
 
     public void setTimer(@NotNull final Item item,
-                         @NotNull final DataContainer dataContainer) {
-        if (dataContainer.getTimer() <= 0) {
+                         @NotNull final DataContainer container) {
+        if (container.getTimer() <= 0) {
             item.remove();
             processingItems.remove(item);
         }
 
-        if (dataContainer.getFormat() == null)
-            dataContainer.setFormat("");
+        if (container.getFormat() == null)
+            container.setFormat("");
 
-        item.setMetadata(StaticData.METADATA_COUNTDOWN, new FixedMetadataValue(plugin, dataContainer));
-        item.setCustomName(dataContainer.getFormat()
-                .replace(StaticData.TIMER_PLACEHOLDER, String.valueOf(dataContainer.getTimer()))
+        item.setMetadata(StaticData.METADATA_COUNTDOWN, new FixedMetadataValue(plugin, container));
+        item.setCustomName(container.getFormat()
+                .replace(StaticData.TIMER_PLACEHOLDER, String.valueOf(container.getTimer()))
                 .replace(StaticData.SIZE_PLACEHOLDER, String.valueOf(item.getItemStack().getAmount()))
                 .replace(StaticData.NAME_PLACEHOLDER, getDisplayName(item))
         );
@@ -161,7 +161,7 @@ public final class ItemsHandler {
 
                     DataContainer voidContainer = filterMap.get("");
                     if (voidContainer != null
-                            && "".equals(name)
+                            && name.isEmpty()
                             && specifiedContainer == null) {
                         timer = voidContainer.getTimer();
                         format = voidContainer.getFormat();
@@ -169,7 +169,7 @@ public final class ItemsHandler {
 
                     DataContainer dataContainer = filterMap.get("*");
                     if (dataContainer != null
-                            && (!"".equals(name) || voidContainer == null)
+                            && (!name.isEmpty() || voidContainer == null)
                             && specifiedContainer == null) {
 
                         timer = dataContainer.getTimer();
@@ -178,20 +178,20 @@ public final class ItemsHandler {
 
                 }
             }
-            DataContainer dataContainer = new DataContainer(timer, format);
+            DataContainer container = new DataContainer(timer, format);
 
             if (data.isSavePlayerDeathDroppedItems())
                 if (deathDropItems.contains(item.getItemStack())) {
-                    removeTimer(item, dataContainer);
+                    removeTimer(item, container);
                     return;
                 }
 
             if (timer == -1) {
-                removeTimer(item, dataContainer);
+                removeTimer(item, container);
                 return;
             }
 
-            setTimer(item, dataContainer);
+            setTimer(item, container);
             return;
         }
 
