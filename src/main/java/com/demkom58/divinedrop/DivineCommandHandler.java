@@ -1,6 +1,7 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.ConfigData;
+import com.demkom58.divinedrop.versions.SupportedVersion;
 import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -49,7 +50,7 @@ public class DivineCommandHandler implements CommandExecutor {
                 String name;
 
                 try {
-                    if (plugin.getServer().getVersion().contains("1.8"))
+                    if (versionManager.isOlder(SupportedVersion.V9R1))
                         name = player.getItemInHand().getItemMeta().getDisplayName();
                     else
                         name = player.getInventory().getItemInMainHand().getItemMeta().getDisplayName();

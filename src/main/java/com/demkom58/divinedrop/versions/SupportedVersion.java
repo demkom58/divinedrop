@@ -64,4 +64,12 @@ public enum SupportedVersion {
         @NotNull Version create(@NotNull final DivineDrop plugin, @NotNull final ConfigData data, @NotNull final ItemsHandler handler);
     }
 
+    public boolean isNewer(@NotNull final SupportedVersion version) {
+        return version.ordinal() > ordinal();
+    }
+
+    public boolean isOlder(@NotNull final SupportedVersion version) {
+        return version.ordinal() < ordinal();
+    }
+
 }
