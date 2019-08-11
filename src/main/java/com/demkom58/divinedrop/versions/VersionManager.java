@@ -8,7 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class VersionManager {
     private final DivineDrop plugin;
+
     private Version version;
+    private SupportedVersion supportedVersion;
 
     public VersionManager(@NotNull final DivineDrop plugin) {
         this.plugin = plugin;
@@ -25,7 +27,7 @@ public class VersionManager {
      */
     public void setup() throws UnsupportedOperationException {
         final String nmsVersion = extractNmsVersion();
-        final SupportedVersion supportedVersion = SupportedVersion.getVersion(nmsVersion);
+        supportedVersion = SupportedVersion.getVersion(nmsVersion);
 
         if (supportedVersion == null)
             throw new UnsupportedOperationException("Current version: " + nmsVersion + ". This version is not supported!");
@@ -47,6 +49,18 @@ public class VersionManager {
         return version;
     }
 
+    /**
+     * Supported version enum constant.
+     *
+     * Allows check newer or older version
+     * or create new instances.
+     *
+     * @return version constant
+     */
+    public SupportedVersion getSupportedVersion() {
+        return supportedVersion;
+    }
+
     @NotNull
     private String extractNmsVersion() throws UnsupportedOperationException {
         try {
@@ -54,6 +68,29 @@ public class VersionManager {
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new UnsupportedOperationException("Can't parse version...", e);
         }
+    }
+
+    /**
+     * Helps to check whether the current version
+     * is newer than the specified version or not.
+     *
+     * @param version - version against which the check is performed.
+     * @return true if newer.
+     */
+    public boolean isNewer(@NotNull final SupportedVersion version) {
+        return supportedVersion.isNewer(version);
+    }
+
+    /**
+     * Helps to check whether the current version
+     * is older than the specified version or not.
+     *
+     * @param version - version against which the check is performed.
+     *
+     * @return true if older.
+     */
+    public boolean isOlder(@NotNull final SupportedVersion version) {
+        return supportedVersion.isOlder(version);
     }
 
 }
