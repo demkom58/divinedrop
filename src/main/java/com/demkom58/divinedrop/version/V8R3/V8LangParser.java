@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 
 public class V8LangParser {
 
-    private static Pattern PATTERN = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
-    private static Splitter SPLITTER = Splitter.on('=').limit(2);
+    private static final Pattern PATTERN = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
+    private static final Splitter SPLITTER = Splitter.on('=').limit(2);
 
     public static Map<String, String> parseLang(@NotNull InputStream inputStream) throws IOException {
         Map<String, String> langMap = Maps.newHashMap();
