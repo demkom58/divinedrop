@@ -1,6 +1,7 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.ConfigData;
+import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.versions.SupportedVersion;
 import com.demkom58.divinedrop.versions.VersionManager;
 import org.bukkit.command.Command;
@@ -53,7 +54,7 @@ public class DivineCommandHandler implements CommandExecutor {
                         ? player.getItemInHand()
                         : player.getInventory().getItemInMainHand();
                 final String name;
-                
+
                 if (handStack != null) {
                     final ItemMeta itemMeta = handStack.getItemMeta();
                     if (itemMeta != null && itemMeta.hasDisplayName())

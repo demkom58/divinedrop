@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop;
+package com.demkom58.divinedrop.config;
 
 public class StaticData {
     public static final String PREFIX = "§5§lDivineDrop §7> §f";

@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop;
+package com.demkom58.divinedrop.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
