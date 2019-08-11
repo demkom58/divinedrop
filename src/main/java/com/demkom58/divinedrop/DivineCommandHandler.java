@@ -57,8 +57,13 @@ public class DivineCommandHandler implements CommandExecutor {
                 } catch (NullPointerException ex) {
                     name = "AIR";
                 }
+                
+                if (name == null)
+                    name = "§7<Empty>";
+                else
+                    name = name.replace('§', '&');
 
-                sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name.replace('§', '&')));
+                sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name));
                 return true;
             }
             return true;
