@@ -2,6 +2,7 @@ package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.Config;
 import com.demkom58.divinedrop.config.StaticData;
+import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.LangManager;
 import com.demkom58.divinedrop.util.Metrics;
 import com.demkom58.divinedrop.util.WebSpigot;
@@ -10,7 +11,6 @@ import com.demkom58.divinedrop.version.VersionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Item;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -32,7 +32,7 @@ public final class DivineDrop extends JavaPlugin {
     @Getter
     private final LangManager langManager = new LangManager(this, configuration.getConfigData());
     @Getter
-    private final ItemsHandler logic = new ItemsHandler(this, versionManager, configuration.getConfigData());
+    private final ItemHandler itemHandler = new ItemHandler(this, versionManager, configuration.getConfigData());
 
     @Override
     public void onEnable() {
@@ -43,7 +43,7 @@ public final class DivineDrop extends JavaPlugin {
         }
 
         try {
-            versionManager.setup();
+            versionManager.setup(configuration.getConfigData(), itemHandler);
         } catch (UnsupportedOperationException e) {
             Bukkit.getConsoleSender().sendMessage("[" + getDescription().getName() + "] " + ChatColor.RED + e.getMessage());
             Bukkit.getPluginManager().disablePlugin(this);
@@ -55,7 +55,7 @@ public final class DivineDrop extends JavaPlugin {
         reloadPlugin(version);
 
         final PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(version.getListener(), this);
+        pluginManager.registerEvents(version.createListener(), this);
         pluginManager.registerEvents(new CommonListener(this), this);
 
         Optional.ofNullable(getCommand("divinedrop"))
@@ -74,24 +74,12 @@ public final class DivineDrop extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
-        logic.removeTimers();
+        itemHandler.disable();
     }
 
     public void reloadPlugin(@NotNull final Version version) {
         loadConfig(version);
-        logic.unregisterCountdown();
-
-        if (configuration.getConfigData().isCleanerEnabled()) {
-            logic.registerCountdown();
-        } else {
-            logic.getProcessingItems().forEach(item -> item.removeMetadata(StaticData.METADATA_COUNTDOWN, this));
-            logic.getDeathDropItems().clear();
-            logic.getProcessingItems().clear();
-        }
-
-        getServer().getWorlds().forEach(world -> world.getEntities().stream()
-                .filter(entity -> entity instanceof Item)
-                .forEach(item -> logic.registerItem((Item) item)));
+        itemHandler.reload();
     }
 
     public void loadConfig(@NotNull final Version version) {
