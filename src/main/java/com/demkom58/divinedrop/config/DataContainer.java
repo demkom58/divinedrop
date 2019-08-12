@@ -8,4 +8,8 @@ import lombok.Data;
 public class DataContainer {
     private int timer;
     private String format;
+
+    public void timerDecrement() {
+        timer--;
+    }
 }

@@ -4,13 +4,17 @@ import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.version.SupportedVersion;
 import com.demkom58.divinedrop.version.VersionManager;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 public class DivineCommandHandler implements CommandExecutor {
     private final DivineDrop plugin;
@@ -55,7 +59,7 @@ public class DivineCommandHandler implements CommandExecutor {
                         : player.getInventory().getItemInMainHand();
                 final String name;
 
-                if (handStack != null) {
+                if (handStack.getType() != Material.AIR) {
                     final ItemMeta itemMeta = handStack.getItemMeta();
                     if (itemMeta != null && itemMeta.hasDisplayName())
                         name = itemMeta.getDisplayName().replace('§', '&');
@@ -70,8 +74,10 @@ public class DivineCommandHandler implements CommandExecutor {
         }
 
         if (subCommand.equalsIgnoreCase("size")) {
-            if (sender.hasPermission("divinedrop.developer"))
-                sendMessage(sender, "Items to remove: " + plugin.getLogic().getProcessingItems().size());
+            if (sender.hasPermission("divinedrop.developer")) {
+                Set<Item> processingItems = plugin.getItemHandler().getRegistry().getTimedItems();
+                sendMessage(sender, "Items to remove: " + processingItems.size());
+            }
             return true;
         }
 

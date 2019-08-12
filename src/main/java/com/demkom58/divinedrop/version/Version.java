@@ -19,7 +19,7 @@ public interface Version {
 
     @NotNull String id();
 
-    @NotNull Listener getListener();
+    @NotNull Listener createListener();
 
     @NotNull String reformatLangCode(@NotNull String localeCode);
 

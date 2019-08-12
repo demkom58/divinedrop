@@ -2,7 +2,7 @@ package com.demkom58.divinedrop.version.V8R3;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.ItemsHandler;
+import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.version.Version;
 import org.bukkit.event.Listener;
@@ -20,20 +20,20 @@ public class V8R3 implements Version {
 
     private final DivineDrop plugin;
     private final ConfigData data;
-    private final ItemsHandler logic;
+    private final ItemHandler itemHandler;
 
     private V8R3() {
         this.plugin = null;
         this.data = null;
-        this.logic = null;
+        this.itemHandler = null;
     }
 
     public V8R3(@NotNull final DivineDrop plugin,
                 @NotNull final ConfigData data,
-                @NotNull final ItemsHandler logic) {
+                @NotNull final ItemHandler itemHandler) {
         this.plugin = plugin;
         this.data = data;
-        this.logic = logic;
+        this.itemHandler = itemHandler;
     }
 
     public static String langFormat(@NotNull final String locale) {
@@ -73,8 +73,8 @@ public class V8R3 implements Version {
 
     @NotNull
     @Override
-    public Listener getListener() {
-        return new V8Listener(plugin, data, logic);
+    public Listener createListener() {
+        return new V8Listener(itemHandler);
     }
 
     @Override

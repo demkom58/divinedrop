@@ -2,6 +2,8 @@ package com.demkom58.divinedrop.version;
 
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.config.Config;
+import com.demkom58.divinedrop.config.ConfigData;
+import com.demkom58.divinedrop.drop.ItemHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -22,10 +24,14 @@ public class VersionManager {
      * It is recommend to be called in {@link Plugin#onEnable()} method
      * for in order to avoid exceptions and mistakes.
      *
+     * @param data - uses for working with configuration options.
+     * @param manager - {@link ItemHandler itemManager} uses for handling items by version dependent code.
+     *
      * @throws UnsupportedOperationException
      *                  throws in situation when version is not supported or when it can't parse version.
      */
-    public void setup() throws UnsupportedOperationException {
+    public void setup(@NotNull final ConfigData data, @NotNull final ItemHandler manager)
+            throws UnsupportedOperationException {
         final String nmsVersion = extractNmsVersion();
         supportedVersion = SupportedVersion.getVersion(nmsVersion);
 
@@ -33,13 +39,13 @@ public class VersionManager {
             throw new UnsupportedOperationException("Current version: " + nmsVersion + ". This version is not supported!");
 
         final Config config = plugin.getConfiguration();
-        this.version = supportedVersion.getFactory().create(plugin, config.getConfigData(), plugin.getLogic());
+        this.version = supportedVersion.getFactory().create(plugin, data, manager);
     }
 
     /**
      * Getter of {@link Version version} version field.
      *
-     * Shouldn't be called before {@link VersionManager#setup()}
+     * Shouldn't be called before {@link VersionManager#setup(ConfigData, ItemHandler)}
      * because it sets version.
      *
      * @return detected version that give access to version depended methods.
