@@ -61,27 +61,37 @@ public class LangManager {
         try {
             downloader.downloadResource(version, lang, langFile);
         } catch (UnknownHostException e) {
-            final String fullPath = langFile.getParentFile().getPath();
-            final int pluginsIdx = fullPath.indexOf("plugins");
-
-            final String relativePath = pluginsIdx == -1 ? fullPath : fullPath.substring(pluginsIdx);
-            final String langFileName = langFile.getName();
-
-            logger.severe("Looks like your server hasn't connection to Internet.");
-            logger.severe("Server should have connection to download language...");
-            logger.severe("Your can manually download and put it to \"" + relativePath + "\" with name \"" + langFileName + "\"");
-            final String link = CacheStorage.load().getLink(version, lang);
-
-            if (link == null) {
-                logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + version.id() + "\" from cache, sorry.");
-                logger.severe("Try download language files from place where Internet connection is present...");
-            } else logger.severe("You can download it from here: " + link);
+            printManualDownload(version, lang, langFile);
+            Bukkit.getPluginManager().disablePlugin(plugin);
         } catch (SocketTimeoutException e) {
-            if (attempt >= maxAttempts)
-                throw e;
+            if (attempt >= maxAttempts) {
+                printManualDownload(version, lang, langFile);
+                Bukkit.getPluginManager().disablePlugin(plugin);
+                return;
+            }
 
             this.downloadLang(version, lang, langFile, ++attempt, maxAttempts);
         }
+    }
+
+    private void printManualDownload(@NotNull final Version version,
+                                     @NotNull final String lang,
+                                     @NotNull final File langFile) {
+        final String fullPath = langFile.getParentFile().getPath();
+        final int pluginsIdx = fullPath.indexOf("plugins");
+
+        final String relativePath = pluginsIdx == -1 ? fullPath : fullPath.substring(pluginsIdx);
+        final String langFileName = langFile.getName();
+
+        logger.severe("Looks like your server hasn't connection to Internet.");
+        logger.severe("Server should have connection to download language...");
+        logger.severe("Your can manually download and put it to \"" + relativePath + "\" with name \"" + langFileName + "\"");
+        final String link = CacheStorage.load().getLink(version, lang);
+
+        if (link == null) {
+            logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + version.id() + "\" from cache, sorry.");
+            logger.severe("Try download language files from place where Internet connection is present...");
+        } else logger.severe("You can download it from here: " + link);
     }
 
 }
