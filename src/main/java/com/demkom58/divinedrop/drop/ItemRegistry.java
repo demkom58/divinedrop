@@ -1,5 +1,6 @@
 package com.demkom58.divinedrop.drop;
 
+import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.google.common.collect.MapMaker;
 import lombok.Getter;
@@ -19,11 +20,14 @@ public class ItemRegistry {
     @Getter private final Set<Item> timedItems = Collections.newSetFromMap(new MapMaker().weakKeys().makeMap());
     @Getter private final Set<ItemStack> deathDropItems = Collections.newSetFromMap(new MapMaker().weakKeys().makeMap());
 
+    private final DivineDrop plugin;
     private final ConfigData data;
     private final ItemHandler itemHandler;
 
-    public ItemRegistry(@NotNull final ConfigData data,
+    public ItemRegistry(@NotNull final DivineDrop plugin,
+                        @NotNull final ConfigData data,
                         @NotNull final ItemHandler itemHandler) {
+        this.plugin = plugin;
         this.data = data;
         this.itemHandler = itemHandler;
     }
@@ -134,14 +138,16 @@ public class ItemRegistry {
     }
 
     private void handleNewTimedItem(@NotNull final Item item) {
-        item.setCustomNameVisible(true);
+        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            item.setCustomNameVisible(true);
 
-        if (!data.isCleanerEnabled()) {
-            item.setCustomName(itemHandler.getFormattedName(item));
-            return;
-        }
+            if (!data.isCleanerEnabled()) {
+                item.setCustomName(itemHandler.getFormattedName(item));
+                return;
+            }
 
-        timedItems.add(item);
+            timedItems.add(item);
+        }, 0);
     }
 
 }

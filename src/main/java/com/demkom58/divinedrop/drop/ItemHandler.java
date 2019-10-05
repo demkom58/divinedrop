@@ -37,7 +37,7 @@ public class ItemHandler {
         this.versionManager = versionManager;
         this.data = data;
 
-        this.registry = new ItemRegistry(data, this);
+        this.registry = new ItemRegistry(plugin, data, this);
 
         final Set<Item> timedItems = registry.getTimedItems();
         this.itemTickTimer = new DivineTimer(plugin, () -> timedItems.forEach(this::itemTick));
