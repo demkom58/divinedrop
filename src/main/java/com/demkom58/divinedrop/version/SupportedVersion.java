@@ -12,6 +12,7 @@ import com.demkom58.divinedrop.version.V12R1.V12R1;
 import com.demkom58.divinedrop.version.V13R1.V13R1;
 import com.demkom58.divinedrop.version.V13R2.V13R2;
 import com.demkom58.divinedrop.version.V14R1.V14R1;
+import com.demkom58.divinedrop.version.V15R1.V15R1;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +29,8 @@ public enum SupportedVersion {
     V12R1(V12R1.class, "v1_12_R1", V12R1::new),
     V13R1(V13R1.class, "v1_13_R1", V13R1::new),
     V13R2(V13R2.class, "v1_13_R2", V13R2::new),
-    V14R1(V14R1.class, "v1_14_R1", V14R1::new);
+    V14R1(V14R1.class, "v1_14_R1", V14R1::new),
+    V15R1(V15R1.class, "v1_15_R1", V15R1::new);
 
     private static final Map<String, SupportedVersion> NMS_VERSION_MAP = new HashMap<String, SupportedVersion>(){{
         for (SupportedVersion version : SupportedVersion.values())
