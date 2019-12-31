@@ -18,20 +18,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.logging.Logger;
 
+@Getter
 public final class DivineDrop extends JavaPlugin {
 
-    @Getter
     private final Metrics metrics = new Metrics(this);
-    @Getter
     private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
 
-    @Getter
     private final VersionManager versionManager = new VersionManager(this);
-    @Getter
     private final Config configuration = new Config("config", this, versionManager, 1);
-    @Getter
     private final LangManager langManager = new LangManager(this, configuration.getConfigData());
-    @Getter
     private final ItemHandler itemHandler = new ItemHandler(this, versionManager, configuration.getConfigData());
 
     @Override

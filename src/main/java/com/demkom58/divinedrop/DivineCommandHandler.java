@@ -41,48 +41,61 @@ public class DivineCommandHandler implements CommandExecutor {
 
         final String subCommand = args[0];
         if (subCommand.equalsIgnoreCase("reload")) {
-            if (!sender.hasPermission("divinedrop.reload")) {
-                sendMessage(sender, data.getNoPermissionMessage());
-                return false;
-            }
-
-            plugin.reloadPlugin(versionManager.getVersion());
-            sendMessage(sender, data.getReloadedMessage());
+            reload(sender);
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("getName")) {
-            if (sender.hasPermission("divinedrop.getname")) {
-                final Player player = (Player) sender;
-                final ItemStack handStack = versionManager.isOlder(SupportedVersion.V9R1)
-                        ? player.getItemInHand()
-                        : player.getInventory().getItemInMainHand();
-                final String name;
-
-                if (handStack.getType() != Material.AIR) {
-                    final ItemMeta itemMeta = handStack.getItemMeta();
-                    if (itemMeta != null && itemMeta.hasDisplayName())
-                        name = itemMeta.getDisplayName().replace('§', '&');
-                    else
-                        name = "§7<Empty>";
-                } else name = "AIR";
-
-                sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name));
-                return true;
-            }
+            getName(sender);
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("size")) {
-            if (sender.hasPermission("divinedrop.developer")) {
-                Set<Item> processingItems = plugin.getItemHandler().getRegistry().getTimedItems();
-                sendMessage(sender, "Items to remove: " + processingItems.size());
-            }
+            size(sender);
             return true;
         }
 
         sendMessage(sender, data.getUnknownCmdMessage());
         return true;
+    }
+
+    private void reload(@NotNull final CommandSender sender) {
+        if (!sender.hasPermission("divinedrop.reload")) {
+            sendMessage(sender, data.getNoPermissionMessage());
+            return;
+        }
+
+        plugin.reloadPlugin(versionManager.getVersion());
+        sendMessage(sender, data.getReloadedMessage());
+    }
+
+    private void getName(@NotNull final CommandSender sender) {
+        if (!sender.hasPermission("divinedrop.getname"))
+            return;
+
+        final Player player = (Player) sender;
+        final ItemStack handStack = versionManager.isOlder(SupportedVersion.V9R1)
+                ? player.getItemInHand()
+                : player.getInventory().getItemInMainHand();
+        final String name;
+
+        if (handStack.getType() != Material.AIR) {
+            final ItemMeta itemMeta = handStack.getItemMeta();
+            if (itemMeta != null && itemMeta.hasDisplayName())
+                name = itemMeta.getDisplayName().replace('§', '&');
+            else
+                name = "§7<Empty>";
+        } else name = "AIR";
+
+        sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name));
+    }
+
+    private void size(@NotNull final CommandSender sender) {
+        if (!sender.hasPermission("divinedrop.developer"))
+            return;
+
+        Set<Item> processingItems = plugin.getItemHandler().getRegistry().getTimedItems();
+        sendMessage(sender, "Items to remove: " + processingItems.size());
     }
 
     private void sendMessage(@NotNull final CommandSender player, @NotNull final String message) {
