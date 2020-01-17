@@ -49,14 +49,23 @@ public class ItemRegistry {
      * @param item - item that was loaded.
      */
     public void loadedItem(@NotNull final Item item) {
-        item.setCustomNameVisible(true);
-
-        if (!data.isCleanerEnabled() || !data.isAddItemsOnChunkLoad()) {
-            item.setCustomName(itemHandler.getFormattedName(item));
+        if (valid(item)) {
             return;
         }
 
-        timedItems.add(item);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
+            if (valid(item)) {
+                return;
+            }
+            item.setCustomNameVisible(true);
+
+            if (!data.isCleanerEnabled() || !data.isAddItemsOnChunkLoad()) {
+                item.setCustomName(itemHandler.getFormattedName(item));
+                return;
+            }
+
+            timedItems.add(item);
+        }, 1L);
     }
 
     /**
@@ -68,6 +77,9 @@ public class ItemRegistry {
      */
     @SuppressWarnings("Duplicates")
     public boolean deSpawnedItem(@NotNull final Item item) {
+        if (valid(item)) {
+            return false;
+        }
         if (!data.isCleanerEnabled())
             return true;
 
@@ -88,6 +100,10 @@ public class ItemRegistry {
      */
     @SuppressWarnings("Duplicates")
     public boolean itemPickup(@NotNull final Entity entity, @NotNull final Item item) {
+        if (valid(item)) {
+            return false;
+        }
+
         if (!(entity instanceof Player))
             return true;
 
@@ -109,10 +125,9 @@ public class ItemRegistry {
     /**
      * Class from Player death event.
      *
-     * @param player - died player.
      * @param item - List of {@link ItemStack itemStack} that should be dropped from player.
      */
-    public void deathItemsDrop(@NotNull final Player player, @NotNull final List<ItemStack> item) {
+    public void deathItemsDrop(@NotNull final List<ItemStack> item) {
         if (!data.isCleanerEnabled())
             return;
 
@@ -129,16 +144,32 @@ public class ItemRegistry {
      * @return true if allow merge.
      */
     public boolean mergeDrop(@NotNull final Item with, @NotNull final Item removed) {
-        if (!data.isCleanerEnabled())
-            handleNewTimedItem(with);
-        else
-            timedItems.remove(removed);
+        if (valid(with) || valid(removed)) {
+            return true;
+        }
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
+            if (valid(with) || valid(removed)) {
+                return;
+            }
+            if (!data.isCleanerEnabled())
+                handleNewTimedItem(with);
+            else
+                timedItems.remove(removed);
+        }, 1L);
 
         return true;
     }
 
     private void handleNewTimedItem(@NotNull final Item item) {
-        Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+        if (valid(item)) {
+            return;
+        }
+        Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> {
+            if (valid(item)) {
+                return;
+            }
+
             item.setCustomNameVisible(true);
 
             if (!data.isCleanerEnabled()) {
@@ -147,7 +178,11 @@ public class ItemRegistry {
             }
 
             timedItems.add(item);
-        }, 0);
+        }, 1L);
+    }
+
+    public boolean valid(@NotNull Item item) {
+        return item.getPickupDelay() == 32767;
     }
 
 }

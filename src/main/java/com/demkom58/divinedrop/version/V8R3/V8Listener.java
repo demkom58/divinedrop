@@ -45,7 +45,7 @@ public final class V8Listener implements Listener {
 
     @EventHandler
     public void onDeathDrop(PlayerDeathEvent event) {
-        itemHandler.getRegistry().deathItemsDrop(event.getEntity(), event.getDrops());
+        itemHandler.getRegistry().deathItemsDrop(event.getDrops());
     }
 
     @EventHandler

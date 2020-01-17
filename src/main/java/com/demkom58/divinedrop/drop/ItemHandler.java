@@ -40,7 +40,7 @@ public class ItemHandler {
         this.registry = new ItemRegistry(plugin, data, this);
 
         final Set<Item> timedItems = registry.getTimedItems();
-        this.itemTickTimer = new DivineTimer(plugin, () -> timedItems.forEach(this::itemTick));
+        this.itemTickTimer = new DivineTimer(registry, plugin, () -> timedItems.forEach(this::itemTick));
     }
 
     public void reload() {
