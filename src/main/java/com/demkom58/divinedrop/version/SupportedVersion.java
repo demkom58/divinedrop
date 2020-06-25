@@ -3,6 +3,7 @@ package com.demkom58.divinedrop.version;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.drop.ItemHandler;
+import com.demkom58.divinedrop.version.V16R1.V16R1;
 import com.demkom58.divinedrop.version.V8R3.V8R3;
 import com.demkom58.divinedrop.version.V9R1.V9R1;
 import com.demkom58.divinedrop.version.V9R2.V9R2;
@@ -30,7 +31,8 @@ public enum SupportedVersion {
     V13R1(V13R1.class, "v1_13_R1", V13R1::new),
     V13R2(V13R2.class, "v1_13_R2", V13R2::new),
     V14R1(V14R1.class, "v1_14_R1", V14R1::new),
-    V15R1(V15R1.class, "v1_15_R1", V15R1::new);
+    V15R1(V15R1.class, "v1_15_R1", V15R1::new),
+    V16R1(V16R1.class, "v1_16_R1", V16R1::new);
 
     private static final Map<String, SupportedVersion> NMS_VERSION_MAP = new HashMap<String, SupportedVersion>(){{
         for (SupportedVersion version : SupportedVersion.values())
