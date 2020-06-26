@@ -1,7 +1,7 @@
 package com.demkom58.divinedrop.version.V9R2;
 
-import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.DivineDrop;
+import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.version.V8R3.V8LangParser;

@@ -1,7 +1,6 @@
 package com.demkom58.divinedrop.version;
 
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.config.Config;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.drop.ItemHandler;
 import org.bukkit.Bukkit;
