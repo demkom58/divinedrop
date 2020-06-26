@@ -46,9 +46,6 @@ public final class DivineDrop extends JavaPlugin {
         }
 
         final Version version = versionManager.getVersion();
-
-        reloadPlugin(version);
-
         final PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(version.createListener(), this);
         pluginManager.registerEvents(new CommonListener(this), this);
@@ -64,6 +61,8 @@ public final class DivineDrop extends JavaPlugin {
                 logger.info("New version '" + latestVersion + "' detected.");
                 logger.info("Please update it on: " + webSpigot.getResourceLink());
             }, false);
+
+        reloadPlugin(version);
     }
 
     @Override
@@ -72,14 +71,20 @@ public final class DivineDrop extends JavaPlugin {
         itemHandler.disable();
     }
 
-    public void reloadPlugin(@NotNull final Version version) {
-        loadConfig(version);
-        itemHandler.reload();
+    public boolean reloadPlugin(@NotNull final Version version) {
+        final boolean loadedConfig = loadConfig(version);
+
+        if (loadedConfig)
+            itemHandler.reload();
+
+        return loadedConfig;
     }
 
-    public void loadConfig(@NotNull final Version version) {
-        configuration.load();
-        langManager.manageLang(configuration.getConfigData().getLang(), version);
+    public boolean loadConfig(@NotNull final Version version) {
+        if (configuration.load())
+            return langManager.manageLang(configuration.getConfigData().getLang(), version);
+
+        return false;
     }
 
 }

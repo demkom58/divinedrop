@@ -18,7 +18,11 @@ public class Config extends CustomConfig {
         this.latestVersion = latestVersion;
     }
 
-    public void load() {
+    /**
+     * Loads configuration and converts it if need.
+     * @return true if successfully loaded.
+     */
+    public boolean load() {
         super.saveDefault();
         super.reloadConfig();
         final int version = getConfig().getInt("config-version", 0);
@@ -31,10 +35,11 @@ public class Config extends CustomConfig {
 
             configUpdater.getProcessor().accept(this);
             this.load();
-            return;
+            return false;
         }
 
         configData.updateData(getConfig());
+        return true;
     }
 
     public ConfigData getConfigData() {
