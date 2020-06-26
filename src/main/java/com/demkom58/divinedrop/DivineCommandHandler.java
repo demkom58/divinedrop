@@ -65,8 +65,11 @@ public class DivineCommandHandler implements CommandExecutor {
             return;
         }
 
-        plugin.reloadPlugin(versionManager.getVersion());
-        sendMessage(sender, data.getReloadedMessage());
+        if (plugin.reloadPlugin(versionManager.getVersion())) {
+            sendMessage(sender, data.getReloadedMessage());
+        } else {
+            sendMessage(sender, "An error occurred while reloading configurations...");
+        }
     }
 
     private void getName(@NotNull final CommandSender sender) {

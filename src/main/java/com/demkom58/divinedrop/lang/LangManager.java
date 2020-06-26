@@ -30,20 +30,24 @@ public class LangManager {
         this.logger = plugin.getLogger();
     }
 
-    public void manageLang(String lang, Version version) {
+    public boolean manageLang(String lang, Version version) {
         final File langFile = new File(data.getLangPath());
         final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
 
         if (!langFolder.exists() && !langFolder.mkdir()) {
             logger.severe("Can't create languages folder.");
             Bukkit.getPluginManager().disablePlugin(plugin);
-            return;
+            return false;
         }
 
         if (!langFile.exists()) {
             langFile.getParentFile().mkdirs();
             try {
-                this.downloadLang(version, lang, langFile, 0, 5);
+                if (!this.downloadLang(version, lang, langFile, 0, 5)) {
+                    printManualDownload(version, lang, langFile);
+                    Bukkit.getPluginManager().disablePlugin(plugin);
+                    return false;
+                }
             } catch (IOException e) {
                 logger.severe("Can't download specified lang");
                 e.printStackTrace();
@@ -51,26 +55,34 @@ public class LangManager {
         }
 
         language.updateLangMap(version, data.getLangPath());
-
+        return true;
     }
 
-    private void downloadLang(@NotNull final Version version,
-                              @NotNull final String lang,
-                              @NotNull final File langFile,
-                              int attempt, int maxAttempts) throws IOException {
+    /**
+     * Downloads language file for exact version.
+     *
+     * @param version     language version
+     * @param lang        language name
+     * @param langFile    file to save
+     * @param attempt     download attempt
+     * @param maxAttempts max count of attempts to download
+     * @return true if successfully
+     * @throws IOException on not handled errors
+     */
+    private boolean downloadLang(@NotNull final Version version,
+                                 @NotNull final String lang,
+                                 @NotNull final File langFile,
+                                 int attempt, int maxAttempts) throws IOException {
         try {
             downloader.downloadResource(version, lang, langFile);
+            return true;
         } catch (UnknownHostException e) {
-            printManualDownload(version, lang, langFile);
-            Bukkit.getPluginManager().disablePlugin(plugin);
+            return false;
         } catch (SocketTimeoutException e) {
-            if (attempt >= maxAttempts) {
-                printManualDownload(version, lang, langFile);
-                Bukkit.getPluginManager().disablePlugin(plugin);
-                return;
-            }
+            if (attempt >= maxAttempts)
+                return false;
 
-            this.downloadLang(version, lang, langFile, ++attempt, maxAttempts);
+            return this.downloadLang(version, lang, langFile, ++attempt, maxAttempts);
         }
     }
 
