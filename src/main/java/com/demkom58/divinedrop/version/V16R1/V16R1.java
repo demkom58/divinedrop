@@ -8,8 +8,10 @@ import com.demkom58.divinedrop.version.V11R1.V11R1;
 import com.demkom58.divinedrop.version.V12R1.V12Listener;
 import com.demkom58.divinedrop.version.V13R1.V13LangParser;
 import com.demkom58.divinedrop.version.Version;
+import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftMetaArmorStand;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,9 +83,9 @@ public class V16R1 implements Version {
     @NotNull
     private String getName(ItemStack bItemStack) {
         if (bItemStack.hasItemMeta()) {
-            final String displayName = bItemStack.getItemMeta().getDisplayName();
-            if (displayName != null)
-                return displayName;
+            final ItemMeta itemMeta = bItemStack.getItemMeta();
+            if (itemMeta.hasDisplayName())
+                return itemMeta.getDisplayName();
         }
 
         return getLangNameNMS(org.bukkit.craftbukkit.v1_16_R1.inventory.CraftItemStack.asNMSCopy(bItemStack));
