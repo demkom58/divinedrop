@@ -10,6 +10,7 @@ import com.demkom58.divinedrop.version.V13R1.V13LangParser;
 import com.demkom58.divinedrop.version.Version;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,9 +80,9 @@ public class V13R2 implements Version {
     @NotNull
     private String getName(ItemStack bItemStack) {
         if (bItemStack.hasItemMeta()) {
-            final String displayName = bItemStack.getItemMeta().getDisplayName();
-            if (displayName != null)
-                return displayName;
+            final ItemMeta itemMeta = bItemStack.getItemMeta();
+            if (itemMeta.hasDisplayName())
+                return itemMeta.getDisplayName();
         }
 
         return getLangNameNMS(org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack.asNMSCopy(bItemStack));
