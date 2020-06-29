@@ -4,7 +4,7 @@ import com.demkom58.divinedrop.config.Config;
 import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.LangManager;
-import com.demkom58.divinedrop.util.Metrics;
+import com.demkom58.divinedrop.metric.MetricService;
 import com.demkom58.divinedrop.util.WebSpigot;
 import com.demkom58.divinedrop.version.Version;
 import com.demkom58.divinedrop.version.VersionManager;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 @Getter
 public final class DivineDrop extends JavaPlugin {
 
-    private final Metrics metrics = new Metrics(this);
+    private final MetricService metricService = new MetricService(this);
     private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
 
     private final VersionManager versionManager = new VersionManager(this);
@@ -32,7 +32,7 @@ public final class DivineDrop extends JavaPlugin {
     @Override
     public void onEnable() {
         try {
-            metrics.setup();
+            metricService.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
