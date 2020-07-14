@@ -1,7 +1,6 @@
 package com.demkom58.divinedrop.config;
 
 public class StaticData {
-    public static final String PREFIX = "§5§lDivineDrop §7> §f";
     public static final String TIMER_PLACEHOLDER = "%countdown%";
     public static final String SIZE_PLACEHOLDER = "%size%";
     public static final String NAME_PLACEHOLDER = "%name%";
