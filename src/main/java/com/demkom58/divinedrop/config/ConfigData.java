@@ -28,6 +28,7 @@ public final class ConfigData {
     private String lang;
 
     // Message settings
+    private String prefixMessage;
     private String itemDisplayNameMessage;
     private String noPermissionMessage;
     private String unknownCmdMessage;
@@ -74,6 +75,7 @@ public final class ConfigData {
         lang = conf.getString("lang", "en_CA");
 
         final ConfigurationSection msg = getConfigurationSection(conf, "messages");
+        prefixMessage = color(msg.getString("prefix", "&5&lDivineDrop &7> &f"));
         itemDisplayNameMessage = color(msg.getString("display-name", "Display Name&7: &f%name%"));
         noPermissionMessage = color(msg.getString("no-permission", "&cYou do not have permission to run this command."));
         unknownCmdMessage = color(msg.getString("unknown-cmd", "&cYou entered an unknown command."));

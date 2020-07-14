@@ -102,7 +102,7 @@ public class DivineCommandHandler implements CommandExecutor {
     }
 
     private void sendMessage(@NotNull final CommandSender player, @NotNull final String message) {
-        player.sendMessage(StaticData.PREFIX + message);
+        player.sendMessage(data.getPrefixMessage() + message);
     }
 
 }

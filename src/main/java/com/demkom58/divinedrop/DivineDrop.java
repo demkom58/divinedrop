@@ -25,7 +25,7 @@ public final class DivineDrop extends JavaPlugin {
     private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
 
     private final VersionManager versionManager = new VersionManager(this);
-    private final Config configuration = new Config("config", this, versionManager, 1);
+    private final Config configuration = new Config("config", this, versionManager, 2);
     private final LangManager langManager = new LangManager(this, configuration.getConfigData());
     private final ItemHandler itemHandler = new ItemHandler(this, versionManager, configuration.getConfigData());
 
