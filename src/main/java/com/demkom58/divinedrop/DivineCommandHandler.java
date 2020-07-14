@@ -73,6 +73,11 @@ public class DivineCommandHandler implements CommandExecutor {
     }
 
     private void getName(@NotNull final CommandSender sender) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("This command can be used only from game.");
+            return;
+        }
+
         if (!sender.hasPermission("divinedrop.getname"))
             return;
 
