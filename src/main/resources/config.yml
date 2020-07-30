@@ -7,7 +7,7 @@
 #      \|_______|\___/ /             \|_______|\|_______|\|__|     \|__|\|__| \|__|\|_______|\|__|     \|__|\_________\|_______|
 #               \|___|/                                                                                    \|_________|
 # Don't change this
-config-version: 1
+config-version: 2
 # Enable update notifications in chat for admins and console.
 check-updates: true
 # Uses when cleaner disabled or if item hasn't timer.
@@ -21,6 +21,7 @@ pickup-items-on-sneak: false
 lang: "en_CA"
 
 messages:
+  prefix: '&5&lDivineDrop &7> &f'
   display-name: "Display Name&7: &f%name%"
   no-permission: "&cYou do not have permission to run this command."
   unknown-cmd: "&cYou entered an unknown command."
