@@ -1,7 +1,7 @@
 package com.demkom58.divinedrop.lang;
 
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.caсhe.CacheStorage;
+import com.demkom58.divinedrop.cache.CacheStorage;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.version.Version;
 import org.bukkit.Bukkit;
