@@ -5,22 +5,18 @@ group = pluginGroup
 description = pluginDesc
 version = pluginVersion
 
-bukkit {
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
 
+    compileOnly fileTree(dir: "$rootDir/libraries/", includes: ['*.jar'])
+    compileOnly bukkit()
+
+    compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
+}
+
+bukkit {
     meta {
         authors = ["demkom58", "demkom", "GdemkomG"]
-    }
-    
-    repositories {
-        vault { url "http://nexus.hc.to/content/repositories/pub_releases/" }
-        placeholderapi { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" } 
-    }
-
-    dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.8'
-        annotationProcessor 'org.projectlombok:lombok:1.18.8'
-        
-        compileOnly fileTree(dir: "$rootDir/libraries/", includes: ['*.jar'])
-        compile group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
     }
 }
