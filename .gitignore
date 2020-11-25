@@ -1,5 +1,7 @@
 # User-specific stuff
 .idea/
+libraries/*
+!libraries/*.md
 *.iml
 
 # CMake
@@ -59,7 +61,6 @@ hs_err_pid*
 
 ### Minecraft ###
 local.properties
-libraries/
 /cache.json
 
 ### Gradle ###
