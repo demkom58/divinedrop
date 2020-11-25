@@ -18,7 +18,7 @@ drop like pickup items by shift key.
 ![GIF](https://i.imgur.com/1QuiJsz.gif)
 
 ## Build
-#### Preparing
+### Preparing
 We cannot store the server core dependencies in the repository, 
 downloading them from the public mavens of the repositories is 
 also quite problematic. Therefore, if you want to build the plugin 
@@ -43,6 +43,6 @@ Spigot 1.16.2
 Spigot 1.16.4
 ```
 
-#### Creating jar
+### Creating jar
 To create simple plugin jar open root directory of DivineDrop and enter: `gradlew jar`.
 Gradle will build jar, you can find it in: `build/libs/`.
