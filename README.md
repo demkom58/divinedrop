@@ -43,6 +43,9 @@ Spigot 1.16.2
 Spigot 1.16.4
 ```
 
-### Creating jar
-To create simple plugin jar open root directory of DivineDrop and enter: `gradlew jar`.
-Gradle will build jar, you can find it in: `build/libs/`.
+### Creating JAR
+To create simple plugin jar, open root directory of DivineDrop 
+and enter: `gradlew jar`.
+
+If all will successfully done, you will able to plugin jar
+it in `build/libs/` directory.
