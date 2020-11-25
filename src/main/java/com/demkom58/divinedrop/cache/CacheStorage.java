@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.caсhe;
+package com.demkom58.divinedrop.cache;
 
 import com.demkom58.divinedrop.lang.Downloader;
 import com.demkom58.divinedrop.version.Version;
