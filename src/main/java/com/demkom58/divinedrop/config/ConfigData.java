@@ -101,7 +101,7 @@ public final class ConfigData {
                 final Material material = Material.getMaterial(materialName.toUpperCase());
 
                 if (material == null) {
-                    Bukkit.getConsoleSender().sendMessage("Unknown material: " + materialName);
+                    Bukkit.getConsoleSender().sendMessage("[DivineDrop] Unknown material: " + materialName);
                     continue;
                 }
 
