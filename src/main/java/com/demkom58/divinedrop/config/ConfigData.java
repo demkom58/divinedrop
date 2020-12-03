@@ -98,7 +98,7 @@ public final class ConfigData {
             cleanerCountdowns = new HashMap<>();
             final ConfigurationSection custom = getConfigurationSection(cleaner, "custom-countdowns");
             for (String materialName : custom.getKeys(false)) {
-                final Material material = Material.getMaterial(materialName.toUpperCase());
+                final Material material = Material.matchMaterial(materialName);
 
                 if (material == null) {
                     Bukkit.getConsoleSender().sendMessage("[DivineDrop] Unknown material: " + materialName);
