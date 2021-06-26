@@ -1,23 +1,27 @@
 plugins {
-    id "ru.endlesscode.bukkitgradle" version "0.8.2"
+    id "ru.endlesscode.bukkitgradle" version "0.9.2"
 }
 group = pluginGroup
 description = pluginDesc
 version = pluginVersion
 
 dependencies {
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
 
     compileOnly fileTree(dir: "$rootDir/libraries/", includes: ['*.jar'])
-    compileOnly bukkit()
 
-    compile group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
+}
+
+rootProject.tasks.named("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 bukkit {
+    apiVersion = "1.13"
     meta {
-        authors = ["demkom58", "demkom", "GdemkomG"]
+        authors.set(["demkom58", "demkom", "GdemkomG"]);
     }
 }
 
