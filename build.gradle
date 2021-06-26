@@ -12,7 +12,7 @@ dependencies {
     compileOnly fileTree(dir: "$rootDir/libraries/", includes: ['*.jar'])
     compileOnly bukkit()
 
-    compile group: 'org.jetbrains', name: 'annotations', version: '20.1.0'
+    implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
 }
 
 bukkit {
