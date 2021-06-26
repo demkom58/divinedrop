@@ -15,9 +15,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ItemHandler {
 
@@ -30,6 +32,11 @@ public class ItemHandler {
 
     private final DivineTimer itemTickTimer;
 
+    private List<Item> toRemove = new ArrayList<>();
+    private List<Item> shadow = new ArrayList<>();
+    private final ReentrantLock lockRemove = new ReentrantLock();
+    private final ReentrantLock lockShadowing = new ReentrantLock();
+
     public ItemHandler(@NotNull final DivineDrop plugin,
                        @NotNull final VersionManager versionManager,
                        @NotNull final ConfigData data) {
@@ -40,7 +47,19 @@ public class ItemHandler {
         this.registry = new ItemRegistry(plugin, data, this);
 
         final Set<Item> timedItems = registry.getTimedItems();
-        this.itemTickTimer = new DivineTimer(plugin, () -> timedItems.forEach(this::itemTick));
+        this.itemTickTimer = new DivineTimer(plugin, () -> {
+            timedItems.forEach(this::itemTick);
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                lockRemove.lock();
+                List<Item> items = toRemove;
+                this.toRemove = shadow;
+                this.shadow = items;
+                lockRemove.unlock();
+
+                items.forEach(Item::remove);
+                items.clear();
+            });
+        });
     }
 
     public void reload() {
@@ -116,7 +135,10 @@ public class ItemHandler {
     public void updateTimedItem(@NotNull final Item item,
                                 @NotNull final DataContainer container) {
         if (container.getTimer() <= 0) {
-            item.remove();
+            lockShadowing.lock();
+            toRemove.add(item);
+            lockShadowing.unlock();
+
             registry.getTimedItems().remove(item);
         }
 
