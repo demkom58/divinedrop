@@ -1,4 +1,3 @@
-api-version: 1.13
 commands:
   divinedrop:
     aliases: [ddrop, dd]
