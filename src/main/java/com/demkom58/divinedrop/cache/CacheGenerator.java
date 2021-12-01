@@ -3,12 +3,9 @@ package com.demkom58.divinedrop.cache;
 import com.demkom58.divinedrop.lang.Downloader;
 import com.demkom58.divinedrop.version.SupportedVersion;
 import com.demkom58.divinedrop.version.Version;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -29,8 +26,8 @@ public class CacheGenerator {
         final Map<String, Map<String, String>> versionLangs = new HashMap<>();
 
         for (SupportedVersion supportedVersion : versions) {
-            final Version version = create(supportedVersion.getVersionClass());
-            final String versionId = version.id();
+            final Version.ResourceClient versionClient = supportedVersion.getClient();
+            final String versionId = versionClient.id();
 
             LOGGER.info("Generating cache links for version " + supportedVersion.getNmsName());
 
@@ -48,7 +45,7 @@ public class CacheGenerator {
 
             for (String locale : locales) {
                 try {
-                    final String hash = ai.getLocaleHash(version.getLangPath(locale));
+                    final String hash = ai.getLocaleHash(versionClient.getLangPath(locale));
                     final String langAssetPath = Downloader.ASSETS_URL + createPathFromHash(hash);
 
                     langsMap.put(locale, langAssetPath);
@@ -67,13 +64,6 @@ public class CacheGenerator {
         }
 
         LOGGER.info("All data saved!");
-    }
-
-    private static @NotNull Version create(@NotNull final Class<? extends Version> versionClass)
-            throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        final Constructor<? extends Version> constructor = versionClass.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        return constructor.newInstance();
     }
 
 }

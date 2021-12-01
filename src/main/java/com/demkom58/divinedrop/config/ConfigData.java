@@ -57,7 +57,8 @@ public final class ConfigData {
      * @return path to lang file
      */
     public String getLangPath() {
-        return plugin.getDataFolder().getAbsolutePath() + "/languages/" + versionManager.getVersion().id() + "/" + lang + ".lang";
+        return plugin.getDataFolder().getAbsolutePath() + "/languages/"
+                + versionManager.getVersion().getClient().id() + "/" + lang + ".lang";
     }
 
     /**

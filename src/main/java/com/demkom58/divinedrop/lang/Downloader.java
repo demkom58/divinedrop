@@ -30,10 +30,10 @@ public class Downloader {
         this.langManager = langManager;
     }
 
-    public void downloadResource(@NotNull final Version version,
+    public void downloadResource(@NotNull final Version.ResourceClient versionClient,
                                  @NotNull final String locale,
                                  @NotNull final File destination) throws IOException {
-        final String versionId = version.id();
+        final String versionId = versionClient.id();
 
         final VersionManifest vm = downloadObject(new URL(Downloader.VERSIONS_LIST), VersionManifest.class);
         final ClientVersion client = downloadObject(new URL(vm.getRelease(versionId).getUrl()), ClientVersion.class);
@@ -44,11 +44,11 @@ public class Downloader {
         } catch (IllegalArgumentException e) {
             Bukkit.getLogger().severe(e.getMessage());
             data.setLang("en_CA");
-            langManager.manageLang(data.getLang(), version);
+            langManager.manageLang(data.getLang(), versionClient);
             return;
         }
 
-        final String hash = ai.getLocaleHash(version.getLangPath(locale));
+        final String hash = ai.getLocaleHash(versionClient.getLangPath(locale));
         Bukkit.getServer().getConsoleSender().sendMessage("§eDownloading §6{0}§e file (hash: §6{1}§e)"
                 .replace("{0}", locale).replace("{1}", hash));
 
