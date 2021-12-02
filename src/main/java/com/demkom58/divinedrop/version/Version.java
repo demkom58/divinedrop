@@ -11,16 +11,20 @@ import java.util.Map;
 
 public interface Version {
 
+    @NotNull ResourceClient getClient();
+
     @Nullable String getI18NDisplayName(@Nullable final ItemStack item);
-
-    @NotNull String getLangPath(@NotNull final String locale);
-
-    @NotNull Map<String, String> parseLang(@NotNull InputStream inputStream) throws IOException;
-
-    @NotNull String id();
 
     @NotNull Listener createListener();
 
-    @NotNull String reformatLangCode(@NotNull String localeCode);
+    interface ResourceClient {
+        @NotNull String id();
+
+        @NotNull String getLangPath(@NotNull final String locale);
+
+        @NotNull String reformatLangCode(@NotNull final String localeCode);
+
+        @NotNull Map<String, String> parseLang(@NotNull final InputStream inputStream) throws IOException;
+    }
 
 }

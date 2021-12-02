@@ -82,7 +82,7 @@ public final class DivineDrop extends JavaPlugin {
 
     public boolean loadConfig(@NotNull final Version version) {
         if (configuration.load())
-            return langManager.manageLang(configuration.getConfigData().getLang(), version);
+            return langManager.manageLang(configuration.getConfigData().getLang(), version.getClient());
 
         return false;
     }

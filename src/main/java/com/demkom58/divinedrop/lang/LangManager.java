@@ -30,7 +30,7 @@ public class LangManager {
         this.logger = plugin.getLogger();
     }
 
-    public boolean manageLang(String lang, Version version) {
+    public boolean manageLang(String lang, Version.ResourceClient versionClient) {
         final File langFile = new File(data.getLangPath());
         final File langFolder = new File(plugin.getDataFolder().getAbsolutePath() + "/languages/");
 
@@ -43,8 +43,8 @@ public class LangManager {
         if (!langFile.exists()) {
             langFile.getParentFile().mkdirs();
             try {
-                if (!this.downloadLang(version, lang, langFile, 0, 5)) {
-                    printManualDownload(version, lang, langFile);
+                if (!this.downloadLang(versionClient, lang, langFile, 0, 5)) {
+                    printManualDownload(versionClient, lang, langFile);
                     Bukkit.getPluginManager().disablePlugin(plugin);
                     return false;
                 }
@@ -54,27 +54,27 @@ public class LangManager {
             }
         }
 
-        language.updateLangMap(version, data.getLangPath());
+        language.updateLangMap(versionClient, data.getLangPath());
         return true;
     }
 
     /**
      * Downloads language file for exact version.
      *
-     * @param version     language version
-     * @param lang        language name
-     * @param langFile    file to save
-     * @param attempt     download attempt
-     * @param maxAttempts max count of attempts to download
+     * @param versionClient language version
+     * @param lang          language name
+     * @param langFile      file to save
+     * @param attempt       download attempt
+     * @param maxAttempts   max count of attempts to download
      * @return true if successfully
      * @throws IOException on not handled errors
      */
-    private boolean downloadLang(@NotNull final Version version,
+    private boolean downloadLang(@NotNull final Version.ResourceClient versionClient,
                                  @NotNull final String lang,
                                  @NotNull final File langFile,
                                  int attempt, int maxAttempts) throws IOException {
         try {
-            downloader.downloadResource(version, lang, langFile);
+            downloader.downloadResource(versionClient, lang, langFile);
             return true;
         } catch (UnknownHostException e) {
             return false;
@@ -82,11 +82,11 @@ public class LangManager {
             if (attempt >= maxAttempts)
                 return false;
 
-            return this.downloadLang(version, lang, langFile, ++attempt, maxAttempts);
+            return this.downloadLang(versionClient, lang, langFile, ++attempt, maxAttempts);
         }
     }
 
-    private void printManualDownload(@NotNull final Version version,
+    private void printManualDownload(@NotNull final Version.ResourceClient client,
                                      @NotNull final String lang,
                                      @NotNull final File langFile) {
         final String fullPath = langFile.getParentFile().getPath();
@@ -98,10 +98,10 @@ public class LangManager {
         logger.severe("Looks like your server hasn't connection to Internet.");
         logger.severe("Server should have connection to download language...");
         logger.severe("Your can manually download and put it to \"" + relativePath + "\" with name \"" + langFileName + "\"");
-        final String link = CacheStorage.load().getLink(version, lang);
+        final String link = CacheStorage.load().getLink(client, lang);
 
         if (link == null) {
-            logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + version.id() + "\" from cache, sorry.");
+            logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + client.id() + "\" from cache, sorry.");
             logger.severe("Try download language files from place where Internet connection is present...");
         } else logger.severe("You can download it from here: " + link);
     }
