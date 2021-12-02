@@ -25,7 +25,7 @@ public class Language {
         return instance;
     }
 
-    public void updateLangMap(@NotNull final Version version,
+    public void updateLangMap(@NotNull final Version.ResourceClient resourceClient,
                               @NotNull final String langPath) {
         try {
             final InputStream inputStream = new FileInputStream(langPath);
@@ -34,7 +34,7 @@ public class Language {
             final JsonReader jsonReader = new JsonReader(reader);
 
             langMap.clear();
-            mergeMap(version.parseLang(inputStream), langMap);
+            mergeMap(resourceClient.parseLang(inputStream), langMap);
 
             jsonReader.close();
             reader.close();

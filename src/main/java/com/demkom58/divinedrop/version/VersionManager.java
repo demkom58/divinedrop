@@ -37,7 +37,7 @@ public class VersionManager {
         if (supportedVersion == null)
             throw new UnsupportedOperationException("Current version: " + nmsVersion + ". This version is not supported!");
 
-        this.version = supportedVersion.getFactory().create(plugin, data, manager);
+        this.version = supportedVersion.create(manager);
     }
 
     /**

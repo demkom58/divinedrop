@@ -28,14 +28,14 @@ public class CacheStorage {
         }
     }
 
-    public @Nullable String getLink(@NotNull final Version version,
+    public @Nullable String getLink(@NotNull final Version.ResourceClient client,
                                     @NotNull final String language) {
-        final Map<String, String> languages = versionLangsCache.get(version.id());
+        final Map<String, String> languages = versionLangsCache.get(client.id());
 
         if (languages == null)
             return null;
 
-        return languages.get(version.reformatLangCode(language));
+        return languages.get(client.reformatLangCode(language));
     }
 
 }
