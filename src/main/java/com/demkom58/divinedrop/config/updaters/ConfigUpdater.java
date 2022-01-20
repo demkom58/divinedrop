@@ -10,7 +10,8 @@ import java.util.function.Consumer;
 
 public enum ConfigUpdater {
     VERSION_0(0, new Updater0()),
-    VERSION_1(1, new Updater1());
+    VERSION_1(1, new Updater1()),
+    VERSION_2(2, new Updater2());
 
     private static final Map<Integer, ConfigUpdater> VERSION_TO_UPDATER = new HashMap<>();
 
