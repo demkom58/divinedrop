@@ -7,7 +7,7 @@
 #      \|_______|\___/ /             \|_______|\|_______|\|__|     \|__|\|__| \|__|\|_______|\|__|     \|__|\_________\|_______|
 #               \|___|/                                                                                    \|_________|
 # Don't change this
-config-version: 2
+config-version: 3
 # Enable update notifications in chat for admins and console.
 check-updates: true
 # Uses when cleaner disabled or if item hasn't timer.
@@ -16,6 +16,9 @@ check-updates: true
 format: "&f%name% &7(x%size%)"
 # Pick up items only with the Shift key.
 pickup-items-on-sneak: false
+# Ignore no pickup items, for compatibility with another plugins
+ignore-no-pickup-items: true
+
 # Name of resources. Example: ru_RU, en_CA, uk_UA, de_DE, mt_MT etc.
 # More: https://www.spigotmc.org/resources/divinedrop.51715/
 lang: "en_CA"

@@ -2,6 +2,7 @@ package com.demkom58.divinedrop.drop;
 
 import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.config.ConfigData;
+import com.demkom58.divinedrop.util.ItemUtil;
 import com.google.common.collect.MapMaker;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -49,6 +50,9 @@ public class ItemRegistry {
      * @param item - item that was loaded.
      */
     public void loadedItem(@NotNull final Item item) {
+        if (isIgnoredItem(item))
+            return;
+
         item.setCustomNameVisible(true);
 
         if (!data.isCleanerEnabled() || !data.isAddItemsOnChunkLoad()) {
@@ -139,6 +143,9 @@ public class ItemRegistry {
 
     private void handleNewTimedItem(@NotNull final Item item) {
         Bukkit.getScheduler().runTaskLater(this.plugin, () -> {
+            if (isIgnoredItem(item))
+                return;
+
             item.setCustomNameVisible(true);
 
             if (!data.isCleanerEnabled()) {
@@ -148,6 +155,10 @@ public class ItemRegistry {
 
             timedItems.add(item);
         }, 0);
+    }
+
+    public boolean isIgnoredItem(Item item) {
+        return data.isIgnoreNoPickup() && ItemUtil.hasNoPickupFlag(item);
     }
 
 }

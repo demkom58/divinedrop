@@ -25,6 +25,7 @@ public final class ConfigData {
     private boolean checkUpdates;
     private String format;
     private boolean pickupOnShift;
+    private boolean ignoreNoPickup;
     private String lang;
 
     // Message settings
@@ -73,6 +74,7 @@ public final class ConfigData {
         checkUpdates = conf.getBoolean("check-updates", true);
         format = color(conf.getString("format", "&f%name% &7(x%size%)"));
         pickupOnShift = conf.getBoolean("pickup-items-on-sneak", false);
+        ignoreNoPickup = conf.getBoolean("ignore-no-pickup-items", true);
         lang = conf.getString("lang", "en_CA");
 
         final ConfigurationSection msg = getConfigurationSection(conf, "messages");
