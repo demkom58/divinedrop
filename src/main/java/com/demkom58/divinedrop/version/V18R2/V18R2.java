@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.version.V17R1;
+package com.demkom58.divinedrop.version.V18R2;
 
 import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.Language;
@@ -15,10 +15,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
-public class V17R1 implements Version {
-    public static final String VERSION = "1.17";
-    public static final String PATH = "minecraft/lang/%s.json";
-
+public class V18R2 implements Version {
     private final ResourceClient client;
     private final ItemHandler manager;
 
@@ -30,20 +27,20 @@ public class V17R1 implements Version {
         try {
             asNMSCopyHandle = MethodHandles.lookup()
                     .findStatic(
-                            Class.forName("org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack"),
+                            Class.forName("org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack"),
                             "asNMSCopy",
                             MethodType.methodType(net.minecraft.world.item.ItemStack.class, ItemStack.class)
                     );
             getItemHandle = MethodHandles.lookup()
                     .findVirtual(
                             Class.forName("net.minecraft.world.item.ItemStack"),
-                            "getItem",
+                            "c",
                             MethodType.methodType(net.minecraft.world.item.Item.class)
                     );
             getNameHandle = MethodHandles.lookup()
                     .findVirtual(
                             Class.forName("net.minecraft.world.item.Item"),
-                            "getName",
+                            "a",
                             MethodType.methodType(String.class)
                     );
         } catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException e) {
@@ -51,7 +48,7 @@ public class V17R1 implements Version {
         }
     }
 
-    public V17R1(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) {
+    public V18R2(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) {
         this.client = client;
         this.manager = manager;
     }
