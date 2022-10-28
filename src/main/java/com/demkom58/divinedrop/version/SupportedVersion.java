@@ -83,7 +83,11 @@ public enum SupportedVersion {
 
     @NotNull
     public Version create(@NotNull final ItemHandler manager) {
-        return factory.create(client, manager);
+        try {
+            return factory.create(client, manager);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static @Nullable SupportedVersion getVersion(@NotNull final String nmsName) {
@@ -95,6 +99,6 @@ public enum SupportedVersion {
     }
 
     private interface VersionFactory {
-        @NotNull Version create(@NotNull final Version.ResourceClient client, @NotNull final ItemHandler manager);
+        @NotNull Version create(@NotNull final Version.ResourceClient client, @NotNull final ItemHandler manager) throws Exception;
     }
 }

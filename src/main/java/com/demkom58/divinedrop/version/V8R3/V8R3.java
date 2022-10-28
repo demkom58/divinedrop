@@ -1,7 +1,6 @@
 package com.demkom58.divinedrop.version.V8R3;
 
 import com.demkom58.divinedrop.drop.ItemHandler;
-import lombok.SneakyThrows;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,8 +8,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
 public class V8R3 extends V8NmsHandleNameVersion {
-    @SneakyThrows
-    public V8R3(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) {
+    public V8R3(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) throws Exception {
         super(client, manager,
                 MethodHandles.lookup()
                         .findStatic(
