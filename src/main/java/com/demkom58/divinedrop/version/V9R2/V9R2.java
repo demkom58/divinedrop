@@ -1,57 +1,34 @@
 package com.demkom58.divinedrop.version.V9R2;
 
 import com.demkom58.divinedrop.drop.ItemHandler;
-import com.demkom58.divinedrop.lang.Language;
-import com.demkom58.divinedrop.version.V8R3.V8Listener;
-import com.demkom58.divinedrop.version.Version;
-import org.bukkit.event.Listener;
+import com.demkom58.divinedrop.version.V8R3.V8NmsHandleNameVersion;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class V9R2 implements Version {
-    private final ResourceClient client;
-    private final ItemHandler manager;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
-    public V9R2(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) {
-        this.client = client;
-        this.manager = manager;
+public class V9R2 extends V8NmsHandleNameVersion {
+    public V9R2(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) throws Exception {
+        super(client, manager,
+                MethodHandles.lookup()
+                        .findStatic(
+                                Class.forName("org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack"),
+                                "asNMSCopy",
+                                MethodType.methodType(Class.forName("net.minecraft.server.v1_9_R2.ItemStack"), ItemStack.class)
+                        ),
+                MethodHandles.lookup()
+                        .findVirtual(
+                                Class.forName("net.minecraft.server.v1_9_R2.ItemStack"),
+                                "getItem",
+                                MethodType.methodType(Class.forName("net.minecraft.server.v1_9_R2.Item"))
+                        ),
+                MethodHandles.lookup()
+                        .findVirtual(
+                                Class.forName("net.minecraft.server.v1_9_R2.Item"),
+                                "f_",
+                                MethodType.methodType(String.class, Class.forName("net.minecraft.server.v1_9_R2.ItemStack.class"))
+                        )
+        );
     }
-
-    @NotNull
-    @Override
-    public Version.ResourceClient getClient() {
-        return client;
-    }
-
-    @Override
-    public String getI18NDisplayName(@Nullable ItemStack item) {
-        if (item == null)
-            return null;
-
-        return getName(item);
-    }
-
-    @NotNull
-    @Override
-    public Listener createListener() {
-        return new V8Listener(manager);
-    }
-
-    private String getName(ItemStack bItemStack) {
-        net.minecraft.server.v1_9_R2.ItemStack itemStack = org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack.asNMSCopy(bItemStack);
-        String s = getLangNameNMS(itemStack);
-        if (itemStack.getTag() != null && itemStack.getTag().hasKeyOfType("display", 10)) {
-            net.minecraft.server.v1_9_R2.NBTTagCompound nbtTagCompound = itemStack.getTag().getCompound("display");
-
-            if (nbtTagCompound.hasKeyOfType("Name", 8))
-                s = nbtTagCompound.getString("Name");
-        }
-        return s;
-    }
-
-    private String getLangNameNMS(net.minecraft.server.v1_9_R2.ItemStack itemStack) {
-        return Language.getInstance().getLocName(itemStack.getItem().f_(itemStack) + ".name").trim();
-    }
-
 }

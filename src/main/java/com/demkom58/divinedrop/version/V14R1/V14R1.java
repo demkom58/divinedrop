@@ -1,59 +1,34 @@
 package com.demkom58.divinedrop.version.V14R1;
 
 import com.demkom58.divinedrop.drop.ItemHandler;
-import com.demkom58.divinedrop.lang.Language;
-import com.demkom58.divinedrop.version.V12R1.V12Listener;
-import com.demkom58.divinedrop.version.Version;
-import org.bukkit.event.Listener;
+import com.demkom58.divinedrop.version.V13R1.V13NmsHandleNameVersion;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class V14R1 implements Version {
-    private final ResourceClient client;
-    private final ItemHandler manager;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 
-    public V14R1(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) {
-        this.client = client;
-        this.manager = manager;
+public class V14R1 extends V13NmsHandleNameVersion {
+    public V14R1(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) throws Exception {
+        super(client, manager,
+                MethodHandles.lookup()
+                        .findStatic(
+                                Class.forName("org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack"),
+                                "asNMSCopy",
+                                MethodType.methodType(Class.forName("net.minecraft.server.v1_14_R1.ItemStack"), ItemStack.class)
+                        ),
+                MethodHandles.lookup()
+                        .findVirtual(
+                                Class.forName("net.minecraft.server.v1_14_R1.ItemStack"),
+                                "getItem",
+                                MethodType.methodType(Class.forName("net.minecraft.server.v1_14_R1.Item"))
+                        ),
+                MethodHandles.lookup()
+                        .findVirtual(
+                                Class.forName("net.minecraft.server.v1_14_R1.Item"),
+                                "getName",
+                                MethodType.methodType(String.class)
+                        )
+        );
     }
-
-    @NotNull
-    @Override
-    public Version.ResourceClient getClient() {
-        return client;
-    }
-
-    @Override
-    @Nullable
-    public String getI18NDisplayName(@Nullable ItemStack item) {
-        if (item == null)
-            return null;
-
-        return getName(item);
-    }
-
-    @NotNull
-    @Override
-    public Listener createListener() {
-        return new V12Listener(manager);
-    }
-
-    @NotNull
-    private String getName(ItemStack bItemStack) {
-        if (bItemStack.hasItemMeta()) {
-            final ItemMeta itemMeta = bItemStack.getItemMeta();
-            if (itemMeta.hasDisplayName())
-                return itemMeta.getDisplayName();
-        }
-
-        return getLangNameNMS(org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack.asNMSCopy(bItemStack));
-    }
-
-    @NotNull
-    private String getLangNameNMS(net.minecraft.server.v1_14_R1.ItemStack itemStack) {
-        return Language.getInstance().getLocName(itemStack.getItem().getName()).trim();
-    }
-
 }
