@@ -2,6 +2,7 @@ package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.StaticData;
+import com.demkom58.divinedrop.util.StringUtil;
 import com.demkom58.divinedrop.version.SupportedVersion;
 import com.demkom58.divinedrop.version.VersionManager;
 import org.bukkit.Material;
@@ -82,6 +83,7 @@ public class DivineCommandHandler implements CommandExecutor {
             return;
 
         final Player player = (Player) sender;
+        @SuppressWarnings("deprecation") // Using "player.getItemInHand()" due legacy version support
         final ItemStack handStack = versionManager.isOlder(SupportedVersion.V9R1)
                 ? player.getItemInHand()
                 : player.getInventory().getItemInMainHand();
@@ -90,7 +92,7 @@ public class DivineCommandHandler implements CommandExecutor {
         if (handStack.getType() != Material.AIR) {
             final ItemMeta itemMeta = handStack.getItemMeta();
             if (itemMeta != null && itemMeta.hasDisplayName())
-                name = itemMeta.getDisplayName().replace('§', '&');
+                name = StringUtil.decolorize(itemMeta.getDisplayName());
             else
                 name = "§7<Empty>";
         } else name = "AIR";
