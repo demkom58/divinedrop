@@ -97,13 +97,16 @@ public class LangManager {
 
         logger.severe("Looks like your server hasn't connection to Internet.");
         logger.severe("Server should have connection to download language...");
-        logger.severe("Your can manually download and put it to \"" + relativePath + "\" with name \"" + langFileName + "\"");
         final String link = CacheStorage.load().getLink(client, lang);
 
         if (link == null) {
             logger.severe("Can't retrieve \"" + lang + "\" download link for \"" + client.id() + "\" from cache, sorry.");
-            logger.severe("Try download language files from place where Internet connection is present...");
-        } else logger.severe("You can download it from here: " + link);
+            logger.severe("Try download language files from place where Internet connection is present :/");
+        } else {
+            logger.severe("You can manually download it.");
+            logger.severe("Open " + link);
+            logger.severe("Then press Ctrl+S and save with name \"" + langFileName + "\" to \"" + relativePath + "\"");
+        }
     }
 
 }
