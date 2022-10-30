@@ -1,3 +1,13 @@
+name: DivineDrop
+main: com.demkom58.divinedrop.DivineDrop
+description: Awesome removal of items from the ground
+website: https://www.spigotmc.org/members/98068/
+version: 2.7.7
+authors:
+  - demkom58
+  - GdemkomG
+  - demkom
+api-version: 1.13
 commands:
   divinedrop:
     aliases: [ddrop, dd]
