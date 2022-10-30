@@ -8,6 +8,8 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class VersionManager {
+    public static SupportedVersion detectedVersion = null;
+
     private final DivineDrop plugin;
 
     private Version version;
@@ -38,6 +40,8 @@ public class VersionManager {
             throw new UnsupportedOperationException("Current version: " + nmsVersion + ". This version is not supported!");
 
         this.version = supportedVersion.create(manager);
+
+        VersionManager.detectedVersion = supportedVersion;
     }
 
     /**

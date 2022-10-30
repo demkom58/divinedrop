@@ -2,7 +2,7 @@ package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.StaticData;
-import com.demkom58.divinedrop.util.StringUtil;
+import com.demkom58.divinedrop.util.ColorUtil;
 import com.demkom58.divinedrop.version.SupportedVersion;
 import com.demkom58.divinedrop.version.VersionManager;
 import org.bukkit.Material;
@@ -92,7 +92,7 @@ public class DivineCommandHandler implements CommandExecutor {
         if (handStack.getType() != Material.AIR) {
             final ItemMeta itemMeta = handStack.getItemMeta();
             if (itemMeta != null && itemMeta.hasDisplayName())
-                name = StringUtil.decolorize(itemMeta.getDisplayName());
+                name = ColorUtil.escapeColor(itemMeta.getDisplayName());
             else
                 name = "§7<Empty>";
         } else name = "AIR";

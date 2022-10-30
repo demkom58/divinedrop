@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.demkom58.divinedrop.util.StringUtil.colorize;
+import static com.demkom58.divinedrop.util.ColorUtil.colorize;
 
 @Getter
 @Setter
