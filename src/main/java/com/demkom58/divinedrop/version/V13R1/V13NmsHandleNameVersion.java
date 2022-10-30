@@ -3,20 +3,28 @@ package com.demkom58.divinedrop.version.V13R1;
 import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.Language;
 import com.demkom58.divinedrop.version.V12R1.V12Listener;
-import com.demkom58.divinedrop.version.V8R3.V8NmsHandleNameVersion;
+import com.demkom58.divinedrop.version.V8R3.NmsHandleNameVersion;
 import lombok.SneakyThrows;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodType;
 
-public class V13NmsHandleNameVersion extends V8NmsHandleNameVersion {
+public class V13NmsHandleNameVersion extends NmsHandleNameVersion {
     public V13NmsHandleNameVersion(@NotNull final ResourceClient client,
                                    @NotNull final ItemHandler manager,
                                    @NotNull final MethodHandle asNMSCopyHandle,
                                    @NotNull final MethodHandle getItemHandle,
                                    @NotNull final MethodHandle getNameHandle) {
-        super(client, manager, asNMSCopyHandle, getItemHandle, getNameHandle);
+        super(
+                client,
+                manager,
+                asNMSCopyHandle.asType(MethodType.methodType(Object.class, ItemStack.class)),
+                getItemHandle.asType(MethodType.methodType(Object.class, Object.class)),
+                getNameHandle.asType(MethodType.methodType(String.class, Object.class))
+        );
     }
 
     @NotNull
