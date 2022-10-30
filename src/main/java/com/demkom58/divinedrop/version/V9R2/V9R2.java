@@ -27,7 +27,7 @@ public class V9R2 extends V8NmsHandleNameVersion {
                         .findVirtual(
                                 Class.forName("net.minecraft.server.v1_9_R2.Item"),
                                 "f_",
-                                MethodType.methodType(String.class, Class.forName("net.minecraft.server.v1_9_R2.ItemStack.class"))
+                                MethodType.methodType(String.class, Class.forName("net.minecraft.server.v1_9_R2.ItemStack"))
                         )
         );
     }

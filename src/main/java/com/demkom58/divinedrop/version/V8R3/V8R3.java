@@ -26,7 +26,7 @@ public class V8R3 extends V8NmsHandleNameVersion {
                         .findVirtual(
                                 Class.forName("net.minecraft.server.v1_8_R3.Item"),
                                 "e_",
-                                MethodType.methodType(String.class, Class.forName("net.minecraft.server.v1_8_R3.ItemStack.class"))
+                                MethodType.methodType(String.class, Class.forName("net.minecraft.server.v1_8_R3.ItemStack"))
                         )
         );
     }
