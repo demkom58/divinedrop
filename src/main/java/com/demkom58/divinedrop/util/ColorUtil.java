@@ -5,6 +5,8 @@ import com.demkom58.divinedrop.version.VersionManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.util.Vector;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
@@ -13,25 +15,24 @@ import java.util.regex.Pattern;
 public final class ColorUtil {
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("&#[a-fA-f0-9]{6}");
 
-    private static final Map<ChatColor, Vector> COLOR_MAP = Map.ofEntries(
-            Map.entry(ChatColor.BLACK, new Vector(0, 0, 0)),
-            Map.entry(ChatColor.DARK_BLUE, new Vector(0, 0, 170)),
-            Map.entry(ChatColor.DARK_GREEN, new Vector(0, 170, 0)),
-            Map.entry(ChatColor.DARK_AQUA, new Vector(0, 170, 170)),
-            Map.entry(ChatColor.DARK_RED, new Vector(170, 0, 0)),
-            Map.entry(ChatColor.DARK_PURPLE, new Vector(170, 0, 170)),
-            Map.entry(ChatColor.GOLD, new Vector(255, 170, 0)),
-            Map.entry(ChatColor.GRAY, new Vector(170, 170, 170)),
-            Map.entry(ChatColor.DARK_GRAY, new Vector(85, 85, 85)),
-            Map.entry(ChatColor.BLUE, new Vector(85, 85, 255)),
-            Map.entry(ChatColor.GREEN, new Vector(85, 255, 85)),
-            Map.entry(ChatColor.AQUA, new Vector(85, 255, 255)),
-            Map.entry(ChatColor.RED, new Vector(255, 85, 85)),
-            Map.entry(ChatColor.LIGHT_PURPLE, new Vector(255, 85, 255)),
-            Map.entry(ChatColor.YELLOW, new Vector(255, 255, 85)),
-            Map.entry(ChatColor.WHITE, new Vector(255, 255, 255))
-    );
-
+    private static final Map<ChatColor, Vector> COLOR_MAP = Collections.unmodifiableMap(new HashMap<ChatColor, Vector>() {{
+        put(ChatColor.BLACK, new Vector(0, 0, 0));
+        put(ChatColor.DARK_BLUE, new Vector(0, 0, 170));
+        put(ChatColor.DARK_GREEN, new Vector(0, 170, 0));
+        put(ChatColor.DARK_AQUA, new Vector(0, 170, 170));
+        put(ChatColor.DARK_RED, new Vector(170, 0, 0));
+        put(ChatColor.DARK_PURPLE, new Vector(170, 0, 170));
+        put(ChatColor.GOLD, new Vector(255, 170, 0));
+        put(ChatColor.GRAY, new Vector(170, 170, 170));
+        put(ChatColor.DARK_GRAY, new Vector(85, 85, 85));
+        put(ChatColor.BLUE, new Vector(85, 85, 255));
+        put(ChatColor.GREEN, new Vector(85, 255, 85));
+        put(ChatColor.AQUA, new Vector(85, 255, 255));
+        put(ChatColor.RED, new Vector(255, 85, 85));
+        put(ChatColor.LIGHT_PURPLE, new Vector(255, 85, 255));
+        put(ChatColor.YELLOW, new Vector(255, 255, 85));
+        put(ChatColor.WHITE, new Vector(255, 255, 255));
+    }});
 
     public static String colorize(String text) {
         Matcher matcher = HEX_COLOR_PATTERN.matcher(text);
