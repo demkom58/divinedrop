@@ -12,7 +12,7 @@ dependencies {
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 
-    implementation 'org.spigotmc:spigot-api:1.12-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     implementation 'commons-io:commons-io:2.11.0'
 
     implementation group: 'org.jetbrains', name: 'annotations', version: '21.0.1'
@@ -24,8 +24,8 @@ rootProject.tasks.named("processResources") {
 
 compileJava {
     options.encoding = 'UTF-8'
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType(JavaCompile) {

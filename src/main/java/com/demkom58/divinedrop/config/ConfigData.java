@@ -5,7 +5,6 @@ import com.demkom58.divinedrop.version.VersionManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.demkom58.divinedrop.util.ColorUtil.colorize;
 
 @Getter
 @Setter
@@ -72,21 +73,21 @@ public final class ConfigData {
         cleanerCountdowns = null;
 
         checkUpdates = conf.getBoolean("check-updates", true);
-        format = color(conf.getString("format", "&f%name% &7(x%size%)"));
+        format = colorize(conf.getString("format", "&f%name% &7(x%size%)"));
         pickupOnShift = conf.getBoolean("pickup-items-on-sneak", false);
         ignoreNoPickup = conf.getBoolean("ignore-no-pickup-items", true);
         lang = conf.getString("lang", "en_CA");
 
         final ConfigurationSection msg = getConfigurationSection(conf, "messages");
-        prefixMessage = color(msg.getString("prefix", "&5&lDivineDrop &7> &f"));
-        itemDisplayNameMessage = color(msg.getString("display-name", "Display Name&7: &f%name%"));
-        noPermissionMessage = color(msg.getString("no-permission", "&cYou do not have permission to run this command."));
-        unknownCmdMessage = color(msg.getString("unknown-cmd", "&cYou entered an unknown command."));
-        reloadedMessage = color(msg.getString("reloaded", "&aThe configuration is reloaded."));
+        prefixMessage = colorize(msg.getString("prefix", "&5&lDivineDrop &7> &f"));
+        itemDisplayNameMessage = colorize(msg.getString("display-name", "Display Name&7: &f%name%"));
+        noPermissionMessage = colorize(msg.getString("no-permission", "&cYou do not have permission to run this command."));
+        unknownCmdMessage = colorize(msg.getString("unknown-cmd", "&cYou entered an unknown command."));
+        reloadedMessage = colorize(msg.getString("reloaded", "&aThe configuration is reloaded."));
 
         final ConfigurationSection cleaner = getConfigurationSection(conf, "drop-cleaner");
         cleanerEnabled = cleaner.getBoolean("enabled", false);
-        cleanerFormat = color(cleaner.getString("format", "&c[&4%countdown%&c] &f%name% &7(x%size%)"));
+        cleanerFormat = colorize(cleaner.getString("format", "&c[&4%countdown%&c] &f%name% &7(x%size%)"));
         timerValue = cleaner.getInt("timer", 10);
         addItemsOnChunkLoad = cleaner.getBoolean("timer-for-loaded-items", true);
         savePlayerDeathDroppedItems = cleaner.getBoolean("save-player-dropped-items", false);
@@ -111,7 +112,7 @@ public final class ConfigData {
                 String name = custom.getString(materialName + ".name-filter");
                 if (name == null)
                     name = "*";
-                name = color(name);
+                name = colorize(name);
 
                 int timer = custom.getInt(materialName + ".timer");
                 String format = custom.getString(materialName + ".format");
@@ -119,7 +120,7 @@ public final class ConfigData {
                 if (format == null)
                     format = ConfigData.this.cleanerFormat;
 
-                format = color(format);
+                format = colorize(format);
                 Map<String, DataContainer> itemFilter;
 
                 if (!cleanerCountdowns.containsKey(material)) {
@@ -132,10 +133,6 @@ public final class ConfigData {
             }
         }
 
-    }
-
-    public static String color(String s) {
-        return ChatColor.translateAlternateColorCodes('&', s);
     }
 
     @NotNull
