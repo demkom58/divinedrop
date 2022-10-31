@@ -1,18 +1,16 @@
 plugins {
-    id "ru.endlesscode.bukkitgradle" version "0.10.1"
+    id 'java'
 }
-group = pluginGroup
-description = pluginDesc
-version = pluginVersion
 
 repositories {
-    spigot()
-    papermc()
+    mavenCentral()
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+    maven { url "https://papermc.io/repo/repository/maven-public/" }
 }
 
 dependencies {
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 
     implementation 'org.spigotmc:spigot-api:1.16.1-R0.1-SNAPSHOT'
     implementation 'commons-io:commons-io:2.11.0'
@@ -24,14 +22,12 @@ rootProject.tasks.named("processResources") {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-bukkit {
-    apiVersion = "1.13"
-    meta {
-        authors.set(["demkom58", "demkom", "GdemkomG"])
-    }
+compileJava {
+    options.encoding = 'UTF-8'
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
-compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
