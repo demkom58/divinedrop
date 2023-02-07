@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class Downloader {
 
     public static final String VERSIONS_LIST = "https://launchermeta.mojang.com/mc/game/version_manifest.json";
-    public static final String ASSETS_URL = "http://resources.download.minecraft.net/";
+    public static final String ASSETS_URL = "https://resources.download.minecraft.net/";
     public static final Gson GSON = new Gson();
 
     private final ConfigData data;
