@@ -18,6 +18,7 @@ import com.demkom58.divinedrop.version.V18R1.V18R1;
 import com.demkom58.divinedrop.version.V18R2.V18R2;
 import com.demkom58.divinedrop.version.V19R1.V19R1;
 import com.demkom58.divinedrop.version.V19R2.V19R2;
+import com.demkom58.divinedrop.version.V19R3.V19R3;
 import com.demkom58.divinedrop.version.V8R3.V8R3;
 import com.demkom58.divinedrop.version.V8R3.V8ResourceClient;
 import com.demkom58.divinedrop.version.V9R1.V9R1;
@@ -47,7 +48,8 @@ public enum SupportedVersion {
     V18R1(V18R1.class, new V13ResourceClient("1.18"), "v1_18_R1", V18R1::new),
     V18R2(V18R2.class, new V13ResourceClient("1.18.2"), "v1_18_R2", V18R2::new),
     V19R1(V19R1.class, new V13ResourceClient("1.19"), "v1_19_R1", V19R1::new),
-    V19R2(V19R2.class, new V13ResourceClient("1.19.3"), "v1_19_R2", V19R2::new)
+    V19R2(V19R2.class, new V13ResourceClient("1.19.3"), "v1_19_R2", V19R2::new),
+    V19R3(V19R3.class, new V13ResourceClient("1.19.4"), "v1_19_R3", V19R3::new)
     ;
 
     private static final Map<String, SupportedVersion> NMS_VERSION_MAP = new HashMap<String, SupportedVersion>(){{
