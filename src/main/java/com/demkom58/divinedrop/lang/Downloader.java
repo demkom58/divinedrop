@@ -7,6 +7,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -33,6 +34,10 @@ public class Downloader {
     public void downloadResource(@NotNull final Version.ResourceClient versionClient,
                                  @NotNull final String locale,
                                  @NotNull final File destination) throws IOException {
+        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+        console.sendMessage("§eSearching §6{0}§e language file for version §6{1}§e..."
+                .replace("{0}", locale).replace("{1}", versionClient.id()));
+
         final String versionId = versionClient.id();
 
         final VersionManifest vm = downloadObject(new URL(Downloader.VERSIONS_LIST), VersionManifest.class);
@@ -49,7 +54,7 @@ public class Downloader {
         }
 
         final String hash = ai.getLocaleHash(versionClient.getLangPath(locale));
-        Bukkit.getServer().getConsoleSender().sendMessage("§eDownloading §6{0}§e file (hash: §6{1}§e)"
+        console.sendMessage("§eDownloading §6{0}§e file (hash: §6{1}§e)"
                 .replace("{0}", locale).replace("{1}", hash));
 
         final String assetPath = Downloader.ASSETS_URL + createPathFromHash(hash);
