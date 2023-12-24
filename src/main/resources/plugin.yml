@@ -2,7 +2,7 @@ name: DivineDrop
 main: com.demkom58.divinedrop.DivineDrop
 description: Awesome removal of items from the ground
 website: https://www.spigotmc.org/members/98068/
-version: 2.12
+version: 2.13
 authors:
   - demkom58
   - GdemkomG
