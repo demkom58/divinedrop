@@ -10,13 +10,13 @@ import java.lang.invoke.MethodType;
 
 public class V8NmsHandleNameVersion extends NmsHandleNameVersion {
     public V8NmsHandleNameVersion(@NotNull ResourceClient client,
-                                  @NotNull ItemHandler manager,
+                                  @NotNull String nmsName,
                                   @NotNull MethodHandle asNMSCopyHandle,
                                   @NotNull MethodHandle getItemHandle,
                                   @NotNull MethodHandle getNameHandle) {
         super(
                 client,
-                manager,
+                nmsName,
                 asNMSCopyHandle.asType(MethodType.methodType(Object.class, ItemStack.class)),
                 getItemHandle.asType(MethodType.methodType(Object.class, Object.class)),
                 getNameHandle.asType(MethodType.methodType(String.class, Object.class, Object.class))
@@ -25,7 +25,7 @@ public class V8NmsHandleNameVersion extends NmsHandleNameVersion {
 
     @NotNull
     @Override
-    public Listener createListener() {
+    public Listener createListener(ItemHandler manager) {
         return new V8Listener(manager);
     }
 }

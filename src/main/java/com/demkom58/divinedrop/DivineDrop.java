@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 
 @Getter
 public final class DivineDrop extends JavaPlugin {
+    @Getter
     private static DivineDrop instance;
 
     private final MetricService metricService = new MetricService(this);
@@ -41,16 +42,17 @@ public final class DivineDrop extends JavaPlugin {
         }
 
         try {
-            versionManager.setup(configuration.getConfigData(), itemHandler);
-        } catch (UnsupportedOperationException e) {
+            versionManager.setup();
+        } catch (Exception e) {
             Bukkit.getConsoleSender().sendMessage("[" + getDescription().getName() + "] " + ChatColor.RED + e.getMessage());
             Bukkit.getPluginManager().disablePlugin(this);
+            e.printStackTrace();
             return;
         }
 
         final Version version = versionManager.getVersion();
         final PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(version.createListener(), this);
+        pluginManager.registerEvents(version.createListener(itemHandler), this);
         pluginManager.registerEvents(new CommonListener(this), this);
 
         Optional.ofNullable(getCommand("divinedrop"))
@@ -90,7 +92,4 @@ public final class DivineDrop extends JavaPlugin {
         return false;
     }
 
-    public static DivineDrop getInstance() {
-        return instance;
-    }
 }

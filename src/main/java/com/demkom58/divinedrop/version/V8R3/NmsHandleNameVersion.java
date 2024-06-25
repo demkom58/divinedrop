@@ -14,22 +14,27 @@ import java.lang.invoke.MethodHandle;
 
 public abstract class NmsHandleNameVersion implements Version {
     protected final ResourceClient client;
-    protected final ItemHandler manager;
+    protected final @Nullable String nmsName;
 
     protected MethodHandle asNMSCopyHandle;
     protected MethodHandle getItemHandle;
     protected MethodHandle getNameHandle;
 
     public NmsHandleNameVersion(@NotNull final ResourceClient client,
-                                   @NotNull final ItemHandler manager,
-                                   @NotNull final MethodHandle asNMSCopyHandle,
-                                   @NotNull final MethodHandle getItemHandle,
-                                   @NotNull final MethodHandle getNameHandle) {
+                                @Nullable final String nmsName,
+                                @NotNull final MethodHandle asNMSCopyHandle,
+                                @NotNull final MethodHandle getItemHandle,
+                                @NotNull final MethodHandle getNameHandle) {
         this.client = client;
-        this.manager = manager;
+        this.nmsName = nmsName;
         this.asNMSCopyHandle = asNMSCopyHandle;
         this.getItemHandle = getItemHandle;
         this.getNameHandle = getNameHandle;
+    }
+
+    @Override
+    public @Nullable String getNmsName() {
+        return nmsName;
     }
 
     @NotNull
@@ -48,7 +53,7 @@ public abstract class NmsHandleNameVersion implements Version {
 
     @NotNull
     @Override
-    public abstract Listener createListener();
+    public abstract Listener createListener(ItemHandler handler);
 
     @NotNull
     @SneakyThrows

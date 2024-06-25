@@ -29,7 +29,7 @@ public class CacheGenerator {
             final Version.ResourceClient versionClient = supportedVersion.getClient();
             final String versionId = versionClient.id();
 
-            LOGGER.info("Generating cache links for version " + supportedVersion.getNmsName());
+            LOGGER.info("Generating cache links for version " + supportedVersion.name());
 
             final Map<String, String> langsMap = new HashMap<>();
             versionLangs.put(versionId, langsMap);

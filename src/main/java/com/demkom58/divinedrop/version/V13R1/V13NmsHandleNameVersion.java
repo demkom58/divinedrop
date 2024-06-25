@@ -8,19 +8,20 @@ import lombok.SneakyThrows;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
 
 public class V13NmsHandleNameVersion extends NmsHandleNameVersion {
     public V13NmsHandleNameVersion(@NotNull final ResourceClient client,
-                                   @NotNull final ItemHandler manager,
+                                   @Nullable final String nmsVersion,
                                    @NotNull final MethodHandle asNMSCopyHandle,
                                    @NotNull final MethodHandle getItemHandle,
                                    @NotNull final MethodHandle getNameHandle) {
         super(
                 client,
-                manager,
+                nmsVersion,
                 asNMSCopyHandle.asType(MethodType.methodType(Object.class, ItemStack.class)),
                 getItemHandle.asType(MethodType.methodType(Object.class, Object.class)),
                 getNameHandle.asType(MethodType.methodType(String.class, Object.class))
@@ -29,7 +30,7 @@ public class V13NmsHandleNameVersion extends NmsHandleNameVersion {
 
     @NotNull
     @Override
-    public Listener createListener() {
+    public Listener createListener(ItemHandler manager) {
         return new V12Listener(manager);
     }
 

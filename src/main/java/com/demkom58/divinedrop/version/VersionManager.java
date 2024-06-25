@@ -1,8 +1,6 @@
 package com.demkom58.divinedrop.version;
 
 import com.demkom58.divinedrop.DivineDrop;
-import com.demkom58.divinedrop.config.ConfigData;
-import com.demkom58.divinedrop.drop.ItemHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -21,36 +19,36 @@ public class VersionManager {
 
     /**
      * Prepares all for using version dependent methods.
-     *
-     * It is recommend to be called in {@link Plugin#onEnable()} method
+     * <p>
+     * It is recommended to be called in {@link Plugin#onEnable()} method
      * for in order to avoid exceptions and mistakes.
-     *
-     * @param data - uses for working with configuration options.
-     * @param manager - {@link ItemHandler itemManager} uses for handling items by version dependent code.
      *
      * @throws UnsupportedOperationException
      *                  throws in situation when version is not supported or when it can't parse version.
      */
-    public void setup(@NotNull final ConfigData data, @NotNull final ItemHandler manager)
-            throws UnsupportedOperationException {
-        final String nmsVersion = extractNmsVersion();
-        supportedVersion = SupportedVersion.getVersion(nmsVersion);
+    public void setup() throws UnsupportedOperationException {
+        this.supportedVersion = SupportedVersion.getVersion();
 
-        if (supportedVersion == null)
-            throw new UnsupportedOperationException("Current version: " + nmsVersion + ". This version is not supported!");
+        if (this.supportedVersion == null) {
+            throw new UnsupportedOperationException(
+                    "Current version: " + Bukkit.getVersion() + ". This version is not supported!");
+        }
 
-        this.version = supportedVersion.create(manager);
-
+        this.version = supportedVersion.create();
         VersionManager.detectedVersion = supportedVersion;
+
+        final String nmsName = version.getNmsName();
+        plugin.getLogger().info("Detected version: " + supportedVersion.name()
+                + " (NMS: " + (nmsName == null ? "Generic" : nmsName) + ")");
     }
 
     /**
      * Getter of {@link Version version} version field.
-     *
-     * Shouldn't be called before {@link VersionManager#setup(ConfigData, ItemHandler)}
+     * <p>
+     * Shouldn't be called before {@link VersionManager#setup()}
      * because it sets version.
      *
-     * @return detected version that give access to version depended methods.
+     * @return detected version that give access to version depended on methods.
      */
     @NotNull
     public Version getVersion() {
@@ -59,7 +57,7 @@ public class VersionManager {
 
     /**
      * Supported version enum constant.
-     *
+     * <p>
      * Allows check newer or older version
      * or create new instances.
      *
@@ -67,15 +65,6 @@ public class VersionManager {
      */
     public SupportedVersion getSupportedVersion() {
         return supportedVersion;
-    }
-
-    @NotNull
-    private String extractNmsVersion() throws UnsupportedOperationException {
-        try {
-            return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new UnsupportedOperationException("Can't parse version...", e);
-        }
     }
 
     /**
