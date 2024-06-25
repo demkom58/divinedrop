@@ -35,29 +35,29 @@ import java.util.Map;
 
 @Getter
 public enum SupportedVersion {
-    V8R3(V8R3.class, new V8ResourceClient("1.8.9"), V8R3::new),
-    V9R1(V9R1.class, new V8ResourceClient("1.9"), V9R1::new),
-    V9R2(V9R2.class, new V8ResourceClient("1.9"), V9R2::new),
-    V10R1(V10R1.class, new V8ResourceClient("1.10"), V10R1::new),
-    V11R1(V11R1.class, new V11ResourceClient("1.11"), V11R1::new),
-    V12R1(V12R1.class, new V11ResourceClient("1.12"), V12R1::new),
-    V13R1(V13R1.class, new V13ResourceClient("1.13"), V13R1::new),
-    V13R2(V13R2.class, new V13ResourceClient("1.13.1"), V13R2::new),
-    V14R1(V14R1.class, new V13ResourceClient("1.14"), V14R1::new),
-    V15R1(V15R1.class, new V13ResourceClient("1.15"), V15R1::new),
-    V16R1(V16R1.class, new V13ResourceClient("1.16"), V16R1::new),
-    V16R2(V16R2.class, new V13ResourceClient("1.16.2"), V16R2::new),
-    V16R3(V16R3.class, new V13ResourceClient("1.16.4"), V16R3::new),
-    V17R1(V17R1.class, new V13ResourceClient("1.17"), V17R1::new),
-    V18R1(V18R1.class, new V13ResourceClient("1.18"), V18R1::new),
-    V18R2(V18R2.class, new V13ResourceClient("1.18.2"), V18R2::new),
-    V19R1(V19R1.class, new V13ResourceClient("1.19"), V19R1::new),
-    V19R2(V19R2.class, new V13ResourceClient("1.19.3"), V19R2::new),
-    V19R3(V19R3.class, new V13ResourceClient("1.19.4"), V19R3::new),
-    V20R1(V20R1.class, new V13ResourceClient("1.20"), V20R1::new),
-    V20R2(V20R2.class, new V13ResourceClient("1.20.2"), V20R2::new),
-    V20R3(V20R3.class, new V13ResourceClient("1.20.4"), V20R3::new),
-    V21(V21.class, new V13ResourceClient("1.21"), V21::new),
+    V8R3(V8R3.class, "1.8.9", V8ResourceClient::new, V8R3::new),
+    V9R1(V9R1.class, "1.9", V8ResourceClient::new, V9R1::new),
+    V9R2(V9R2.class, "1.9", V8ResourceClient::new, V9R2::new),
+    V10R1(V10R1.class, "1.10", V8ResourceClient::new, V10R1::new),
+    V11R1(V11R1.class, "1.11", V11ResourceClient::new, V11R1::new),
+    V12R1(V12R1.class, "1.12", V11ResourceClient::new, V12R1::new),
+    V13R1(V13R1.class, "1.13", V13ResourceClient::new, V13R1::new),
+    V13R2(V13R2.class, "1.13.1", V13ResourceClient::new, V13R2::new),
+    V14R1(V14R1.class, "1.14", V13ResourceClient::new, V14R1::new),
+    V15R1(V15R1.class, "1.15", V13ResourceClient::new, V15R1::new),
+    V16R1(V16R1.class, "1.16", V13ResourceClient::new, V16R1::new),
+    V16R2(V16R2.class, "1.16.2", V13ResourceClient::new, V16R2::new),
+    V16R3(V16R3.class, "1.16.4", V13ResourceClient::new, V16R3::new),
+    V17R1(V17R1.class, "1.17", V13ResourceClient::new, V17R1::new),
+    V18R1(V18R1.class, "1.18", V13ResourceClient::new, V18R1::new),
+    V18R2(V18R2.class, "1.18.2", V13ResourceClient::new, V18R2::new),
+    V19R1(V19R1.class, "1.19", V13ResourceClient::new, V19R1::new),
+    V19R2(V19R2.class, "1.19.3", V13ResourceClient::new, V19R2::new),
+    V19R3(V19R3.class, "1.19.4", V13ResourceClient::new, V19R3::new),
+    V20R1(V20R1.class, "1.20", V13ResourceClient::new, V20R1::new),
+    V20R2(V20R2.class, "1.20.2", V13ResourceClient::new, V20R2::new),
+    V20R3(V20R3.class, "1.20.4", V13ResourceClient::new, V20R3::new),
+    V21(V21.class, "1.21", V13ResourceClient::new, V21::new),
     ;
 
     private static final Map<Class<? extends Version>, SupportedVersion> CLASS_VERSION_MAP = new HashMap<Class<? extends Version>, SupportedVersion>() {{
@@ -66,15 +66,18 @@ public enum SupportedVersion {
     }};
 
     private final Class<? extends Version> versionClass;
-    private final Version.ResourceClient client;
-    private final VersionFactory factory;
+    private final String versionName;
+    private final ClientFactory clientFactory;
+    private final VersionFactory versionFactory;
 
     SupportedVersion(@NotNull final Class<? extends Version> versionClass,
-                     @NotNull final Version.ResourceClient client,
-                     @NotNull final VersionFactory factory) {
+                     @NotNull final String versionName,
+                     @NotNull final ClientFactory clientFactory,
+                     @NotNull final VersionFactory versionFactory) {
         this.versionClass = versionClass;
-        this.client = client;
-        this.factory = factory;
+        this.versionName = versionName;
+        this.clientFactory = clientFactory;
+        this.versionFactory = versionFactory;
     }
 
     public boolean isNewer(@NotNull final SupportedVersion version) {
@@ -85,29 +88,43 @@ public enum SupportedVersion {
         return ordinal() < version.ordinal();
     }
 
-    @NotNull
-    public Version create() {
+    /**
+     * Creates version instance.
+     *
+     * @param specificVersion specific version to create or null to use default version.
+     * @return created version instance.
+     */
+    public @NotNull Version create(@Nullable String specificVersion) {
         try {
-            return factory.create(client);
+            String version = specificVersion == null ? versionName : specificVersion;
+            Version.ResourceClient client = clientFactory.create(version);
+            return versionFactory.create(client);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public static @Nullable SupportedVersion getVersion() {
+        SupportedVersion latest = null;
+
         for (SupportedVersion value : values()) {
             try {
-                value.getFactory().create(value.client);
-                return value;
+                value.create(value.getVersionName());
+                latest = value;
             } catch (Exception ignored) {
             }
         }
 
-        return null;
+        return latest;
     }
 
     private interface VersionFactory {
         @NotNull
         Version create(@NotNull final Version.ResourceClient client) throws Exception;
+    }
+
+    public interface ClientFactory {
+        @NotNull
+        Version.ResourceClient create(@NotNull String version) throws Exception;
     }
 }

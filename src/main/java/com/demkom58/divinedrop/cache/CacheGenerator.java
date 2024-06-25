@@ -26,7 +26,8 @@ public class CacheGenerator {
         final Map<String, Map<String, String>> versionLangs = new HashMap<>();
 
         for (SupportedVersion supportedVersion : versions) {
-            final Version.ResourceClient versionClient = supportedVersion.getClient();
+            final Version.ResourceClient versionClient = supportedVersion.getClientFactory()
+                    .create(supportedVersion.getVersionName());
             final String versionId = versionClient.id();
 
             LOGGER.info("Generating cache links for version " + supportedVersion.name());
