@@ -21,6 +21,7 @@ import com.demkom58.divinedrop.version.V19R3.V19R3;
 import com.demkom58.divinedrop.version.V20R1.V20R1;
 import com.demkom58.divinedrop.version.V20R2.V20R2;
 import com.demkom58.divinedrop.version.V20R3.V20R3;
+import com.demkom58.divinedrop.version.V21.V21;
 import com.demkom58.divinedrop.version.V8R3.V8R3;
 import com.demkom58.divinedrop.version.V8R3.V8ResourceClient;
 import com.demkom58.divinedrop.version.V9R1.V9R1;
@@ -56,6 +57,7 @@ public enum SupportedVersion {
     V20R1(V20R1.class, new V13ResourceClient("1.20"), V20R1::new),
     V20R2(V20R2.class, new V13ResourceClient("1.20.2"), V20R2::new),
     V20R3(V20R3.class, new V13ResourceClient("1.20.4"), V20R3::new),
+    V21(V21.class, new V13ResourceClient("1.21"), V21::new),
     ;
 
     private static final Map<Class<? extends Version>, SupportedVersion> CLASS_VERSION_MAP = new HashMap<Class<? extends Version>, SupportedVersion>() {{
