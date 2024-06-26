@@ -10,8 +10,8 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
 public class V12R1 extends V8NmsHandleNameVersion {
-    public V12R1(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) throws Exception {
-        super(client, manager,
+    public V12R1(@NotNull final ResourceClient client) throws Exception {
+        super(client, "v1_12_R1",
                 MethodHandles.lookup()
                         .findStatic(
                                 Class.forName("org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack"),
@@ -35,7 +35,7 @@ public class V12R1 extends V8NmsHandleNameVersion {
 
     @NotNull
     @Override
-    public Listener createListener() {
+    public Listener createListener(ItemHandler manager) {
         return new V12Listener(manager);
     }
 }

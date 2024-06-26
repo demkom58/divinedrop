@@ -1,6 +1,5 @@
 package com.demkom58.divinedrop.version.V11R1;
 
-import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.version.V8R3.V8NmsHandleNameVersion;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -9,8 +8,8 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
 public class V11R1 extends V8NmsHandleNameVersion {
-    public V11R1(@NotNull final ResourceClient client, @NotNull final ItemHandler manager) throws Exception {
-        super(client, manager,
+    public V11R1(@NotNull final ResourceClient client) throws Exception {
+        super(client,  "v1_11_R1",
                 MethodHandles.lookup()
                         .findStatic(
                                 Class.forName("org.bukkit.craftbukkit.v1_11_R1.inventory.CraftItemStack"),

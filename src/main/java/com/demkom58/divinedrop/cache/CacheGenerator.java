@@ -26,10 +26,11 @@ public class CacheGenerator {
         final Map<String, Map<String, String>> versionLangs = new HashMap<>();
 
         for (SupportedVersion supportedVersion : versions) {
-            final Version.ResourceClient versionClient = supportedVersion.getClient();
+            final Version.ResourceClient versionClient = supportedVersion.getClientFactory()
+                    .create(supportedVersion.getVersion().toString());
             final String versionId = versionClient.id();
 
-            LOGGER.info("Generating cache links for version " + supportedVersion.getNmsName());
+            LOGGER.info("Generating cache links for version " + supportedVersion.name());
 
             final Map<String, String> langsMap = new HashMap<>();
             versionLangs.put(versionId, langsMap);
