@@ -29,14 +29,14 @@ public class VersionManager {
      * @throws UnsupportedOperationException throws in situation when version is not supported or when it can't parse version.
      */
     public void setup() throws UnsupportedOperationException {
-        this.supportedVersion = SupportedVersion.getVersion();
+        final SemVer minecraftVersion = detectMinecraftVersion();
+        this.supportedVersion = SupportedVersion.getVersion(minecraftVersion);
 
         if (this.supportedVersion == null) {
             throw new UnsupportedOperationException(
                     "Current version: " + Bukkit.getVersion() + ". This version is not supported!");
         }
 
-        final String minecraftVersion = detectMinecraftVersion();
         this.version = supportedVersion.create(minecraftVersion);
 
         VersionManager.detectedVersion = supportedVersion;
@@ -94,13 +94,13 @@ public class VersionManager {
         return supportedVersion.isOlder(version);
     }
 
-    public static @Nullable String detectMinecraftVersion() {
+    public static @Nullable SemVer detectMinecraftVersion() {
         final String bukkitVersion = Bukkit.getVersion(); // format: "1.21-37-dd49fba (MC: 1.21)"
         final Pattern compile = Pattern.compile("MC: ([0-9.]+)");
         final java.util.regex.Matcher matcher = compile.matcher(bukkitVersion);
 
         if (matcher.find()) {
-            return matcher.group(1);
+            return new SemVer(matcher.group(1));
         }
 
         return null;

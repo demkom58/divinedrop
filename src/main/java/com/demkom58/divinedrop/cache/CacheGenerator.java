@@ -27,7 +27,7 @@ public class CacheGenerator {
 
         for (SupportedVersion supportedVersion : versions) {
             final Version.ResourceClient versionClient = supportedVersion.getClientFactory()
-                    .create(supportedVersion.getVersionName());
+                    .create(supportedVersion.getVersion().toString());
             final String versionId = versionClient.id();
 
             LOGGER.info("Generating cache links for version " + supportedVersion.name());

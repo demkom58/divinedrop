@@ -5,7 +5,8 @@ import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.LangManager;
 import com.demkom58.divinedrop.metric.MetricService;
-import com.demkom58.divinedrop.util.WebSpigot;
+import com.demkom58.divinedrop.util.UpdateChecker;
+import com.demkom58.divinedrop.version.SemVer;
 import com.demkom58.divinedrop.version.Version;
 import com.demkom58.divinedrop.version.VersionManager;
 import lombok.Getter;
@@ -15,6 +16,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -24,7 +26,8 @@ public final class DivineDrop extends JavaPlugin {
     private static DivineDrop instance;
 
     private final MetricService metricService = new MetricService(this);
-    private final WebSpigot webSpigot = new WebSpigot(this, getDescription().getVersion(), StaticData.RESOURCE_ID);
+    private final UpdateChecker webSpigot = new UpdateChecker(this, new SemVer(getDescription().getVersion()),
+            Objects.requireNonNull(VersionManager.detectMinecraftVersion()), "spigot", StaticData.RESOURCE_ID);
 
     private final VersionManager versionManager = new VersionManager(this);
     private final Config configuration = new Config("config", this, versionManager, 3);
@@ -60,14 +63,15 @@ public final class DivineDrop extends JavaPlugin {
                         new DivineCommandHandler(this, versionManager, configuration.getConfigData())
                 ));
 
-        if (configuration.getConfigData().isCheckUpdates())
-            webSpigot.ifOutdated((latestVersion) -> {
+        reloadPlugin(version);
+
+        if (configuration.getConfigData().isCheckUpdates()) {
+            webSpigot.checkIfOutdated((latestVersion) -> {
                 final Logger logger = Bukkit.getLogger();
-                logger.info("New version '" + latestVersion + "' detected.");
+                logger.info("New version '" + latestVersion.getVersion_number() + "' detected.");
                 logger.info("Please update it on: " + webSpigot.getResourceLink());
             }, false);
-
-        reloadPlugin(version);
+        }
     }
 
     @Override
@@ -86,8 +90,9 @@ public final class DivineDrop extends JavaPlugin {
     }
 
     public boolean loadConfig(@NotNull final Version version) {
-        if (configuration.load())
+        if (configuration.load()) {
             return langManager.manageLang(configuration.getConfigData().getLang(), version.getClient());
+        }
 
         return false;
     }

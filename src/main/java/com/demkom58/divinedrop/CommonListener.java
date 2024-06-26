@@ -1,7 +1,7 @@
 package com.demkom58.divinedrop;
 
 import com.demkom58.divinedrop.config.ConfigData;
-import com.demkom58.divinedrop.util.WebSpigot;
+import com.demkom58.divinedrop.util.UpdateChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,9 +23,9 @@ public class CommonListener implements Listener {
             return;
 
         final Player player = event.getPlayer();
-        final WebSpigot webSpigot = plugin.getWebSpigot();
-        webSpigot.ifOutdated(latest -> {
-            player.sendMessage(ChatColor.DARK_PURPLE + "New version of DivineDrop found. Latest: " + latest);
+        final UpdateChecker webSpigot = plugin.getWebSpigot();
+        webSpigot.checkIfOutdated(latest -> {
+            player.sendMessage(ChatColor.DARK_PURPLE + "New version of DivineDrop found. Latest: " + latest.getVersion_number());
             player.sendMessage(ChatColor.LIGHT_PURPLE + "You can update it here: " + ChatColor.GRAY + webSpigot.getResourceLink());
         }, true);
     }

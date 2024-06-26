@@ -30,8 +30,12 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public enum SupportedVersion {
@@ -66,16 +70,16 @@ public enum SupportedVersion {
     }};
 
     private final Class<? extends Version> versionClass;
-    private final String versionName;
+    private final SemVer version;
     private final ClientFactory clientFactory;
     private final VersionFactory versionFactory;
 
     SupportedVersion(@NotNull final Class<? extends Version> versionClass,
-                     @NotNull final String versionName,
+                     @NotNull final String version,
                      @NotNull final ClientFactory clientFactory,
                      @NotNull final VersionFactory versionFactory) {
         this.versionClass = versionClass;
-        this.versionName = versionName;
+        this.version = new SemVer(version);
         this.clientFactory = clientFactory;
         this.versionFactory = versionFactory;
     }
@@ -94,9 +98,9 @@ public enum SupportedVersion {
      * @param specificVersion specific version to create or null to use default version.
      * @return created version instance.
      */
-    public @NotNull Version create(@Nullable String specificVersion) {
+    public @NotNull Version create(@Nullable SemVer specificVersion) {
         try {
-            String version = specificVersion == null ? versionName : specificVersion;
+            String version = specificVersion == null ? this.version.toString() : specificVersion.toString();
             Version.ResourceClient client = clientFactory.create(version);
             return versionFactory.create(client);
         } catch (Exception e) {
@@ -104,18 +108,22 @@ public enum SupportedVersion {
         }
     }
 
-    public static @Nullable SupportedVersion getVersion() {
-        SupportedVersion latest = null;
-
-        for (SupportedVersion value : values()) {
+    public static @Nullable SupportedVersion getVersion(@Nullable SemVer specificVersion) {
+        List<SupportedVersion> list = Stream.of(values()).filter(version -> {
             try {
-                value.create(value.getVersionName());
-                latest = value;
-            } catch (Exception ignored) {
+                version.create(specificVersion);
+                return true;
+            } catch (Exception e) {
+                return false;
             }
+        }).collect(Collectors.toList());
+
+        if (specificVersion != null) {
+            Comparator<SemVer> semVerComparator = SemVer.closestTo(specificVersion);
+            list.sort((o1, o2) -> semVerComparator.compare(o1.version, o2.version));
         }
 
-        return latest;
+        return list.isEmpty() ? null : list.get(0);
     }
 
     private interface VersionFactory {
