@@ -21,6 +21,7 @@ import com.demkom58.divinedrop.version.V19R3.V19R3;
 import com.demkom58.divinedrop.version.V20R1.V20R1;
 import com.demkom58.divinedrop.version.V20R2.V20R2;
 import com.demkom58.divinedrop.version.V20R3.V20R3;
+import com.demkom58.divinedrop.version.V21R1.V21R1;
 import com.demkom58.divinedrop.version.deobf.DeobfuscatedVersionV21;
 import com.demkom58.divinedrop.version.V8R3.V8R3;
 import com.demkom58.divinedrop.version.V8R3.V8ResourceClient;
@@ -61,6 +62,7 @@ public enum SupportedVersion {
     V20R1(V20R1.class, "1.20", V13ResourceClient::new, V20R1::new),
     V20R2(V20R2.class, "1.20.2", V13ResourceClient::new, V20R2::new),
     V20R3(V20R3.class, "1.20.4", V13ResourceClient::new, V20R3::new),
+    V21R1(V21R1.class, "1.21", V13ResourceClient::new, V21R1::new),
     DEOBFUSCATED_POST_V_21(DeobfuscatedVersionV21.class, "1.21", V13ResourceClient::new, DeobfuscatedVersionV21::new),
     ;
 
