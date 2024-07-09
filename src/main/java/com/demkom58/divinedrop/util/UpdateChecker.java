@@ -58,7 +58,7 @@ public class UpdateChecker {
 
     public void checkIfOutdated(@NotNull final Consumer<Version> handler, boolean sync) {
         fetchLatestSupportedVersion(latest -> {
-            if (latest == null || currentVersion.isNewer(latest.version_number)) return;
+            if (latest == null || !latest.version_number.isNewer(currentVersion)) return;
 
             handler.accept(latest);
         }, sync);
