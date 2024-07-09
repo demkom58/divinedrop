@@ -1,4 +1,4 @@
-package com.demkom58.divinedrop.version.V21;
+package com.demkom58.divinedrop.version.deobf;
 
 import com.demkom58.divinedrop.version.V13R1.V13NmsHandleNameVersion;
 import org.bukkit.inventory.ItemStack;
@@ -7,9 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 
-public class V21 extends V13NmsHandleNameVersion {
-    public V21(@NotNull final ResourceClient client) throws Exception {
-        super(client,  null,
+public class DeobfuscatedVersionV21 extends V13NmsHandleNameVersion {
+    public DeobfuscatedVersionV21(@NotNull final ResourceClient client) throws Exception {
+        super(client, null,
                 MethodHandles.lookup()
                         .findStatic(
                                 Class.forName("org.bukkit.craftbukkit.inventory.CraftItemStack"),
