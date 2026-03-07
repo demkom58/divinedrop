@@ -4,13 +4,13 @@ import com.demkom58.divinedrop.DivineDrop;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.DataContainer;
 import com.demkom58.divinedrop.config.StaticData;
+import com.demkom58.divinedrop.util.CraftEngineUtil;
 import com.demkom58.divinedrop.util.DivineTimer;
 import com.demkom58.divinedrop.version.VersionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.jetbrains.annotations.NotNull;
@@ -113,7 +113,13 @@ public class ItemHandler {
     }
 
     public String getDisplayName(@NotNull final Item item) {
-        return versionManager.getVersion().getI18NDisplayName(item.getItemStack());
+        final String craftEngineName = CraftEngineUtil.getDisplayName(item.getItemStack());
+        if (craftEngineName != null) {
+            return craftEngineName;
+        }
+
+        final String fallbackName = versionManager.getVersion().getI18NDisplayName(item.getItemStack());
+        return fallbackName != null ? fallbackName : "";
     }
 
     public void removeTimer(@NotNull final Item item) {
@@ -156,10 +162,7 @@ public class ItemHandler {
     }
 
     public void setupMetaTimer(@NotNull final Item item) {
-        final ItemMeta meta = item.getItemStack().getItemMeta();
-        final String name = meta != null
-                ? meta.hasDisplayName() ? meta.getDisplayName() : ""
-                : "";
+        final String name = getDisplayName(item);
 
         int timer = data.getTimerValue();
         String format = data.getCleanerFormat();
