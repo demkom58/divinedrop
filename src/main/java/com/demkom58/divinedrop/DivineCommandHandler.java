@@ -3,6 +3,7 @@ package com.demkom58.divinedrop;
 import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.util.ColorUtil;
+import com.demkom58.divinedrop.util.CraftEngineUtil;
 import com.demkom58.divinedrop.version.SupportedVersion;
 import com.demkom58.divinedrop.version.VersionManager;
 import org.bukkit.Material;
@@ -12,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -90,11 +90,11 @@ public class DivineCommandHandler implements CommandExecutor {
         final String name;
 
         if (handStack.getType() != Material.AIR) {
-            final ItemMeta itemMeta = handStack.getItemMeta();
-            if (itemMeta != null && itemMeta.hasDisplayName())
-                name = ColorUtil.escapeColor(itemMeta.getDisplayName());
-            else
-                name = "§7<Empty>";
+            final String craftEngineName = CraftEngineUtil.getDisplayName(handStack);
+            final String displayName = craftEngineName != null
+                    ? craftEngineName
+                    : versionManager.getVersion().getI18NDisplayName(handStack);
+            name = displayName != null ? ColorUtil.escapeColor(displayName) : "§7<Empty>";
         } else name = "AIR";
 
         sendMessage(sender, data.getItemDisplayNameMessage().replace("%name%", name));
