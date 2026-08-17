@@ -5,6 +5,7 @@ import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.drop.ItemHandler;
 import com.demkom58.divinedrop.lang.LangManager;
 import com.demkom58.divinedrop.metric.MetricService;
+import com.demkom58.divinedrop.util.ItemUtil;
 import com.demkom58.divinedrop.util.UpdateChecker;
 import com.demkom58.divinedrop.version.SemVer;
 import com.demkom58.divinedrop.version.Version;
@@ -68,6 +69,11 @@ public final class DivineDrop extends JavaPlugin {
                 ));
 
         reloadPlugin(version);
+
+        if (configuration.getConfigData().isOccludeNameTags() && !ItemUtil.supportsDiscrete()) {
+            getLogger().warning("occlude-name-tags is on, but this server has no Entity#setSneaking "
+                    + "(added in 1.20). Item name tags will keep rendering through blocks.");
+        }
 
         if (configuration.getConfigData().isCheckUpdates()) {
             webSpigot.checkIfOutdated((latestVersion) -> {

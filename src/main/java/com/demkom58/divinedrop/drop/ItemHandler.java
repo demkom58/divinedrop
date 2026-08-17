@@ -5,6 +5,7 @@ import com.demkom58.divinedrop.config.ConfigData;
 import com.demkom58.divinedrop.config.DataContainer;
 import com.demkom58.divinedrop.config.StaticData;
 import com.demkom58.divinedrop.util.DivineTimer;
+import com.demkom58.divinedrop.util.ItemUtil;
 import com.demkom58.divinedrop.version.VersionManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -83,6 +84,7 @@ public class ItemHandler {
         timedItems.forEach(item -> {
             item.setCustomName(null);
             item.setCustomNameVisible(false);
+            ItemUtil.setDiscrete(item, false);
         });
 
         timedItems.clear();

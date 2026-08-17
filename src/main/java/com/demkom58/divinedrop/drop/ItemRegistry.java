@@ -53,6 +53,7 @@ public class ItemRegistry {
             return;
 
         item.setCustomNameVisible(true);
+        occludeNameTag(item);
 
         if (!data.isCleanerEnabled() || !data.isAddItemsOnChunkLoad()) {
             item.setCustomName(itemHandler.getFormattedName(item));
@@ -146,6 +147,7 @@ public class ItemRegistry {
                 return;
 
             item.setCustomNameVisible(true);
+            occludeNameTag(item);
 
             if (!data.isCleanerEnabled()) {
                 item.setCustomName(itemHandler.getFormattedName(item));
@@ -158,6 +160,19 @@ public class ItemRegistry {
 
     public boolean isIgnoredItem(Item item) {
         return data.isIgnoreNoPickup() && ItemUtil.hasNoPickupFlag(item);
+    }
+
+    /**
+     * Keeps the name tag of a dropped item from being drawn through blocks.
+     *
+     * <p>Always writes the configured value rather than only setting the flag,
+     * so a reload that turns the option off clears it from items as they are
+     * picked back up by {@link #loadedItem(Item)}.
+     *
+     * @param item - item whose tag was just made visible.
+     */
+    private void occludeNameTag(@NotNull final Item item) {
+        ItemUtil.setDiscrete(item, data.isOccludeNameTags());
     }
 
 }
