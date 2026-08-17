@@ -27,6 +27,7 @@ public final class ConfigData {
     private String format;
     private boolean pickupOnShift;
     private boolean ignoreNoPickup;
+    private boolean occludeNameTags;
     private String lang;
 
     // Message settings
@@ -76,6 +77,7 @@ public final class ConfigData {
         format = colorize(conf.getString("format", "&f%name% &7(x%size%)"));
         pickupOnShift = conf.getBoolean("pickup-items-on-sneak", false);
         ignoreNoPickup = conf.getBoolean("ignore-no-pickup-items", true);
+        occludeNameTags = conf.getBoolean("occlude-name-tags", true);
         lang = conf.getString("lang", "en_CA");
 
         final ConfigurationSection msg = getConfigurationSection(conf, "messages");

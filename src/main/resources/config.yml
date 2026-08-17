@@ -23,6 +23,12 @@ pickup-items-on-sneak: false
 # Ignore no-pickup items, for compatibility with other plugins.
 ignore-no-pickup-items: true
 
+# Stop item labels from being drawn through walls and terrain.
+# Dropped items are flagged as sneaking, which is what the client reads to decide
+# whether a name tag is see-through. Items have no sneaking pose, so nothing else
+# about them changes. Needs 1.20 or newer; below that the option is ignored.
+occlude-name-tags: true
+
 # Name of resource. Example: en_CA, uk_UA, de_DE, mt_MT etc.
 # More: https://www.spigotmc.org/resources/divinedrop.51715/
 lang: "en_CA"
